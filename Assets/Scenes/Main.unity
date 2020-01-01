@@ -150,6 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiles: {fileID: 226229914}
+  testRobotPrefab: {fileID: 8546798843112015616, guid: 089b57b27c8f7dc428f3c4fa735d958c,
+    type: 3}
 --- !u!4 &121208318
 Transform:
   m_ObjectHideFlags: 0

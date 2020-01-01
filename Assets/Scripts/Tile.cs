@@ -1,7 +1,12 @@
-﻿public class Tile
+﻿using UnityEngine;
+
+public class Tile
 {
     private TileVisual visual;
     
+    private Vector3Int intPosition;
+    public Vector3Int IntPosition => intPosition;
+
     public TileType Type { get; }
 
     public Tile(TileType tileType)
@@ -17,6 +22,7 @@
     {
         Tile tile = new Tile(visual.TileType);
         tile.visual = visual;
+        tile.intPosition = visual.IntPosition;
         return tile;
     }
 }

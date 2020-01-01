@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Utility;
 
@@ -7,11 +8,15 @@ public class Field : SingletonBehaviour<Field>
     [SerializeField]
     private Transform tiles;
 
+    [SerializeField]
+    private GameObject testRobotPrefab;
+
     private Dictionary<Vector3Int, Tile> positionsToTiles;
     
     void Awake()
     {
         Initialize();
+        InvokeRepeating("SpawnRobotForTesting", 0,1);
     }
 
     private void Initialize()
@@ -27,8 +32,21 @@ public class Field : SingletonBehaviour<Field>
             }
             
             Tile tile = Tile.ConstructTileFromVisual(tileVisual);
-            Vector3Int intPosition = tileVisual.IntPosition;
-            positionsToTiles[intPosition] = tile;
+            positionsToTiles[tile.IntPosition] = tile;
         }
+    }
+
+    private void SpawnRobotForTesting()
+    {
+        Tile startTile = positionsToTiles.First().Value;
+        GameObject robot = GameObject.Instantiate(testRobotPrefab);
+        robot.GetComponent<RobotVisual>().CurrentTile = startTile;
+    }
+
+    public Tile GetTileAtIntPosition(Vector3Int intPosition)
+    {
+        if (positionsToTiles.ContainsKey(intPosition))
+            return positionsToTiles[intPosition];
+        return null;
     }
 }
