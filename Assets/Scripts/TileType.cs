@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum TileType
+﻿public enum TileType
 {
-    Basic,
-    StaticArrow,
-    FlipArrow
+    Basic = 1,
+    StaticArrow = 2,
+    FlipArrow = 3,
+    Wall = 4
 }

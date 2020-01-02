@@ -30,7 +30,7 @@ public class Field : SingletonBehaviour<Field>
                 Debug.LogError("Did not find component '" + nameof(TileVisual) + "' on tile", tileTransform);
                 continue;
             }
-            
+
             Tile tile = Tile.ConstructTileFromVisual(tileVisual);
             positionsToTiles[tile.IntPosition] = tile;
         }
@@ -38,7 +38,7 @@ public class Field : SingletonBehaviour<Field>
 
     private void SpawnRobotForTesting()
     {
-        Tile startTile = positionsToTiles.First().Value;
+        Tile startTile = positionsToTiles.First(x => x.Value.Type == TileType.Basic).Value;
         GameObject robot = GameObject.Instantiate(testRobotPrefab);
         robot.GetComponent<RobotVisual>().CurrentTile = startTile;
     }

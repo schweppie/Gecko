@@ -4,8 +4,8 @@ public class TileVisual : MonoBehaviour
 {
     [SerializeField]
     private TileType type;
-    
-    public TileType TileType { get; }
+
+    public TileType TileType => type;
 
     public Vector3Int IntPosition
     {
