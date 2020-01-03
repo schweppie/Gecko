@@ -23,7 +23,7 @@ namespace Gameplay.Robots
             transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutQuart);
         }
 
-        private void OnDispose()
+        public void OnDispose()
         {
             transform.DOScale(0, 1f)
                 .OnComplete(() => Destroy(gameObject));

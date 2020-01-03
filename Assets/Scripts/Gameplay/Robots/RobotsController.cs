@@ -20,6 +20,9 @@ namespace Gameplay.Robots
         {
             RobotVisual robotVisual = Instantiate(robotPrefab);
             robotVisual.Initialize(robot);
+
+            robot.SetVisual(robotVisual);
+
             return robotVisual;
         }
     }

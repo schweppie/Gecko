@@ -16,6 +16,11 @@ namespace Gameplay.Robots.Components
 
             if (commands.Count == 0)
                 robotCommand = new SpawnRobotCommand();
+            else if (commands.Last().GetType() == typeof(CollectRobotCommand)
+                     || commands.Last().GetType() == typeof(DoNothingCommand))
+                robotCommand = new DoNothingCommand();
+            else if (robot.Tile.GetComponent<CollectorTileComponent>())
+                robotCommand = new CollectRobotCommand();
             else if (robot.Tile.GetComponent<EmptyTileComponent>())
                 robotCommand = new FallRobotCommand();
             else

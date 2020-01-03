@@ -19,6 +19,9 @@ namespace Gameplay.Robots
 
         public Vector3Int Position => position;
 
+        private RobotVisual robotVisual;
+        public RobotVisual RobotVisual => robotVisual;
+
         private List<RobotComponent> components = new List<RobotComponent>();
         private RobotCommandComponent commandComponent = new RobotCommandComponent();
 
@@ -81,6 +84,11 @@ namespace Gameplay.Robots
             
             GameStepController.Instance.OnForwardStep -= OnForwardStep;
             GameStepController.Instance.OnBackwardStep -= OnBackwardStep;
+        }
+
+        public void SetVisual(RobotVisual robotVisual)
+        {
+            this.robotVisual = robotVisual;
         }
     }
 }
