@@ -12,14 +12,11 @@ namespace Gameplay.Robots
         private Tile tile;
         public Tile Tile => tile;
         
-        private Tile oldTile;
         private Vector3Int position;
-        private Vector3Int oldPosition;
         
         private Vector3Int direction;
         public Vector3Int Direction => direction;
 
-        public Vector3Int OldPosition => oldPosition;
         public Vector3Int Position => position;
 
         private List<RobotComponent> components = new List<RobotComponent>();
@@ -32,8 +29,6 @@ namespace Gameplay.Robots
         {
             tile = startTile;
             position = startTile.IntPosition;
-            oldTile = startTile;
-            oldPosition = startTile.IntPosition;
             this.direction = direction;
         }
         
@@ -75,8 +70,6 @@ namespace Gameplay.Robots
 
         public void Move(Vector3Int direction)
         {
-            oldTile = tile;
-            oldPosition = position;
             position = position + direction;
             Tile nextTile = FieldController.Instance.GetTileAtIntPosition(position);
             tile = nextTile;
