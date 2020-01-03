@@ -13,10 +13,10 @@ public class FieldController : SingletonBehaviour<FieldController>
     void Awake()
     {
         Initialize();
-        GameStepController.Instance.OnGameStep += OnGameStep;
+        GameStepController.Instance.OnForwardStep += OnForwardStep;
     }
 
-    private void OnGameStep(int step)
+    private void OnForwardStep(int step)
     {
         foreach (var tile in positionsToTiles.Values)
             tile.DoStep();        

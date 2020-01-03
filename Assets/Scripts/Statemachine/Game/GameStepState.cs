@@ -1,15 +1,24 @@
 using Gameplay;
 using JP.Framework.Statemachine;
+using UnityEngine;
 
 namespace Gecko.Gameplay
 {
     public class GameStepState : State<GameStates>
     {
-        public override void Enter()
+        public override void Update()
         {
-            GameStepController.Instance.DoGameStep();
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                GameStepController.Instance.DoForwardStep();
+                stateMachine.ChangeTo(GameStates.GameVisualization);
+            }
             
-            stateMachine.ChangeTo(GameStates.GameVisualization);
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                GameStepController.Instance.DoBackwardStep();
+                stateMachine.ChangeTo(GameStates.GameVisualization);                
+            }
         }
     }
 }

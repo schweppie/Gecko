@@ -1,5 +1,6 @@
 using Gameplay.Robots;
 using UnityEngine;
+using Utility;
 
 namespace Gameplay.Tiles.Components
 {
@@ -7,7 +8,7 @@ namespace Gameplay.Tiles.Components
     {
         public override void DoStep()
         {
-            RobotsController.Instance.CreateRobot(tile);
+            RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());
         }
 
         private void Update()

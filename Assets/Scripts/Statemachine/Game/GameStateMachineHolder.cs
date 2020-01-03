@@ -12,5 +12,10 @@ namespace Gecko.Gameplay
             gameStatemachine = new GameStatemachine();
             gameStatemachine.Start();
         }
+
+        private void Update()
+        {
+            gameStatemachine.Update();
+        }
     }
 }
