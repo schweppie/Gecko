@@ -3,7 +3,8 @@
     public enum GameStates
     {
         Countdown = 1,
-        Gameloop = 2,
-        GameOver = 3,
+        GameStep = 2,
+        GameVisualization = 3,
+        GameOver = 4
     }
 }

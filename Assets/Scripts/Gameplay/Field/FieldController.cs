@@ -1,22 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using Gameplay;
+using Gameplay.Tiles;
 using UnityEngine;
 using Utility;
 
-public class Field : SingletonBehaviour<Field>
+public class FieldController : SingletonBehaviour<FieldController>
 {
     [SerializeField]
     private Transform tiles;
-
-    [SerializeField]
-    private GameObject testRobotPrefab;
-
     private Dictionary<Vector3Int, Tile> positionsToTiles;
-    
+
     void Awake()
     {
         Initialize();
-        InvokeRepeating("SpawnRobotForTesting", 0,1);
+        GameStepController.Instance.OnGameStep += OnGameStep;
+    }
+
+    private void OnGameStep(int step)
+    {
+        foreach (var tile in positionsToTiles.Values)
+            tile.DoStep();        
     }
 
     private void Initialize()
@@ -34,13 +37,6 @@ public class Field : SingletonBehaviour<Field>
             Tile tile = Tile.ConstructTileFromVisual(tileVisual);
             positionsToTiles[tile.IntPosition] = tile;
         }
-    }
-
-    private void SpawnRobotForTesting()
-    {
-        Tile startTile = positionsToTiles.First(x => x.Value.Type == TileType.Basic).Value;
-        GameObject robot = GameObject.Instantiate(testRobotPrefab);
-        robot.GetComponent<RobotVisual>().CurrentTile = startTile;
     }
 
     public Tile GetTileAtIntPosition(Vector3Int intPosition)
