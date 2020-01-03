@@ -76,6 +76,9 @@ namespace Gameplay.Robots
         public void Dispose()
         {
             OnDispose?.Invoke();
+            
+            GameStepController.Instance.OnForwardStep -= OnForwardStep;
+            GameStepController.Instance.OnBackwardStep -= OnBackwardStep;
         }
     }
 }
