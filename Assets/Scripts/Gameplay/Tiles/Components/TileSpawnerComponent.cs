@@ -7,7 +7,7 @@ namespace Gameplay.Tiles.Components
     {
         public override void DoStep()
         {
-            RobotController.Instance.CreateRobot(tile);
+            RobotsController.Instance.CreateRobot(tile);
         }
 
         private void Update()

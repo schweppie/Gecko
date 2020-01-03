@@ -4,7 +4,7 @@ using Utility;
 
 namespace Gameplay.Robots
 {
-    public class RobotController : SingletonBehaviour<RobotController>
+    public class RobotsController : SingletonBehaviour<RobotsController>
     {
         [SerializeField]
         private RobotVisual robotPrefab;
