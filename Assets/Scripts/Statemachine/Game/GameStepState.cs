@@ -7,7 +7,7 @@ namespace Gecko.Gameplay
     {
         public override void Enter()
         {
-            GameStepController.Instance.DoGameStep();
+            GameStepController.Instance.DoForwardStep();
             
             stateMachine.ChangeTo(GameStates.GameVisualization);
         }

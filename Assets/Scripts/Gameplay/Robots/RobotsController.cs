@@ -9,11 +9,14 @@ namespace Gameplay.Robots
         [SerializeField]
         private RobotVisual robotPrefab;
 
-        public RobotVisual CreateRobot(Tile startTile)
+        public Robot CreateRobot(Tile startTile, Vector3Int direction)
         {
-            RobotVisual robot = Instantiate(robotPrefab);
-            robot.CurrentTile = startTile;
+            Robot robot = new Robot(startTile, direction);
             robot.Initialize();
+            
+            RobotVisual robotVisual = Instantiate(robotPrefab);
+            robotVisual.Initialize(robot);
+            
             return robot;
         }
     }
