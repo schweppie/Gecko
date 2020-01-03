@@ -18,21 +18,33 @@ namespace Gameplay.Robots
                 randomDir == 3 ? 1 : 0 + randomDir == 4 ? -1 : 0);
             transform.LookAt(transform.position + direction);
             transform.localPosition = CurrentTile.IntPosition;
-            
-            GameStepController.Instance.OnGameStep += OnGameStep;
-            GameVisualizationController.Instance.OnGameVisualization += OnGameVisualization;
-            GameVisualizationController.Instance.OnVisualizationStart += OnGameVisualizationStart;
+
+            SubscribeEvents();
 
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutQuart);
+        }
+
+        private void SubscribeEvents()
+        {
+            GameStepController.Instance.OnGameStep += OnGameStep;
+            GameVisualizationController.Instance.OnGameVisualization += OnGameVisualization;
+            GameVisualizationController.Instance.OnVisualizationStart += OnGameVisualizationStart;            
+        }
+        
+        private void UnsubscribeEvents()
+        {
+            GameStepController.Instance.OnGameStep -= OnGameStep;
+            GameVisualizationController.Instance.OnGameVisualization -= OnGameVisualization;
+            GameVisualizationController.Instance.OnVisualizationStart -= OnGameVisualizationStart;            
         }
 
         private void OnGameVisualizationStart()
         {
             if (CurrentTile == null)
             {
-                // TODO This is a hack to let the bot move 1 forward and then fall, seperate from the visualization
-                GameVisualizationController.Instance.OnVisualizationStart -= OnGameVisualizationStart;
+                // TODO This is a hack to let the bot move 1 forward and then fall, separate from the visualization
+                UnsubscribeEvents();
                 MoveForwardAndFall();
             }
         }
@@ -69,9 +81,7 @@ namespace Gameplay.Robots
 
         private void OnDestroy()
         {
-            GameStepController.Instance.OnGameStep -= OnGameStep;
-            GameVisualizationController.Instance.OnGameVisualization -= OnGameVisualization;
-            GameVisualizationController.Instance.OnVisualizationStart -= OnGameVisualizationStart;
+            UnsubscribeEvents();
         }
     }
 }
