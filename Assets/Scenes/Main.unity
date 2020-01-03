@@ -300,6 +300,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiles: {fileID: 226229914}
+  emptyTileVisualPrefab: {fileID: 5380702416627140360, guid: 845bb21540694774eaa9ebfb1c36a5e8,
+    type: 3}
 --- !u!4 &121208318
 Transform:
   m_ObjectHideFlags: 0
@@ -1512,22 +1514,22 @@ PrefabInstance:
     - target: {fileID: 2382378677226244417, guid: c9c45c498a3aac548a71193f03b2ef89,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2382378677226244417, guid: c9c45c498a3aac548a71193f03b2ef89,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2382378677226244417, guid: c9c45c498a3aac548a71193f03b2ef89,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2382378677226244417, guid: c9c45c498a3aac548a71193f03b2ef89,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2382378677226244417, guid: c9c45c498a3aac548a71193f03b2ef89,
         type: 3}
@@ -1542,7 +1544,7 @@ PrefabInstance:
     - target: {fileID: 2382378677226244417, guid: c9c45c498a3aac548a71193f03b2ef89,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2382378677226244417, guid: c9c45c498a3aac548a71193f03b2ef89,
         type: 3}
@@ -1945,13 +1947,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 814072664}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 235515524}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &814072666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2697,7 +2699,7 @@ PrefabInstance:
     - target: {fileID: 2382378677226244417, guid: 7e3a89969b17fbe408da1b24ba7379a7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2382378677226244417, guid: 7e3a89969b17fbe408da1b24ba7379a7,
         type: 3}

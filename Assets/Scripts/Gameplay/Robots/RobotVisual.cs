@@ -22,7 +22,8 @@ namespace Gameplay.Robots
 
         private void OnDispose()
         {
-            Destroy(gameObject);
+            transform.DOScale(0, 1f)
+                .OnComplete(() => Destroy(gameObject));
         }
 
         private void SubscribeEvents()

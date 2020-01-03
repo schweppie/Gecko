@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Gameplay;
 using Gameplay.Tiles;
+using Gameplay.Tiles.Components;
 using UnityEngine;
 using Utility;
 
@@ -8,6 +9,10 @@ public class FieldController : SingletonBehaviour<FieldController>
 {
     [SerializeField]
     private Transform tiles;
+    
+    [SerializeField]
+    private TileVisual emptyTileVisualPrefab;
+
     private Dictionary<Vector3Int, Tile> positionsToTiles;
 
     void Awake()
@@ -43,6 +48,11 @@ public class FieldController : SingletonBehaviour<FieldController>
     {
         if (positionsToTiles.ContainsKey(intPosition))
             return positionsToTiles[intPosition];
-        return null;
+
+        TileVisual emptyTile = Instantiate(emptyTileVisualPrefab);
+        emptyTile.transform.position = intPosition;
+        Tile tile = Tile.ConstructTileFromVisual(emptyTile);
+        positionsToTiles[tile.IntPosition] = tile;
+        return tile;
     }
 }

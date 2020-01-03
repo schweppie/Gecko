@@ -10,13 +10,17 @@ namespace Gameplay.Robots
     public class Robot : IDisposable
     {
         private Tile tile;
+        public Tile Tile => tile;
+        
         private Tile oldTile;
+        private Vector3Int position;
+        private Vector3Int oldPosition;
         
         private Vector3Int direction;
         public Vector3Int Direction => direction;
 
-        public Vector3Int OldPosition => oldTile.IntPosition;
-        public Vector3Int Position => tile.IntPosition;
+        public Vector3Int OldPosition => oldPosition;
+        public Vector3Int Position => position;
 
         private List<RobotComponent> components = new List<RobotComponent>();
         private RobotCommandComponent commandComponent = new RobotCommandComponent();
@@ -27,7 +31,9 @@ namespace Gameplay.Robots
         public Robot(Tile startTile, Vector3Int direction)
         {
             tile = startTile;
+            position = startTile.IntPosition;
             oldTile = startTile;
+            oldPosition = startTile.IntPosition;
             this.direction = direction;
         }
         
@@ -40,6 +46,8 @@ namespace Gameplay.Robots
             
             GameStepController.Instance.OnForwardStep += OnForwardStep;
             GameStepController.Instance.OnBackwardStep += OnBackwardStep;
+            
+            commandComponent.GetNextCommand().Execute();
         }
 
         private void OnForwardStep(int step)
@@ -68,11 +76,12 @@ namespace Gameplay.Robots
         public void Move(Vector3Int direction)
         {
             oldTile = tile;
-            Vector3Int nextPosition = tile.IntPosition + direction;
-            Tile nextTile = FieldController.Instance.GetTileAtIntPosition(nextPosition);
+            oldPosition = position;
+            position = position + direction;
+            Tile nextTile = FieldController.Instance.GetTileAtIntPosition(position);
             tile = nextTile;
         }
-
+        
         public void Dispose()
         {
             OnDispose?.Invoke();
