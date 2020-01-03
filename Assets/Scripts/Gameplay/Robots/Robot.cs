@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
+using Commands;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
 using UnityEngine;
 
 namespace Gameplay.Robots
 {
-    public class Robot
+    public class Robot : IDisposable
     {
         private Tile tile;
         private Tile oldTile;
@@ -17,8 +19,10 @@ namespace Gameplay.Robots
         public Vector3Int Position => tile.IntPosition;
 
         private List<RobotComponent> components = new List<RobotComponent>();
-
         private RobotCommandComponent commandComponent = new RobotCommandComponent();
+
+        public delegate void voidDelegate();
+        public event voidDelegate OnDispose;
         
         public Robot(Tile startTile, Vector3Int direction)
         {
@@ -45,7 +49,15 @@ namespace Gameplay.Robots
 
         private void OnBackwardStep(int step)
         {
-            commandComponent.GetPrevCommand().Execute();
+            Command command = commandComponent.GetPrevCommand();
+
+            if (command == null)
+            {
+                Dispose();
+                return;
+            }
+            
+            command.Undo();
         }
         
         public void SetDirection(Vector3Int direction)
@@ -59,6 +71,11 @@ namespace Gameplay.Robots
             Vector3Int nextPosition = tile.IntPosition + direction;
             Tile nextTile = FieldController.Instance.GetTileAtIntPosition(nextPosition);
             tile = nextTile;
+        }
+
+        public void Dispose()
+        {
+            OnDispose?.Invoke();
         }
     }
 }

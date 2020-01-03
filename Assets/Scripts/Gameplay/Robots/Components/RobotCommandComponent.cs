@@ -23,6 +23,9 @@ namespace Gameplay.Robots.Components
 
         public RobotCommand GetPrevCommand()
         {
+            if (commands.Count == 0)
+                return null;
+            
             // Todo determine which command to instantiate
             RobotCommand robotCommand = commands.Last();
             commands.RemoveAt(commands.Count-1);
