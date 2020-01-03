@@ -8,17 +8,26 @@ namespace Gecko.Gameplay
     {
         public override void Update()
         {
-            if (Input.GetKeyUp(KeyCode.W))
-            {
-                GameStepController.Instance.DoForwardStep();
-                stateMachine.ChangeTo(GameStates.GameVisualization);
-            }
-            
-            if (Input.GetKeyUp(KeyCode.S))
-            {
+//            if (Input.GetKeyUp(KeyCode.W))
+//            {
+//                GameStepController.Instance.DoForwardStep();
+//                stateMachine.ChangeTo(GameStates.GameVisualization);
+//            }
+//            
+//            if (Input.GetKeyUp(KeyCode.S))
+//            {
+//                GameStepController.Instance.DoBackwardStep();
+//                stateMachine.ChangeTo(GameStates.GameVisualization);                
+//            }
+        }
+
+        public override void Enter()
+        {
+            if (Input.GetKey(KeyCode.S))
                 GameStepController.Instance.DoBackwardStep();
-                stateMachine.ChangeTo(GameStates.GameVisualization);                
-            }
+            else
+                GameStepController.Instance.DoForwardStep();
+            stateMachine.ChangeTo(GameStates.GameVisualization);
         }
     }
 }

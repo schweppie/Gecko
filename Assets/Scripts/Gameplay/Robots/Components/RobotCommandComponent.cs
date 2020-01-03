@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Commands.Robots;
+using Gameplay.Tiles.Components;
 
 namespace Gameplay.Robots.Components
 {
@@ -12,10 +13,20 @@ namespace Gameplay.Robots.Components
         {
             // Todo determine which command to instantiate
             RobotCommand robotCommand;
-            robotCommand = new MoveRobotCommand();
+
+            if (commands.Count == 0)
+                robotCommand = new SpawnRobotCommand();
+            else if (commands.Last().GetType() == typeof(CollectRobotCommand)
+                     || commands.Last().GetType() == typeof(DoNothingCommand))
+                robotCommand = new DoNothingCommand();
+            else if (robot.Tile.GetComponent<CollectorTileComponent>())
+                robotCommand = new CollectRobotCommand();
+            else if (robot.Tile.GetComponent<EmptyTileComponent>())
+                robotCommand = new FallRobotCommand();
+            else
+                robotCommand = new MoveRobotCommand();
             
             robotCommand.Initialize(robot);
-            
             commands.Add(robotCommand);
             
             return robotCommand;

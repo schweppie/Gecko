@@ -1,4 +1,6 @@
-﻿using Gameplay.Tiles.Components;
+﻿using System;
+using System.Collections.Generic;
+using Gameplay.Tiles.Components;
 using UnityEngine;
 
 namespace Gameplay.Tiles
@@ -12,12 +14,14 @@ namespace Gameplay.Tiles
 
         public TileType Type { get; }
 
-        private TileComponent[] tileComponents;
+        private Dictionary<Type, TileComponent> tileComponents;
         
         public Tile(TileVisual visual)
         {
             this.visual = visual;
-            tileComponents = visual.TileComponents;
+            tileComponents = new Dictionary<Type, TileComponent>();
+            foreach (TileComponent tileComponent in visual.TileComponents)
+                tileComponents[tileComponent.GetType()] = tileComponent;
         }
 
         /// <summary>
@@ -38,8 +42,15 @@ namespace Gameplay.Tiles
 
         public void DoStep()
         {
-            for (int i = 0; i < tileComponents.Length; i++)
-                tileComponents[i].DoStep();
+            foreach (var tileComponent in tileComponents.Values)
+                tileComponent.DoStep();
+        }
+
+        public T GetComponent<T>() where T : TileComponent
+        {
+            TileComponent component;
+            tileComponents.TryGetValue(typeof(T), out component);
+            return component as T;
         }
     }
 }

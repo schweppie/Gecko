@@ -1,11 +1,14 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using Utility;
 
 namespace Gameplay.Robots
 {
     public class RobotVisual : MonoBehaviour
     {
         private Robot robot;
+
+        private Vector3Int oldPosition;
         
         public void Initialize(Robot robot)
         {
@@ -20,26 +23,34 @@ namespace Gameplay.Robots
             transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutQuart);
         }
 
-        private void OnDispose()
+        public void OnDispose()
         {
-            Destroy(gameObject);
+            transform.DOScale(0, 1f)
+                .OnComplete(() => Destroy(gameObject));
         }
 
         private void SubscribeEvents()
         {
             GameVisualizationController.Instance.OnGameVisualization += OnGameVisualization;
+            GameVisualizationController.Instance.OnVisualizationStart += OnGameVisualizationStart;
             robot.OnDispose += OnDispose;
         }
-        
+
+        private void OnGameVisualizationStart()
+        {
+            oldPosition = transform.position.ToIntVector();
+        }
+
         private void UnsubscribeEvents()
         {
             GameVisualizationController.Instance.OnGameVisualization -= OnGameVisualization;
+            GameVisualizationController.Instance.OnVisualizationStart -= OnGameVisualizationStart;
             robot.OnDispose -= OnDispose;
         }
 
         private void OnGameVisualization(int step, float t)
         {
-            transform.position = Vector3.Lerp(robot.OldPosition, robot.Position, t);
+            transform.position = Vector3.Lerp(oldPosition, robot.Position, t);
         }
 
         private void OnDestroy()

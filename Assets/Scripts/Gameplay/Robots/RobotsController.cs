@@ -13,11 +13,17 @@ namespace Gameplay.Robots
         {
             Robot robot = new Robot(startTile, direction);
             robot.Initialize();
-            
+            return robot;
+        }
+
+        public RobotVisual CreateRobotVisual(Robot robot)
+        {
             RobotVisual robotVisual = Instantiate(robotPrefab);
             robotVisual.Initialize(robot);
-            
-            return robot;
+
+            robot.SetVisual(robotVisual);
+
+            return robotVisual;
         }
     }
 }
