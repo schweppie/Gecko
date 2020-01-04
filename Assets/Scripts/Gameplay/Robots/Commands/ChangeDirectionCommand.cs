@@ -14,6 +14,7 @@ namespace Gameplay.Robots.Commands
         
         public override void Execute()
         {
+            oldDirection = robot.Direction;
             robot.SetDirection(direction);
             GameStepController.Instance.PopulatePositionBuffer(robot.Position);
         }

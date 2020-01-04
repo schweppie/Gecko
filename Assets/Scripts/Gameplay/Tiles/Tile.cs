@@ -23,14 +23,21 @@ namespace Gameplay.Tiles
             foreach (TileComponent tileComponent in visual.TileComponents)
                 tileComponents[tileComponent.GetType()] = tileComponent;
             
-            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;            
+            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
+            GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
         }
 
         private void OnStaticForwardStep(int step)
         {
             foreach (var tileComponent in tileComponents.Values)
-                tileComponent.DoStep();            
+                tileComponent.DoNextStep();            
         }
+        
+        private void OnStaticBackwardStep(int step)
+        {
+            foreach (var tileComponent in tileComponents.Values)
+                tileComponent.DoPrevStep();            
+        }        
 
         /// <summary>
         /// Normally the data (this tile) is created first before the visual, but as we want to build levels in the
