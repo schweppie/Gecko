@@ -8,6 +8,9 @@ namespace Gameplay.Tiles.Components
     {
         public override void DoStep()
         {
+            if (GameStepController.Instance.IsPositionBlocked(tile.IntPosition))
+                return;
+            
             RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());
         }
 

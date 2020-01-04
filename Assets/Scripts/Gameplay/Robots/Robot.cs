@@ -22,12 +22,12 @@ namespace Gameplay.Robots
         private RobotVisual robotVisual;
         public RobotVisual RobotVisual => robotVisual;
 
-        private List<RobotComponent> components = new List<RobotComponent>();
+        private Dictionary<Type, RobotComponent> components = new Dictionary<Type, RobotComponent>();
         private RobotCommandComponent commandComponent = new RobotCommandComponent();
 
         public delegate void voidDelegate();
         public event voidDelegate OnDispose;
-        
+
         public Robot(Tile startTile, Vector3Int direction)
         {
             tile = startTile;
@@ -37,9 +37,9 @@ namespace Gameplay.Robots
         
         public void Initialize()
         {
-            components.Add(commandComponent);
+            components.Add(commandComponent.GetType(), commandComponent);
 
-            foreach (RobotComponent component in components)
+            foreach (RobotComponent component in components.Values)
                 component.Initialize(this);
             
             GameStepController.Instance.OnDynamicForwardStep += OnDynamicForwardStep;
@@ -87,6 +87,13 @@ namespace Gameplay.Robots
         public void SetVisual(RobotVisual robotVisual)
         {
             this.robotVisual = robotVisual;
+        }
+        
+        public T GetComponent<T>() where T : RobotComponent
+        {
+            RobotComponent component;
+            components.TryGetValue(typeof(T), out component);
+            return component as T;
         }
     }
 }

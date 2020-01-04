@@ -1,30 +1,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Robots.Commands;
-using Gameplay.Tiles.Components;
+using Gameplay.Robots.Strategies;
+using JP.Framework.Strategy;
 
 namespace Gameplay.Robots.Components
 {
     public class RobotCommandComponent : RobotComponent
     {
         private List<RobotCommand> commands = new List<RobotCommand>();
+        public List<RobotCommand> Commands => commands;
+
+        private StrategyContainer<RobotCommandStrategy> commandStrategyContainer;
         
+        public override void Initialize(Robot robot)
+        {
+            base.Initialize(robot);
+            
+            commandStrategyContainer = new StrategyContainer<RobotCommandStrategy>();
+            commandStrategyContainer.AddStrategy(new SpawnStrategy(robot));
+            commandStrategyContainer.AddStrategy(new DoNothingStrategy(robot));
+            commandStrategyContainer.AddStrategy(new CollectStrategy(robot));
+            commandStrategyContainer.AddStrategy(new FallStrategy(robot));
+            commandStrategyContainer.AddStrategy(new MoveStrategy(robot));
+        }
+
         public RobotCommand GetNextCommand()
         {
-            // Todo determine which command to instantiate
-            RobotCommand robotCommand;
-
-            if (commands.Count == 0)
-                robotCommand = new SpawnRobotCommand();
-            else if (commands.Last().GetType() == typeof(CollectRobotCommand)
-                     || commands.Last().GetType() == typeof(DoNothingCommand))
-                robotCommand = new DoNothingCommand();
-            else if (robot.Tile.GetComponent<CollectorTileComponent>())
-                robotCommand = new CollectRobotCommand();
-            else if (robot.Tile.GetComponent<EmptyTileComponent>())
-                robotCommand = new FallRobotCommand();
-            else
-                robotCommand = new MoveRobotCommand();
+            RobotCommand robotCommand = commandStrategyContainer.GetApplicableStrategy().GetCommand();
             
             robotCommand.Initialize(robot);
             commands.Add(robotCommand);
