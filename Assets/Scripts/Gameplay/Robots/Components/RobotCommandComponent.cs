@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Commands.Robots;
+using Gameplay.Robots.Commands;
 using Gameplay.Tiles.Components;
 
 namespace Gameplay.Robots.Components

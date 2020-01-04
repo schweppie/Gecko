@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Commands.Robots
+namespace Gameplay.Robots.Commands
 {
     public class FallRobotCommand : RobotCommand
     {

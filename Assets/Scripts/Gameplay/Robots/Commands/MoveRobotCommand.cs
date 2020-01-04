@@ -1,4 +1,4 @@
-namespace Commands.Robots
+namespace Gameplay.Robots.Commands
 {
     public class MoveRobotCommand : RobotCommand
     {
