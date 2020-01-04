@@ -22,6 +22,14 @@ namespace Gameplay.Tiles
             tileComponents = new Dictionary<Type, TileComponent>();
             foreach (TileComponent tileComponent in visual.TileComponents)
                 tileComponents[tileComponent.GetType()] = tileComponent;
+            
+            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;            
+        }
+
+        private void OnStaticForwardStep(int step)
+        {
+            foreach (var tileComponent in tileComponents.Values)
+                tileComponent.DoStep();            
         }
 
         /// <summary>
@@ -38,12 +46,6 @@ namespace Gameplay.Tiles
             visual.LinkTile(tile);
             
             return tile;
-        }
-
-        public void DoStep()
-        {
-            foreach (var tileComponent in tileComponents.Values)
-                tileComponent.DoStep();
         }
 
         public T GetComponent<T>() where T : TileComponent
