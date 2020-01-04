@@ -1,6 +1,6 @@
 using System.Collections;
+using JP.Framework.Flow;
 using UnityEngine;
-using Utility;
 
 namespace Gameplay
 {
@@ -27,7 +27,7 @@ namespace Gameplay
 
             while (t <= 1f)
             {
-                t += Time.deltaTime;
+                t += Time.deltaTime * 2f;
 
                 if (OnGameVisualization != null)
                     OnGameVisualization(GameStepController.Instance.Step, t);

@@ -1,6 +1,4 @@
-using Gameplay.Robots;
-
-namespace Commands.Robots
+namespace Gameplay.Robots.Commands
 {
     public class CollectRobotCommand : RobotCommand
     {

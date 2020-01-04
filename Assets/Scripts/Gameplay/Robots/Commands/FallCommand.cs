@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
-namespace Commands.Robots
+namespace Gameplay.Robots.Commands
 {
-    public class FallRobotCommand : RobotCommand
+    public class FallCommand : RobotCommand
     {
         public override void Execute()
         {
             robot.Move(Vector3Int.down);
+            GameStepController.Instance.PopulatePositionBuffer(robot.Position);
         }
 
         public override void Undo()

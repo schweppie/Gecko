@@ -22,7 +22,22 @@ namespace Gameplay.Tiles
             tileComponents = new Dictionary<Type, TileComponent>();
             foreach (TileComponent tileComponent in visual.TileComponents)
                 tileComponents[tileComponent.GetType()] = tileComponent;
+            
+            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
+            GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
         }
+
+        private void OnStaticForwardStep(int step)
+        {
+            foreach (var tileComponent in tileComponents.Values)
+                tileComponent.DoNextStep();            
+        }
+        
+        private void OnStaticBackwardStep(int step)
+        {
+            foreach (var tileComponent in tileComponents.Values)
+                tileComponent.DoPrevStep();            
+        }        
 
         /// <summary>
         /// Normally the data (this tile) is created first before the visual, but as we want to build levels in the
@@ -38,12 +53,6 @@ namespace Gameplay.Tiles
             visual.LinkTile(tile);
             
             return tile;
-        }
-
-        public void DoStep()
-        {
-            foreach (var tileComponent in tileComponents.Values)
-                tileComponent.DoStep();
         }
 
         public T GetComponent<T>() where T : TileComponent

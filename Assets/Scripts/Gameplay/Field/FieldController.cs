@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using Gameplay;
 using Gameplay.Tiles;
-using Gameplay.Tiles.Components;
+using JP.Framework.Flow;
 using UnityEngine;
-using Utility;
 
 public class FieldController : SingletonBehaviour<FieldController>
 {
@@ -18,13 +16,6 @@ public class FieldController : SingletonBehaviour<FieldController>
     void Awake()
     {
         Initialize();
-        GameStepController.Instance.OnForwardStep += OnForwardStep;
-    }
-
-    private void OnForwardStep(int step)
-    {
-        foreach (var tile in positionsToTiles.Values)
-            tile.DoStep();        
     }
 
     private void Initialize()

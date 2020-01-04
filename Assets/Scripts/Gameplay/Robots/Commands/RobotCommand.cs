@@ -1,6 +1,6 @@
-using Gameplay.Robots;
+using JP.Framework.Commands;
 
-namespace Commands.Robots
+namespace Gameplay.Robots.Commands
 {
     public abstract class RobotCommand : Command
     {

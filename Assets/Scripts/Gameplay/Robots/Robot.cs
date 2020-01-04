@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Commands;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
+using JP.Framework.Commands;
 using UnityEngine;
 
 namespace Gameplay.Robots
@@ -22,12 +22,12 @@ namespace Gameplay.Robots
         private RobotVisual robotVisual;
         public RobotVisual RobotVisual => robotVisual;
 
-        private List<RobotComponent> components = new List<RobotComponent>();
+        private Dictionary<Type, RobotComponent> components = new Dictionary<Type, RobotComponent>();
         private RobotCommandComponent commandComponent = new RobotCommandComponent();
 
         public delegate void voidDelegate();
         public event voidDelegate OnDispose;
-        
+
         public Robot(Tile startTile, Vector3Int direction)
         {
             tile = startTile;
@@ -37,23 +37,21 @@ namespace Gameplay.Robots
         
         public void Initialize()
         {
-            components.Add(commandComponent);
+            components.Add(commandComponent.GetType(), commandComponent);
 
-            foreach (RobotComponent component in components)
+            foreach (RobotComponent component in components.Values)
                 component.Initialize(this);
             
-            GameStepController.Instance.OnForwardStep += OnForwardStep;
-            GameStepController.Instance.OnBackwardStep += OnBackwardStep;
-            
-            commandComponent.GetNextCommand().Execute();
+            GameStepController.Instance.OnDynamicForwardStep += OnDynamicForwardStep;
+            GameStepController.Instance.OnDynamicBackwardStep += OnDynamicBackwardStep;
         }
 
-        private void OnForwardStep(int step)
+        private void OnDynamicForwardStep(int step)
         {
             commandComponent.GetNextCommand().Execute();
         }
 
-        private void OnBackwardStep(int step)
+        private void OnDynamicBackwardStep(int step)
         {
             Command command = commandComponent.GetPrevCommand();
 
@@ -82,13 +80,20 @@ namespace Gameplay.Robots
         {
             OnDispose?.Invoke();
             
-            GameStepController.Instance.OnForwardStep -= OnForwardStep;
-            GameStepController.Instance.OnBackwardStep -= OnBackwardStep;
+            GameStepController.Instance.OnDynamicForwardStep -= OnDynamicForwardStep;
+            GameStepController.Instance.OnDynamicBackwardStep -= OnDynamicBackwardStep;
         }
 
         public void SetVisual(RobotVisual robotVisual)
         {
             this.robotVisual = robotVisual;
+        }
+        
+        public T GetComponent<T>() where T : RobotComponent
+        {
+            RobotComponent component;
+            components.TryGetValue(typeof(T), out component);
+            return component as T;
         }
     }
 }

@@ -1,10 +1,11 @@
-namespace Commands.Robots
+namespace Gameplay.Robots.Commands
 {
-    public class MoveRobotCommand : RobotCommand
+    public class MoveCommand : RobotCommand
     {
         public override void Execute()
         {
             robot.Move(robot.Direction);
+            GameStepController.Instance.PopulatePositionBuffer(robot.Position);
         }
 
         public override void Undo()

@@ -1,6 +1,6 @@
 ﻿using DG.Tweening;
+using JP.Framework.Extensions;
 using UnityEngine;
-using Utility;
 
 namespace Gameplay.Robots
 {
@@ -9,6 +9,7 @@ namespace Gameplay.Robots
         private Robot robot;
 
         private Vector3Int oldPosition;
+        private Vector3Int oldDirection;
         
         public void Initialize(Robot robot)
         {
@@ -39,6 +40,7 @@ namespace Gameplay.Robots
         private void OnGameVisualizationStart()
         {
             oldPosition = transform.position.ToIntVector();
+            oldDirection = transform.forward.ToIntVector();
         }
 
         private void UnsubscribeEvents()
@@ -51,6 +53,7 @@ namespace Gameplay.Robots
         private void OnGameVisualization(int step, float t)
         {
             transform.position = Vector3.Lerp(oldPosition, robot.Position, t);
+            transform.forward = Vector3.Lerp(oldDirection, robot.Direction, t);
         }
 
         private void OnDestroy()
