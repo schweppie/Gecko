@@ -21,7 +21,7 @@ namespace Gameplay.Robots.Strategies
 
         public override RobotCommand GetCommand()
         {
-            return new FallRobotCommand();
+            return new FallCommand();
         }
     }
 }
