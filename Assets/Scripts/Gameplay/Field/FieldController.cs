@@ -6,10 +6,10 @@ using UnityEngine;
 public class FieldController : SingletonBehaviour<FieldController>
 {
     [SerializeField]
-    private Transform tiles;
+    private Transform tiles = null;
     
     [SerializeField]
-    private TileVisual emptyTileVisualPrefab;
+    private TileVisual emptyTileVisualPrefab = null;
 
     private Dictionary<Vector3Int, Tile> positionsToTiles;
 

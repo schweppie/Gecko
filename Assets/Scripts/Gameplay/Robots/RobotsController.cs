@@ -7,7 +7,7 @@ namespace Gameplay.Robots
     public class RobotsController : SingletonBehaviour<RobotsController>
     {
         [SerializeField]
-        private RobotVisual robotPrefab;
+        private RobotVisual robotPrefab = null;
 
         public Robot CreateRobot(Tile startTile, Vector3Int direction)
         {
