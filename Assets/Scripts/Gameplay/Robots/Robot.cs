@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gameplay.Field;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
 using JP.Framework.Commands;
