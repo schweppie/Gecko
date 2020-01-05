@@ -9,6 +9,10 @@ namespace Gameplay.Tiles
     {
         private TileVisual visual;
 
+        private IOccupier occupier;
+        public IOccupier Occupier => occupier;
+        public bool IsOccupied => occupier != null;
+
         private Vector3Int intPosition;
         public Vector3Int IntPosition => intPosition;
 
@@ -60,6 +64,20 @@ namespace Gameplay.Tiles
             TileComponent component;
             tileComponents.TryGetValue(typeof(T), out component);
             return component as T;
+        }
+
+        public void SetOccupier(IOccupier occupier)
+        {
+            if (IsOccupied)
+                throw new Exception("Tile already occupied! " + intPosition);
+            this.occupier = occupier;
+        }
+
+        public void ReleaseOccupier(IOccupier occupier)
+        {
+            if (this.occupier != occupier)
+                throw new Exception("Occupier can only release it self");
+            this.occupier = null;
         }
     }
 }

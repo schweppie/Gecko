@@ -4,7 +4,6 @@ namespace Gameplay.Robots.Commands
     {
         public override void Execute()
         {
-            GameStepController.Instance.PopulatePositionBuffer(robot.Position);
         }
 
         public override void Undo()

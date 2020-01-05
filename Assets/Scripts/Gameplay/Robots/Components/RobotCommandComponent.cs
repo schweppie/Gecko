@@ -1,17 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Field;
 using Gameplay.Robots.Commands;
 using Gameplay.Robots.Strategies;
 using JP.Framework.Strategy;
 
 namespace Gameplay.Robots.Components
 {
-    public class RobotCommandComponent : RobotComponent
+    public class RobotCommandComponent : RobotComponent, IIntentionRequester
     {
         private List<RobotCommand> commands = new List<RobotCommand>();
         public List<RobotCommand> Commands => commands;
 
         private StrategyContainer<RobotCommandStrategy> commandStrategyContainer;
+
+        private RobotCommandStrategy strategy;
         
         public override void Initialize(Robot robot)
         {
@@ -25,15 +28,28 @@ namespace Gameplay.Robots.Components
             commandStrategyContainer.AddStrategy(new ChangeDirectionStrategy(robot));
             commandStrategyContainer.AddStrategy(new MoveStrategy(robot));
             commandStrategyContainer.AddStrategy(new WaitStrategy(robot));
+            
+            FieldController.Instance.FieldResolver.OnResolveStart += OnOnResolveStart;
+        }
+
+        private void OnOnResolveStart()
+        {
+            PickStrategy();
+        }
+
+        private void PickStrategy()
+        {
+            strategy = commandStrategyContainer.GetApplicableStrategy();
+            FieldController.Instance.FieldResolver.AddIntention(this, strategy);
         }
 
         public RobotCommand GetNextCommand()
         {
-            RobotCommand robotCommand = commandStrategyContainer.GetApplicableStrategy().GetCommand();
+            RobotCommand robotCommand = strategy.GetCommand();
             
             robotCommand.Initialize(robot);
             commands.Add(robotCommand);
-            
+
             return robotCommand;
         }
 
@@ -46,6 +62,16 @@ namespace Gameplay.Robots.Components
             RobotCommand robotCommand = commands.Last();
             commands.RemoveAt(commands.Count-1);
             return robotCommand;            
+        }
+
+        void IIntentionRequester.IntentionAccepted()
+        {
+            GetNextCommand().Execute();
+        }
+
+        void IIntentionRequester.IntentionDeclined()
+        {
+            PickStrategy();
         }
     }
 }

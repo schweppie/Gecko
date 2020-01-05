@@ -1,3 +1,7 @@
+using Gameplay.Field;
+using Gameplay.Tiles;
+using UnityEngine;
+
 namespace Gameplay.Robots.Commands
 {
     public class MoveCommand : RobotCommand
@@ -5,7 +9,9 @@ namespace Gameplay.Robots.Commands
         public override void Execute()
         {
             robot.Move(robot.Direction);
-            GameStepController.Instance.PopulatePositionBuffer(robot.Position);
+            Vector3Int nextPosition = robot.Position + robot.Direction;
+            Tile nextTile = FieldController.Instance.GetTileAtIntPosition(nextPosition);
+            //TODO check what needs to be done here
         }
 
         public override void Undo()

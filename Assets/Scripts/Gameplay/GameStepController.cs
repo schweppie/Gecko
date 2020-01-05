@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using JP.Framework.Flow;
-using UnityEngine;
 
 namespace Gameplay
 {
@@ -17,22 +15,8 @@ namespace Gameplay
         private int step;
         public int Step => step;
         
-        private HashSet<Vector3Int> stepBlockBuffer = new HashSet<Vector3Int>();
-
-        public bool IsPositionBlocked(Vector3Int position)
-        {
-            return stepBlockBuffer.Contains(position);
-        }
-
-        public void PopulatePositionBuffer(Vector3Int position)
-        {
-            stepBlockBuffer.Add(position);
-        }
-        
         public void DoForwardStep()
         {
-            stepBlockBuffer.Clear();
-            
             step++;
 
             if (OnStaticForwardStep != null)
@@ -54,8 +38,6 @@ namespace Gameplay
             
             if (OnStaticBackwardStep != null)
                 OnStaticBackwardStep(step);
-            
-            stepBlockBuffer.Clear();
         }
     }
 }

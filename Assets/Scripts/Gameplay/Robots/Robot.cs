@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Gameplay.Robots
 {
-    public class Robot : IDisposable
+    public class Robot : IDisposable, IOccupier
     {
         private Tile tile;
         public Tile Tile => tile;
@@ -32,6 +32,7 @@ namespace Gameplay.Robots
         public Robot(Tile startTile, Vector3Int direction)
         {
             tile = startTile;
+            tile.SetOccupier(this);
             position = startTile.IntPosition;
             this.direction = direction;
         }
@@ -43,13 +44,7 @@ namespace Gameplay.Robots
             foreach (RobotComponent component in components.Values)
                 component.Initialize(this);
             
-            GameStepController.Instance.OnDynamicForwardStep += OnDynamicForwardStep;
             GameStepController.Instance.OnDynamicBackwardStep += OnDynamicBackwardStep;
-        }
-
-        private void OnDynamicForwardStep(int step)
-        {
-            commandComponent.GetNextCommand().Execute();
         }
 
         private void OnDynamicBackwardStep(int step)
@@ -74,14 +69,15 @@ namespace Gameplay.Robots
         {
             position = position + direction;
             Tile nextTile = FieldController.Instance.GetTileAtIntPosition(position);
+            tile.ReleaseOccupier(this);
             tile = nextTile;
+            tile.SetOccupier(this);
         }
         
         public void Dispose()
         {
             OnDispose?.Invoke();
             
-            GameStepController.Instance.OnDynamicForwardStep -= OnDynamicForwardStep;
             GameStepController.Instance.OnDynamicBackwardStep -= OnDynamicBackwardStep;
         }
 

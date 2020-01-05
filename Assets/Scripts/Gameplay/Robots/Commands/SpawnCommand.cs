@@ -7,7 +7,6 @@
         public override void Execute()
         {
             robotVisual = RobotsController.Instance.CreateRobotVisual(robot);
-            GameStepController.Instance.PopulatePositionBuffer(robot.Position);
         }
 
         public override void Undo()

@@ -16,7 +16,6 @@ namespace Gameplay.Robots.Commands
         {
             oldDirection = robot.Direction;
             robot.SetDirection(direction);
-            GameStepController.Instance.PopulatePositionBuffer(robot.Position);
         }
 
         public override void Undo()

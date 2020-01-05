@@ -15,9 +15,6 @@ namespace Gameplay.Tiles.Components
             if (spawned >= MAX_AVAILABLE)
                 return;
             
-            if (GameStepController.Instance.IsPositionBlocked(tile.IntPosition))
-                return;
-            
             RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());
 
             spawned++;

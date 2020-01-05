@@ -14,6 +14,8 @@ namespace Gameplay.Field
         private TileVisual emptyTileVisualPrefab = null;
 
         private Dictionary<Vector3Int, Tile> positionsToTiles;
+        private FieldResolver fieldResolver;
+        public FieldResolver FieldResolver => fieldResolver;
 
         void Awake()
         {
@@ -23,6 +25,8 @@ namespace Gameplay.Field
         private void Initialize()
         {
             positionsToTiles = new Dictionary<Vector3Int, Tile>();
+            fieldResolver = new FieldResolver();
+            
             foreach (Transform tileTransform in tiles.transform)
             {
                 TileVisual tileVisual = tileTransform.GetComponent<TileVisual>();

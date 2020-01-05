@@ -1,6 +1,7 @@
 using Gameplay.Robots.Commands;
 using Gameplay.Robots.Components;
 using JP.Framework.Strategy;
+using UnityEngine;
 
 namespace Gameplay.Robots.Strategies
 {
@@ -18,6 +19,11 @@ namespace Gameplay.Robots.Strategies
         {
             this.robot = robot;
             commandComponent = robot.GetComponent<RobotCommandComponent>();
+        }
+
+        public virtual Vector3Int GetMoveToPositionIntention()
+        {
+            return robot.Position;
         }
     }
 }
