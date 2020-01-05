@@ -21,7 +21,12 @@ namespace Gameplay.Robots.Strategies
             commandComponent = robot.GetComponent<RobotCommandComponent>();
         }
 
-        public virtual Vector3Int GetMoveToPositionIntention()
+        public virtual Vector3Int GetIntentOrigin()
+        {
+            return robot.Position;
+        }
+        
+        public virtual Vector3Int GetIntentTarget()
         {
             return robot.Position;
         }

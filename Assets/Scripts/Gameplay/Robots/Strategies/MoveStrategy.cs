@@ -5,6 +5,8 @@ namespace Gameplay.Robots.Strategies
 {
     public class MoveStrategy : RobotCommandStrategy
     {
+        private bool used = false;
+        
         public MoveStrategy(Robot robot) : base(robot)
         {
         }
@@ -16,6 +18,11 @@ namespace Gameplay.Robots.Strategies
 
         public override bool IsApplicable()
         {
+            // TODO find better solution
+            if (used)
+                return false;
+            
+            used = true;
             return true;
         }
 
@@ -24,9 +31,14 @@ namespace Gameplay.Robots.Strategies
             return new MoveCommand();
         }
 
-        public override Vector3Int GetMoveToPositionIntention()
+        public override Vector3Int GetIntentTarget()
         {
             return robot.Position + robot.Direction;
+        }
+
+        public void ResetUsed()
+        {
+            used = false;
         }
     }
 }

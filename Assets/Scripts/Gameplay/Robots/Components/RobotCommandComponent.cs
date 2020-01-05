@@ -4,6 +4,7 @@ using Gameplay.Field;
 using Gameplay.Robots.Commands;
 using Gameplay.Robots.Strategies;
 using JP.Framework.Strategy;
+using UnityEngine;
 
 namespace Gameplay.Robots.Components
 {
@@ -15,6 +16,8 @@ namespace Gameplay.Robots.Components
         private StrategyContainer<RobotCommandStrategy> commandStrategyContainer;
 
         private RobotCommandStrategy strategy;
+
+        private MoveStrategy moveStrategy;
         
         public override void Initialize(Robot robot)
         {
@@ -26,21 +29,24 @@ namespace Gameplay.Robots.Components
             commandStrategyContainer.AddStrategy(new CollectStrategy(robot));
             commandStrategyContainer.AddStrategy(new FallStrategy(robot));
             commandStrategyContainer.AddStrategy(new ChangeDirectionStrategy(robot));
-            commandStrategyContainer.AddStrategy(new MoveStrategy(robot));
+            moveStrategy = new MoveStrategy(robot);
+            commandStrategyContainer.AddStrategy(moveStrategy);
             commandStrategyContainer.AddStrategy(new WaitStrategy(robot));
             
             FieldController.Instance.FieldResolver.OnResolveStart += OnOnResolveStart;
         }
-
+        
         private void OnOnResolveStart()
         {
-            PickStrategy();
+            PickStrategy(true);
+            FieldController.Instance.FieldResolver.AddIntention(this, strategy);
         }
 
-        private void PickStrategy()
+        public void PickStrategy(bool firstTime)
         {
+            if (firstTime)
+                moveStrategy.ResetUsed();
             strategy = commandStrategyContainer.GetApplicableStrategy();
-            FieldController.Instance.FieldResolver.AddIntention(this, strategy);
         }
 
         public RobotCommand GetNextCommand()
@@ -63,15 +69,17 @@ namespace Gameplay.Robots.Components
             commands.RemoveAt(commands.Count-1);
             return robotCommand;            
         }
-
+        
         void IIntentionRequester.IntentionAccepted()
         {
+            Debug.Log("ACCEPTED");
             GetNextCommand().Execute();
         }
 
         void IIntentionRequester.IntentionDeclined()
         {
-            PickStrategy();
+            Debug.Log("DECLINED");
+            PickStrategy(false);
         }
     }
 }
