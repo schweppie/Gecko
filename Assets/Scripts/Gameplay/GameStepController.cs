@@ -5,12 +5,11 @@ namespace Gameplay
     public class GameStepController : SingletonBehaviour<GameStepController>
     {
         public delegate void StepDelegate(int step);
-        
-        public event StepDelegate OnDynamicForwardStep;
-        public event StepDelegate OnDynamicBackwardStep;
 
-        public event StepDelegate OnStaticForwardStep;
-        public event StepDelegate OnStaticBackwardStep;
+        public event StepDelegate OnPickCommands;
+        public event StepDelegate OnPrewarmCommands;
+        public event StepDelegate OnExecuteCommands;
+        public event StepDelegate OnRewindCommands;
 
         private int step;
         public int Step => step;
@@ -19,11 +18,9 @@ namespace Gameplay
         {
             step++;
 
-            if (OnStaticForwardStep != null)
-                OnStaticForwardStep(step);
-            
-            if (OnDynamicForwardStep != null)
-                OnDynamicForwardStep(step);
+            OnPickCommands?.Invoke(step);
+            OnPrewarmCommands?.Invoke(step);
+            OnExecuteCommands?.Invoke(step);
         }
 
         public void DoBackwardStep()
@@ -32,12 +29,8 @@ namespace Gameplay
                 return;
             
             step--;
-            
-            if (OnDynamicBackwardStep != null)
-                OnDynamicBackwardStep(step);
-            
-            if (OnStaticBackwardStep != null)
-                OnStaticBackwardStep(step);
+
+            OnRewindCommands?.Invoke(step);
         }
     }
 }

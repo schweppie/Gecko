@@ -23,10 +23,10 @@ namespace Gameplay.Field
         {
             intentions = new Dictionary<IIntentionRequester, RobotCommandStrategy>();
             newIntentions = new Dictionary<IIntentionRequester, RobotCommandStrategy>();
-            GameStepController.Instance.OnDynamicForwardStep += OnForwardStep;
+            GameStepController.Instance.OnPickCommands += OnPickCommands;
         }
 
-        private void OnForwardStep(int step)
+        private void OnPickCommands(int step)
         {
             Resolve();
         }

@@ -18,5 +18,10 @@ namespace Gameplay.Robots.Commands
         {
             robot.Move(robot.Direction * -1);
         }
+
+        public override void Prewarm()
+        {
+            FieldController.Instance.GetTileAtIntPosition(robot.Position).ReleaseOccupier(robot);
+        }
     }
 }

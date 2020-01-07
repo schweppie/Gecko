@@ -10,5 +10,9 @@ namespace Gameplay.Robots.Commands
         {
             this.robot = robot;
         }
+
+        public virtual void Prewarm()
+        {
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Field;
@@ -18,6 +19,8 @@ namespace Gameplay.Robots.Components
         private RobotCommandStrategy strategy;
 
         private MoveStrategy moveStrategy;
+
+        private RobotCommand robotCommand;
         
         public override void Initialize(Robot robot)
         {
@@ -32,11 +35,23 @@ namespace Gameplay.Robots.Components
             moveStrategy = new MoveStrategy(robot);
             commandStrategyContainer.AddStrategy(moveStrategy);
             commandStrategyContainer.AddStrategy(new WaitStrategy(robot));
-            
-            FieldController.Instance.FieldResolver.OnResolveStart += OnOnResolveStart;
+
+            FieldController.Instance.FieldResolver.OnResolveStart += OnResolveStart;
+            GameStepController.Instance.OnPrewarmCommands += OnPrewarmCommands;
+            GameStepController.Instance.OnExecuteCommands += OnExecuteCommands;
         }
-        
-        private void OnOnResolveStart()
+
+        private void OnPrewarmCommands(int step)
+        {
+            robotCommand?.Prewarm();
+        }
+
+        private void OnExecuteCommands(int step)
+        {
+            robotCommand?.Execute();
+        }
+
+        private void OnResolveStart()
         {
             PickStrategy(true);
             FieldController.Instance.FieldResolver.AddIntention(this, strategy);
@@ -51,7 +66,7 @@ namespace Gameplay.Robots.Components
 
         public RobotCommand GetNextCommand()
         {
-            RobotCommand robotCommand = strategy.GetCommand();
+            robotCommand = strategy.GetCommand();
             
             robotCommand.Initialize(robot);
             commands.Add(robotCommand);
@@ -73,7 +88,7 @@ namespace Gameplay.Robots.Components
         void IIntentionRequester.IntentionAccepted()
         {
             Debug.Log("ACCEPTED");
-            GetNextCommand().Execute();
+            robotCommand = GetNextCommand();
         }
 
         void IIntentionRequester.IntentionDeclined()

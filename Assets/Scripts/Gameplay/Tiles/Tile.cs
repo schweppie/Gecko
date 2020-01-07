@@ -27,11 +27,11 @@ namespace Gameplay.Tiles
             foreach (TileComponent tileComponent in visual.TileComponents)
                 tileComponents[tileComponent.GetType()] = tileComponent;
             
-            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
-            GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
+            GameStepController.Instance.OnPickCommands += OnForward;
+            GameStepController.Instance.OnRewindCommands += OnStaticBackwardStep;
         }
 
-        private void OnStaticForwardStep(int step)
+        private void OnForward(int step)
         {
             foreach (var tileComponent in tileComponents.Values)
                 tileComponent.DoNextStep();            
@@ -75,7 +75,7 @@ namespace Gameplay.Tiles
 
         public void ReleaseOccupier(IOccupier occupier)
         {
-            if (this.occupier != occupier)
+            if (this.occupier != null && this.occupier != occupier )
                 throw new Exception("Occupier can only release it self");
             this.occupier = null;
         }

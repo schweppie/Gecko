@@ -44,10 +44,10 @@ namespace Gameplay.Robots
             foreach (RobotComponent component in components.Values)
                 component.Initialize(this);
             
-            GameStepController.Instance.OnDynamicBackwardStep += OnDynamicBackwardStep;
+            GameStepController.Instance.OnRewindCommands += OnRewindCommands;
         }
 
-        private void OnDynamicBackwardStep(int step)
+        private void OnRewindCommands(int step)
         {
             Command command = commandComponent.GetPrevCommand();
 
@@ -69,7 +69,7 @@ namespace Gameplay.Robots
         {
             position = position + direction;
             Tile nextTile = FieldController.Instance.GetTileAtIntPosition(position);
-            tile.ReleaseOccupier(this);
+            
             tile = nextTile;
             tile.SetOccupier(this);
         }
@@ -78,7 +78,7 @@ namespace Gameplay.Robots
         {
             OnDispose?.Invoke();
             
-            GameStepController.Instance.OnDynamicBackwardStep -= OnDynamicBackwardStep;
+            GameStepController.Instance.OnRewindCommands -= OnRewindCommands;
         }
 
         public void SetVisual(RobotVisual robotVisual)
