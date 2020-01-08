@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
 using JP.Framework.Commands;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace Gameplay.Robots
 {
-    public class Robot : IDisposable
+    public class Robot : IDisposable, IOccupier
     {
         private Tile tile;
         public Tile Tile => tile;
@@ -94,6 +95,16 @@ namespace Gameplay.Robots
             RobotComponent component;
             components.TryGetValue(typeof(T), out component);
             return component as T;
+        }
+
+        public void PickNewStrategy()
+        {
+            List<Commands.RobotCommand> commands = commandComponent.Commands;
+
+            commands.Last().Undo();
+            commands.RemoveAt(commands.Count - 1);
+
+            commandComponent.GetNextCommand().Execute();
         }
     }
 }

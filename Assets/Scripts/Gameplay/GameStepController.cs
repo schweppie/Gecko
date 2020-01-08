@@ -17,22 +17,30 @@ namespace Gameplay
         private int step;
         public int Step => step;
         
-        private HashSet<Vector3Int> stepBlockBuffer = new HashSet<Vector3Int>();
+        private Dictionary<Vector3Int, IOccupier> occupationBuffer = new Dictionary<Vector3Int, IOccupier>();
+        public Dictionary<Vector3Int, IOccupier> OccupationBuffer => occupationBuffer;
 
-        public bool IsPositionBlocked(Vector3Int position)
-        {
-            return stepBlockBuffer.Contains(position);
-        }
+        private Dictionary<Vector3Int, IOccupier> oldOccupationBuffer = new Dictionary<Vector3Int, IOccupier>();
+        public Dictionary<Vector3Int, IOccupier> OldOccupationBuffer => oldOccupationBuffer;
 
-        public void PopulatePositionBuffer(Vector3Int position)
+
+        public void AddOccupier(Vector3Int position, IOccupier occupier)
         {
-            stepBlockBuffer.Add(position);
+            occupationBuffer[position] = occupier;
         }
         
+        private void ClearBuffers()
+        {
+            oldOccupationBuffer.Clear();
+            foreach (var pair in occupationBuffer)
+                oldOccupationBuffer.Add(pair.Key, pair.Value);
+            occupationBuffer.Clear();
+        }
+
         public void DoForwardStep()
         {
-            stepBlockBuffer.Clear();
-            
+            ClearBuffers();
+
             step++;
 
             if (OnStaticForwardStep != null)
@@ -54,8 +62,8 @@ namespace Gameplay
             
             if (OnStaticBackwardStep != null)
                 OnStaticBackwardStep(step);
-            
-            stepBlockBuffer.Clear();
+
+            ClearBuffers();
         }
     }
 }

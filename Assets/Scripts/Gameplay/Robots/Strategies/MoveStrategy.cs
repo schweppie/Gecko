@@ -15,7 +15,25 @@ namespace Gameplay.Robots.Strategies
 
         public override bool IsApplicable()
         {
-            return !GameStepController.Instance.IsPositionBlocked(robot.Position + robot.Direction);
+            var occupationBuffer = GameStepController.Instance.OccupationBuffer;
+            var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
+
+            if (!occupationBuffer.ContainsKey(robot.Position + robot.Direction))
+            {
+                if(oldOccupationBuffer.ContainsKey(robot.Position + robot.Direction))
+                {
+                    IOccupier oldOccupier = oldOccupationBuffer[robot.Position + robot.Direction];
+                    IOccupier currentOccupier = occupationBuffer[robot.Position];
+
+                    if (oldOccupier == currentOccupier)
+                    {
+                        oldOccupier.PickNewStrategy();
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public override RobotCommand GetCommand()
