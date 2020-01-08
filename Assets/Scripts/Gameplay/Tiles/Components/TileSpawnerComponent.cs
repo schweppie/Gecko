@@ -29,11 +29,5 @@ namespace Gameplay.Tiles.Components
             if (spawned <= 0)
                 spawned = 0;
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-                DoNextStep();
-        }
     }
 }

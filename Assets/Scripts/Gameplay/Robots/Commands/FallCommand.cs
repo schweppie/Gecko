@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Gameplay.Field;
+using UnityEngine;
 
 namespace Gameplay.Robots.Commands
 {
@@ -12,6 +13,11 @@ namespace Gameplay.Robots.Commands
         public override void Undo()
         {
             robot.Move(Vector3Int.up);
+        }
+
+        public override void Prewarm()
+        {
+            FieldController.Instance.GetTileAtIntPosition(robot.Position).ReleaseOccupier(robot);
         }
     }
 }

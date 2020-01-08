@@ -52,6 +52,9 @@ namespace Gameplay.Field
 
             AddNewIntensionsToIntensions();
             
+
+            HashSet<IIntentionRequester> removeRequesters = new HashSet<IIntentionRequester>();
+
             foreach (var entry in intentions)
             {
                 Vector3Int origin = entry.Value.GetIntentOrigin();
@@ -60,13 +63,18 @@ namespace Gameplay.Field
                 {
                     newOccupiedPositions.Add(target);
                     entry.Key.IntentionAccepted();
+                    removeRequesters.Add(entry.Key);
                 }
             }
-            
+
+            foreach (var requester in removeRequesters)
+                intentions.Remove(requester);
+
             FilterIntersectingIntentensions();
 
-            HashSet<IIntentionRequester> removeRequesters = new HashSet<IIntentionRequester>();
-            while (intentions.Count > 0)
+            int iterations = 0;
+
+            while (intentions.Count > 0 || newIntentions.Count > 0)
             {
                 AddNewIntensionsToIntensions();
                 removeRequesters.Clear();
@@ -75,14 +83,9 @@ namespace Gameplay.Field
                 {
                     Vector3Int origin = entry.Value.GetIntentOrigin();
                     Vector3Int target = entry.Value.GetIntentTarget();
-                    if (origin == target)
-                    {
-                        removeRequesters.Add(entry.Key);
-                        continue;
-                    }
-
+ 
                     Tile tileTarget = FieldController.Instance.GetTileAtIntPosition(target);
-                    if (tileTarget.IsOccupied)
+                    if (tileTarget.IsOccupied || newOccupiedPositions.Contains(target))
                     {
                         if (tileTarget.Occupier is Robot)
                         {
@@ -108,9 +111,14 @@ namespace Gameplay.Field
                     }
                     removeRequesters.Add(entry.Key);
                 }
-                
+
                 foreach (var requester in removeRequesters)
                     intentions.Remove(requester);
+
+                iterations++;
+
+                if (iterations == 15)
+                    break;
             }
 
             OnResolveComplete?.Invoke();
@@ -132,6 +140,10 @@ namespace Gameplay.Field
                 if (otherRobot == null)
                     continue;
                 IIntentionRequester otherRequester = otherRobot.GetComponent<RobotCommandComponent>();
+
+                if (!intentions.ContainsKey(otherRequester))
+                    continue;
+
                 Vector3Int otherTarget = intentions[otherRequester].GetIntentTarget();
                 if (origin == otherTarget)
                 {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gameplay.Field;
@@ -54,7 +53,6 @@ namespace Gameplay.Robots.Components
         private void OnResolveStart()
         {
             PickStrategy(true);
-            FieldController.Instance.FieldResolver.AddIntention(this, strategy);
         }
 
         public void PickStrategy(bool firstTime)
@@ -62,6 +60,8 @@ namespace Gameplay.Robots.Components
             if (firstTime)
                 moveStrategy.ResetUsed();
             strategy = commandStrategyContainer.GetApplicableStrategy();
+
+            FieldController.Instance.FieldResolver.AddIntention(this, strategy);
         }
 
         public RobotCommand GetNextCommand()
