@@ -86,6 +86,9 @@ namespace Gameplay
             
             step--;
             
+            // TODO: Not sure yet which order the steps should be handled
+            // when rewinding
+
             if (OnDynamicBackwardStep != null)
                 OnDynamicBackwardStep(step);
             

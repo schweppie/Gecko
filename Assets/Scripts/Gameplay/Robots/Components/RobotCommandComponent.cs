@@ -13,6 +13,12 @@ namespace Gameplay.Robots.Components
 
         private StrategyContainer<RobotCommandStrategy> commandStrategyContainer;
 
+        /// <summary>
+        /// This set holds the other occupiers which require to pick a new strategy
+        /// when this robot's command has been executed.
+        /// 
+        /// It can populated in the IsApplicable() from a strategy.
+        /// </summary>
         private HashSet<IOccupier> invalidOccupiers = new HashSet<IOccupier>();
 
         private void ResetInvalidOccupiers()
@@ -30,6 +36,9 @@ namespace Gameplay.Robots.Components
 
         private void HandleInvalidOccupiers()
         {
+            if (invalidOccupiers.Count > 1)
+                throw new System.Exception("Handling multiple invalid occupiers! Should be 1, unless you know what you are doing");
+
             foreach (IOccupier occupier in invalidOccupiers)
                 occupier.PickNewStrategy();
         }
