@@ -15,7 +15,7 @@ namespace Gameplay.Tiles.Components
             if (spawned >= spawnCount)
                 return;
             
-            if (GameStepController.Instance.GetOccupierAt(tile.IntPosition) != null)
+            if (FieldController.Instance.GetTileAtIntPosition(tile.IntPosition).IsOccupied)
                 return;
             
             RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());

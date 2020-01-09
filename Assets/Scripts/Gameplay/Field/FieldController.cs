@@ -35,6 +35,12 @@ public class FieldController : SingletonBehaviour<FieldController>
         }
     }
 
+    public void ClearTileOccupations()
+    {
+        foreach(var pair in positionsToTiles)
+            pair.Value.SetOccupier(null);
+    }
+
     public Tile GetTileAtIntPosition(Vector3Int intPosition)
     {
         if (positionsToTiles.ContainsKey(intPosition))

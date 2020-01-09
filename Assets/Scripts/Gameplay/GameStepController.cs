@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gameplay.Tiles;
 using JP.Framework.Flow;
 using UnityEngine;
 
@@ -52,6 +53,17 @@ namespace Gameplay
             occupationBuffer.Clear();
         }
 
+        private void WriteOccupantsToTiles()
+        {
+            FieldController.Instance.ClearTileOccupations();
+
+            foreach (var pair in occupationBuffer)
+            {
+                Tile tile = FieldController.Instance.GetTileAtIntPosition(pair.Key);
+                tile.SetOccupier(pair.Value);
+            }
+        }
+
         public void DoForwardStep()
         {
             ClearBuffers();
@@ -63,6 +75,8 @@ namespace Gameplay
             
             if (OnDynamicForwardStep != null)
                 OnDynamicForwardStep(step);
+
+            WriteOccupantsToTiles();
         }
 
         public void DoBackwardStep()

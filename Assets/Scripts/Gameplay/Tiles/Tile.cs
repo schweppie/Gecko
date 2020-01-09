@@ -15,7 +15,10 @@ namespace Gameplay.Tiles
         public TileType Type { get; }
 
         private Dictionary<Type, TileComponent> tileComponents;
-        
+
+        private IOccupier occupier;
+        public bool IsOccupied { get { return occupier != null; } }
+
         public Tile(TileVisual visual)
         {
             this.visual = visual;
@@ -60,6 +63,11 @@ namespace Gameplay.Tiles
             TileComponent component;
             tileComponents.TryGetValue(typeof(T), out component);
             return component as T;
+        }
+
+        public void SetOccupier(IOccupier occupier)
+        {
+            this.occupier = occupier;
         }
 
         public void PickNewStrategy()
