@@ -1,4 +1,5 @@
 using Gameplay.Robots.Commands;
+using Gameplay.Tiles.Components;
 
 namespace Gameplay.Robots.Strategies
 {
@@ -15,6 +16,10 @@ namespace Gameplay.Robots.Strategies
 
         public override bool IsApplicable()
         {
+            // Don't move while on empty tile (falling)
+            if (robot.Tile.GetComponent<EmptyTileComponent>() != null)
+                return false;
+
             var occupationBuffer = GameStepController.Instance.OccupationBuffer;
             var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
 

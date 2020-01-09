@@ -15,6 +15,11 @@ namespace Gameplay.Robots.Strategies
 
         public override bool IsApplicable()
         {
+            IOccupier otherOccupier = GameStepController.Instance.GetOccupierAt(robot.Position);
+
+            if (otherOccupier != null)
+                commandComponent.AddInvalidOccupier(otherOccupier);
+
             return true;
         }
 
