@@ -23,6 +23,21 @@ namespace Gameplay
         private Dictionary<Vector3Int, IOccupier> oldOccupationBuffer = new Dictionary<Vector3Int, IOccupier>();
         public Dictionary<Vector3Int, IOccupier> OldOccupationBuffer => oldOccupationBuffer;
 
+        public IOccupier GetOccupierAt(Vector3Int position)
+        {
+            if (occupationBuffer.ContainsKey(position))
+                return occupationBuffer[position];
+
+            return null;
+        }
+
+        public IOccupier GetOldOccupierAt(Vector3Int position)
+        {
+            if (oldOccupationBuffer.ContainsKey(position))
+                return oldOccupationBuffer[position];
+
+            return null;
+        }
 
         public void AddOccupier(Vector3Int position, IOccupier occupier)
         {

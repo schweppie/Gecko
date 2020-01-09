@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Gameplay.Tiles
 {
-    public class Tile
+    public class Tile: IOccupier
     {
         private TileVisual visual;
 
@@ -60,6 +60,11 @@ namespace Gameplay.Tiles
             TileComponent component;
             tileComponents.TryGetValue(typeof(T), out component);
             return component as T;
+        }
+
+        public void PickNewStrategy()
+        {
+            throw new Exception("Tile should never need to pick a new strategy");
         }
     }
 }

@@ -22,15 +22,19 @@ namespace Gameplay.Robots.Strategies
             {
                 if(oldOccupationBuffer.ContainsKey(robot.Position + robot.Direction))
                 {
-                    IOccupier oldOccupier = oldOccupationBuffer[robot.Position + robot.Direction];
-                    IOccupier currentOccupier = occupationBuffer[robot.Position];
+                    IOccupier oldOccupier =  GameStepController.Instance.GetOldOccupierAt(robot.Position + robot.Direction);
+                    IOccupier currentOccupier =  GameStepController.Instance.GetOccupierAt(robot.Position);
 
                     if (oldOccupier == currentOccupier)
                     {
-                        oldOccupier.PickNewStrategy();
+                        commandComponent.AddInvalidOccupier(oldOccupier);
                         return false;
                     }
                 }
+            }
+            else
+            {
+                return false;
             }
 
             return true;
@@ -38,7 +42,8 @@ namespace Gameplay.Robots.Strategies
 
         public override RobotCommand GetCommand()
         {
-            return new MoveCommand();
+            RobotCommand moveCommand = new MoveCommand();
+            return moveCommand;
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Gameplay.Tiles.Components
     {
         public override void DoNextStep()
         {
-            GameStepController.Instance.PopulatePositionBuffer(tile.IntPosition);
+            GameStepController.Instance.AddOccupier(tile.IntPosition, tile);
         }
     }
 }

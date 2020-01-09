@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
-using JP.Framework.Commands;
 using UnityEngine;
 
 namespace Gameplay.Robots
@@ -49,20 +47,12 @@ namespace Gameplay.Robots
 
         private void OnDynamicForwardStep(int step)
         {
-            commandComponent.GetNextCommand().Execute();
+            commandComponent.ExecuteNextCommand();
         }
 
         private void OnDynamicBackwardStep(int step)
         {
-            Command command = commandComponent.GetPrevCommand();
-
-            if (command == null)
-            {
-                Dispose();
-                return;
-            }
-            
-            command.Undo();
+            commandComponent.ExecutePrevCommand();
         }
         
         public void SetDirection(Vector3Int direction)
@@ -99,12 +89,8 @@ namespace Gameplay.Robots
 
         public void PickNewStrategy()
         {
-            List<Commands.RobotCommand> commands = commandComponent.Commands;
-
-            commands.Last().Undo();
-            commands.RemoveAt(commands.Count - 1);
-
-            commandComponent.GetNextCommand().Execute();
+            commandComponent.UndoLastCommand();
+            commandComponent.ExecuteNextCommand();
         }
     }
 }
