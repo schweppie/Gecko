@@ -10,6 +10,8 @@ namespace Gameplay.Robots
 
         private Vector3Int oldPosition;
         private Vector3Int oldDirection;
+
+        private Transform visualTransform;
         
         public void Initialize(Robot robot)
         {
@@ -22,6 +24,8 @@ namespace Gameplay.Robots
 
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutQuart);
+
+            visualTransform = transform.GetChild(0);
         }
 
         public void OnDispose()
@@ -49,6 +53,19 @@ namespace Gameplay.Robots
             GameVisualizationController.Instance.OnVisualizationStart -= OnGameVisualizationStart;
             robot.OnDispose -= OnDispose;
         }
+
+        public void AnimateMove()
+        {
+            visualTransform.DOKill();
+            visualTransform.DOLocalRotate(new Vector3(-10f, 0f, 0f), 0.5f).SetEase(Ease.OutQuart);
+        }
+
+        public void AnimateIdle()
+        {
+            visualTransform.DOKill();
+            visualTransform.DOLocalRotate(new Vector3(0f, 0f, 0f), 1f).SetEase(Ease.OutElastic);
+        }
+
 
         private void OnGameVisualization(int step, float t)
         {
