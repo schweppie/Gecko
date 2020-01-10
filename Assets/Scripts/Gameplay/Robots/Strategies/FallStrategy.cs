@@ -1,5 +1,6 @@
 using Gameplay.Robots.Commands;
 using Gameplay.Tiles.Components;
+using UnityEngine;
 
 namespace Gameplay.Robots.Strategies
 {
@@ -16,7 +17,15 @@ namespace Gameplay.Robots.Strategies
 
         public override bool IsApplicable()
         {
-            return robot.Tile.GetComponent<EmptyTileComponent>() != null;
+            if (robot.Tile.GetComponent<EmptyTileComponent>() == null)
+                return false;
+
+            IOccupier currentOccupier = GameStepController.Instance.GetOccupierAt(robot.Position + Vector3Int.down);
+
+            if (currentOccupier != null)
+                return false;
+
+            return true;
         }
 
         public override RobotCommand GetCommand()

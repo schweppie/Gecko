@@ -22,7 +22,17 @@ namespace Gameplay.Robots.Strategies
             Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position + robot.Direction);
             directionTile = tile.GetComponent<DirectionTileComponent>();
 
-            return directionTile != null;
+            if (directionTile != null)
+            {
+                IOccupier otherOccupier = GameStepController.Instance.GetOccupierAt(robot.Position);
+
+                if (otherOccupier != null)
+                    commandComponent.AddInvalidOccupier(otherOccupier);
+
+                return true;
+            }
+            else
+                return false;
         }
 
         public override RobotCommand GetCommand()

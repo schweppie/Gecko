@@ -7,7 +7,7 @@ namespace Gameplay.Robots.Commands
         public override void Execute()
         {
             robot.Move(Vector3Int.down);
-            GameStepController.Instance.PopulatePositionBuffer(robot.Position);
+            GameStepController.Instance.AddOccupier(robot.Position, robot);
         }
 
         public override void Undo()

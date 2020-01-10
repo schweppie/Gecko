@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
-using JP.Framework.Commands;
 using UnityEngine;
 
 namespace Gameplay.Robots
 {
-    public class Robot : IDisposable
+    public class Robot : IDisposable, IOccupier
     {
         private Tile tile;
         public Tile Tile => tile;
@@ -48,20 +47,12 @@ namespace Gameplay.Robots
 
         private void OnDynamicForwardStep(int step)
         {
-            commandComponent.GetNextCommand().Execute();
+            commandComponent.ExecuteNextCommand();
         }
 
         private void OnDynamicBackwardStep(int step)
         {
-            Command command = commandComponent.GetPrevCommand();
-
-            if (command == null)
-            {
-                Dispose();
-                return;
-            }
-            
-            command.Undo();
+            commandComponent.ExecutePrevCommand();
         }
         
         public void SetDirection(Vector3Int direction)
@@ -94,6 +85,12 @@ namespace Gameplay.Robots
             RobotComponent component;
             components.TryGetValue(typeof(T), out component);
             return component as T;
+        }
+
+        public void PickNewStrategy()
+        {
+            commandComponent.UndoLastCommand();
+            commandComponent.ExecuteNextCommand();
         }
     }
 }

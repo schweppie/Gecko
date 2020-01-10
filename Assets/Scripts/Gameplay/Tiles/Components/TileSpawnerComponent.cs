@@ -6,16 +6,16 @@ namespace Gameplay.Tiles.Components
 {
     public class TileSpawnerComponent : TileComponent
     {
-
-        private const int MAX_AVAILABLE = 4;
+        [SerializeField]
+        private int spawnCount = 4;
         private int spawned = 0;
         
         public override void DoNextStep()
         {
-            if (spawned >= MAX_AVAILABLE)
+            if (spawned >= spawnCount)
                 return;
             
-            if (GameStepController.Instance.IsPositionBlocked(tile.IntPosition))
+            if (FieldController.Instance.GetTileAtIntPosition(tile.IntPosition).IsOccupied)
                 return;
             
             RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());
@@ -29,12 +29,6 @@ namespace Gameplay.Tiles.Components
 
             if (spawned <= 0)
                 spawned = 0;
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-                DoNextStep();
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Gameplay.Robots
         private void OnGameVisualization(int step, float t)
         {
             transform.position = Vector3.Lerp(oldPosition, robot.Position, t);
-            transform.forward = Vector3.Lerp(oldDirection, robot.Direction, t);
+            transform.forward = Vector3.Slerp(oldDirection, robot.Direction, t);
         }
 
         private void OnDestroy()
