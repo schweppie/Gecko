@@ -3,6 +3,7 @@ using System.Linq;
 using Gameplay.Robots.Commands;
 using Gameplay.Robots.Strategies;
 using JP.Framework.Strategy;
+using UnityEngine;
 
 namespace Gameplay.Robots.Components
 {
@@ -28,16 +29,13 @@ namespace Gameplay.Robots.Components
 
         public void AddInvalidOccupier(IOccupier occupier)
         {
-            if (invalidOccupiers.Contains(occupier))
-                return;
-
             invalidOccupiers.Add(occupier);
         }
 
         private void HandleInvalidOccupiers()
         {
             if (invalidOccupiers.Count > 1)
-                throw new System.Exception("Handling multiple invalid occupiers! Should be 1, unless you know what you are doing");
+                Debug.LogWarning("Handling multiple invalid occupiers! Should be 1, unless you know what you are doing");
 
             foreach (IOccupier occupier in invalidOccupiers)
                 occupier.PickNewStrategy();

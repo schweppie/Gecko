@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Gameplay.Tiles
 {
-    public class Tile: IOccupier
+    public class Tile
     {
         private TileVisual visual;
 
@@ -68,11 +68,6 @@ namespace Gameplay.Tiles
         public void SetOccupier(IOccupier occupier)
         {
             this.occupier = occupier;
-        }
-
-        public void PickNewStrategy()
-        {
-            throw new Exception("Tile should never need to pick a new strategy");
         }
     }
 }

@@ -23,23 +23,20 @@ namespace Gameplay.Robots.Strategies
             var occupationBuffer = GameStepController.Instance.OccupationBuffer;
             var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
 
-            if (!occupationBuffer.ContainsKey(robot.Position + robot.Direction))
-            {
-                if(oldOccupationBuffer.ContainsKey(robot.Position + robot.Direction))
-                {
-                    IOccupier oldOccupier =  GameStepController.Instance.GetOldOccupierAt(robot.Position + robot.Direction);
-                    IOccupier currentOccupier =  GameStepController.Instance.GetOccupierAt(robot.Position);
-
-                    if (oldOccupier == currentOccupier)
-                    {
-                        commandComponent.AddInvalidOccupier(oldOccupier);
-                        return false;
-                    }
-                }
-            }
-            else
-            {
+            if (occupationBuffer.ContainsKey(robot.Position + robot.Direction))
                 return false;
+
+            // Check old occupier of the tile this robot wants to move to, to avoid robots moving through each other
+            if (oldOccupationBuffer.ContainsKey(robot.Position + robot.Direction))
+            {
+                IOccupier oldOccupier =  GameStepController.Instance.GetOldOccupierAt(robot.Position + robot.Direction);
+                IOccupier currentOccupier =  GameStepController.Instance.GetOccupierAt(robot.Position);
+
+                if (oldOccupier == currentOccupier)
+                {
+                    commandComponent.AddInvalidOccupier(oldOccupier);
+                    return false;
+                }
             }
 
             return true;
@@ -47,8 +44,7 @@ namespace Gameplay.Robots.Strategies
 
         public override RobotCommand GetCommand()
         {
-            RobotCommand moveCommand = new MoveCommand();
-            return moveCommand;
+            return new MoveCommand(); ;
         }
     }
 }

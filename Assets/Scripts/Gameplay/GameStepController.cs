@@ -53,7 +53,7 @@ namespace Gameplay
             occupationBuffer.Clear();
         }
 
-        private void WriteOccupantsToTiles()
+        private void WriteOccupiersToTiles()
         {
             FieldController.Instance.ClearTileOccupations();
 
@@ -76,7 +76,7 @@ namespace Gameplay
             if (OnDynamicForwardStep != null)
                 OnDynamicForwardStep(step);
 
-            WriteOccupantsToTiles();
+            WriteOccupiersToTiles();
         }
 
         public void DoBackwardStep()
