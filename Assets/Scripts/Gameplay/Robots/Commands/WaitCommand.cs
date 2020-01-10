@@ -5,6 +5,7 @@ namespace Gameplay.Robots.Commands
         public override void Execute()
         {
             GameStepController.Instance.AddOccupier(robot.Position, robot);
+            robot.RobotVisual.AnimateIdle();
         }
 
         public override void Undo()
