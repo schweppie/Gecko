@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Gameplay.Tiles;
+using Gameplay.Tiles.Components;
+using JP.Framework.Extensions;
 using JP.Framework.Flow;
 using UnityEngine;
 
@@ -12,6 +15,9 @@ public class FieldController : SingletonBehaviour<FieldController>
     private TileVisual emptyTileVisualPrefab = null;
 
     private Dictionary<Vector3Int, Tile> positionsToTiles;
+
+    private BoundsInt bounds;
+    public BoundsInt Bounds => bounds;
 
     void Awake()
     {
@@ -32,6 +38,11 @@ public class FieldController : SingletonBehaviour<FieldController>
 
             Tile tile = Tile.ConstructTileFromVisual(tileVisual);
             positionsToTiles[tile.IntPosition] = tile;
+
+            if (!bounds.Contains(tile.IntPosition))
+            {
+                bounds.Add(tile.IntPosition);
+            }
         }
     }
 
@@ -51,5 +62,23 @@ public class FieldController : SingletonBehaviour<FieldController>
         Tile tile = Tile.ConstructTileFromVisual(emptyTile);
         positionsToTiles[tile.IntPosition] = tile;
         return tile;
+    }
+
+    public Tile GetTileBelowIntPosition(Vector3Int intPosition)
+    {
+        // This should probably be cached when new tiles have been added/after initial initialization
+        var tilesBelow = positionsToTiles.Where(x => x.Key.y <= intPosition.y && x.Key.x == intPosition.x && x.Key.z == intPosition.z && x.Value.GetComponent<EmptyTileComponent>() == null);
+        tilesBelow = tilesBelow.OrderByDescending(x => x.Key.y);
+
+        return tilesBelow.FirstOrDefault().Value;
+    }
+
+    public Tile GetTileAboveIntPosition(Vector3Int intPosition)
+    {
+        // This should probably be cached when new tiles have been added/after initial initialization
+        var tilesBelow = positionsToTiles.Where(x => x.Key.y > intPosition.y && x.Key.x == intPosition.x && x.Key.z == intPosition.z && x.Value.GetComponent<EmptyTileComponent>() == null);
+        tilesBelow = tilesBelow.OrderBy(x => x.Key.y);
+
+        return tilesBelow.FirstOrDefault().Value;
     }
 }

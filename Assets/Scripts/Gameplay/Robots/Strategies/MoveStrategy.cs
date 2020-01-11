@@ -1,12 +1,21 @@
 using Gameplay.Robots.Commands;
+using Gameplay.Tiles;
 using Gameplay.Tiles.Components;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gameplay.Robots.Strategies
 {
     public class MoveStrategy : RobotCommandStrategy
     {
+        private Dictionary<Vector3Int, IOccupier> occupationBuffer;
+        private Dictionary<Vector3Int, IOccupier> oldOccupationBuffer;
+
         public MoveStrategy(Robot robot) : base(robot)
         {
+            occupationBuffer = GameStepController.Instance.OccupationBuffer;
+            oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
         }
 
         public override int GetPriority()
@@ -23,7 +32,13 @@ namespace Gameplay.Robots.Strategies
             var occupationBuffer = GameStepController.Instance.OccupationBuffer;
             var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
 
+            // If occupied, no move
             if (occupationBuffer.ContainsKey(robot.Position + robot.Direction))
+                return false;
+
+            // Check if target tile's vertical path is free
+            if (FieldController.Instance.GetTileAtIntPosition(robot.Position + robot.Direction).GetComponent<EmptyTileComponent>() != null &&
+                !IsVerticalPathFree(robot.Position + robot.Direction))
                 return false;
 
             // Check old occupier of the tile this robot wants to move to, to avoid robots moving through each other
@@ -40,6 +55,46 @@ namespace Gameplay.Robots.Strategies
             }
 
             return true;
+        }
+
+        private bool IsVerticalPathFree(Vector3Int position)
+        {
+            var occupationBuffer = GameStepController.Instance.OccupationBuffer;
+            var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
+
+            Tile targetTile = FieldController.Instance.GetTileAtIntPosition(position);
+            Tile tileAboveTarget = FieldController.Instance.GetTileAboveIntPosition(position);
+            Tile tileBelowTarget = FieldController.Instance.GetTileBelowIntPosition(position);
+
+            // No floor below? This means no more world.. we may always fall
+            if (tileBelowTarget == null)
+                return true;
+
+            // If no tile below or above, use bounds of field
+            Vector3Int abovePosition = position;
+            Vector3Int belowPosition = position;
+            BoundsInt worldBounds = FieldController.Instance.Bounds;
+
+            // Find hightest and lowest positions
+            abovePosition.y = tileAboveTarget == null ? worldBounds.yMax : tileAboveTarget.IntPosition.y;
+            belowPosition.y = tileBelowTarget == null ? worldBounds.yMin : tileBelowTarget.IntPosition.y;
+
+            // Find occupiers between tileAbove and TileBelow
+            //      Need to check if it is a Robot as well (BlockingTiles are IOccupiers as well)
+            //      Maybe we should consider breaking up into static/dynamic occupation buffers?
+            //
+            //      Oh.. and it should probably be optimized..
+            var newVerticalOccupiers = occupationBuffer.Where(o => o.Value.GetType() == typeof(Robot) && o.Key.x == position.x && o.Key.z == position.z);
+            newVerticalOccupiers = newVerticalOccupiers.Where(o => o.Key.y >= belowPosition.y && o.Key.y < abovePosition.y);
+
+            var oldVerticalOccupiers = oldOccupationBuffer.Where(o => o.Value.GetType() == typeof(Robot) && o.Key.x == position.x && o.Key.z == position.z);
+            oldVerticalOccupiers = oldVerticalOccupiers.Where(o => o.Key.y >= belowPosition.y && o.Key.y < abovePosition.y);
+
+            // No other occupiers, we can fall
+            if (newVerticalOccupiers.Count() == 0 && oldVerticalOccupiers.Count() == 0)
+                return true;
+
+            return false;
         }
 
         public override RobotCommand GetCommand()
