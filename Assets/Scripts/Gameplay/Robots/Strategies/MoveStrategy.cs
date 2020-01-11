@@ -59,9 +59,6 @@ namespace Gameplay.Robots.Strategies
 
         private bool IsVerticalPathFree(Vector3Int position)
         {
-            var occupationBuffer = GameStepController.Instance.OccupationBuffer;
-            var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
-
             Tile targetTile = FieldController.Instance.GetTileAtIntPosition(position);
             Tile tileAboveTarget = FieldController.Instance.GetTileAboveIntPosition(position);
             Tile tileBelowTarget = FieldController.Instance.GetTileBelowIntPosition(position);
@@ -79,8 +76,8 @@ namespace Gameplay.Robots.Strategies
             abovePosition.y = tileAboveTarget == null ? worldBounds.yMax : tileAboveTarget.IntPosition.y;
             belowPosition.y = tileBelowTarget == null ? worldBounds.yMin : tileBelowTarget.IntPosition.y;
 
-            // Find occupiers between tileAbove and TileBelow
-            //      Need to check if it is a Robot as well (BlockingTiles are IOccupiers as well)
+            // Find occupiers between abovePosition and belowPosition
+            //      Need to check if it is a Robot as well (BlockingTileComponents are IOccupiers)
             //      Maybe we should consider breaking up into static/dynamic occupation buffers?
             //
             //      Oh.. and it should probably be optimized..
