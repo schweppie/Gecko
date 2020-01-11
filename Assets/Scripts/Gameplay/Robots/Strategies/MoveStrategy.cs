@@ -67,14 +67,18 @@ namespace Gameplay.Robots.Strategies
             if (tileBelowTarget == null)
                 return true;
 
+            // Can't land on blocking tile
+            if (tileBelowTarget.GetComponent<BlockingTileComponent>() != null)
+                return false;
+
             // If no tile below or above, use bounds of field
             Vector3Int abovePosition = position;
             Vector3Int belowPosition = position;
             BoundsInt worldBounds = FieldController.Instance.Bounds;
 
             // Find hightest and lowest positions
-            abovePosition.y = tileAboveTarget == null ? worldBounds.yMax : tileAboveTarget.IntPosition.y;
-            belowPosition.y = tileBelowTarget == null ? worldBounds.yMin : tileBelowTarget.IntPosition.y;
+            abovePosition.y = tileAboveTarget == null ? worldBounds.yMax + 1 : tileAboveTarget.IntPosition.y;
+            belowPosition.y = tileBelowTarget == null ? worldBounds.yMin - 1 : tileBelowTarget.IntPosition.y;
 
             // Find occupiers between abovePosition and belowPosition
             //      Need to check if it is a Robot as well (BlockingTileComponents are IOccupiers)

@@ -81,7 +81,6 @@ namespace Gameplay.Robots.Components
 
             robotCommand.Undo();
         }
-
         public void UndoLastCommand()
         {
             commands.Last().Undo();

@@ -5,14 +5,34 @@ namespace Gameplay.Tiles
 {
     public class TileVisual : MonoBehaviour
     {
+        [SerializeField]
+        private bool needsBottom = false;
+
         private TileComponent[] tileComponents;
         public TileComponent[] TileComponents => tileComponents;
         
         private Tile tile;
 
+        private GameObject tileBottomVisualInstance;
+
         private void Awake()
         {
             tileComponents = GetComponents<TileComponent>();
+            FieldController.Instance.OnUpdateVisualsEvent += OnUpdateVisuals;
+        }
+
+        private void OnUpdateVisuals()
+        {
+            if (!needsBottom)
+                return;
+
+            if (FieldController.Instance.GetTileAtIntPosition(IntPosition + Vector3Int.down).GetComponent<BlockingTileComponent>() == null)
+            {
+                tileBottomVisualInstance = Instantiate(FieldController.Instance.TileBottomVisualPrefab);
+                tileBottomVisualInstance.transform.SetParent(transform, false);
+            }
+            else
+                Destroy(tileBottomVisualInstance);
         }
 
         public void LinkTile(Tile tile)

@@ -14,12 +14,19 @@ public class FieldController : SingletonBehaviour<FieldController>
     [SerializeField]
     private TileVisual emptyTileVisualPrefab = null;
 
+    [SerializeField]
+    private GameObject tileBottomVisualPrefab;
+    public GameObject TileBottomVisualPrefab => tileBottomVisualPrefab;
+
     private Dictionary<Vector3Int, Tile> positionsToTiles;
 
     private BoundsInt bounds;
     public BoundsInt Bounds => bounds;
 
-    void Awake()
+    public delegate void UpdateVisualsDelegate();
+    public event UpdateVisualsDelegate OnUpdateVisualsEvent;
+
+    private void Awake()
     {
         Initialize();
     }
@@ -37,6 +44,10 @@ public class FieldController : SingletonBehaviour<FieldController>
             }
 
             Tile tile = Tile.ConstructTileFromVisual(tileVisual);
+
+            if (positionsToTiles.ContainsKey(tile.IntPosition))
+                Debug.LogError("Tile already exists!" + tile.IntPosition);
+
             positionsToTiles[tile.IntPosition] = tile;
 
             if (!bounds.Contains(tile.IntPosition))
@@ -44,6 +55,8 @@ public class FieldController : SingletonBehaviour<FieldController>
                 bounds.Add(tile.IntPosition);
             }
         }
+
+        OnUpdateVisualsEvent?.Invoke();
     }
 
     public void ClearTileOccupations()
