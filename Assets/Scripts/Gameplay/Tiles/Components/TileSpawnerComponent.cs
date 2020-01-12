@@ -9,6 +9,9 @@ namespace Gameplay.Tiles.Components
         [SerializeField]
         private int spawnCount = 4;
         private int spawned = 0;
+
+        [SerializeField]
+        private bool spawnDebugBots = false;
         
         public override void DoNextStep()
         {
@@ -18,7 +21,8 @@ namespace Gameplay.Tiles.Components
             if (FieldController.Instance.GetTileAtIntPosition(tile.IntPosition).IsOccupied)
                 return;
             
-            RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());
+            Robot robot = RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());
+            robot.isDebugBot = spawnDebugBots;
 
             spawned++;
         }

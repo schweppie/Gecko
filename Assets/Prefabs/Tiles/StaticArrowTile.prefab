@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2382378677226244417}
   - component: {fileID: -8802833679784345588}
-  - component: {fileID: 6559856315868468224}
   - component: {fileID: 1651049979607513348}
   m_Layer: 0
   m_Name: StaticArrowTile
@@ -46,18 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589d702a05a73ad48a25ca710d5e689f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6559856315868468224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3250740378589823392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbab1754ec3b462dbe57e7fbf73150db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  needsBottom: 1
 --- !u!114 &1651049979607513348
 MonoBehaviour:
   m_ObjectHideFlags: 0

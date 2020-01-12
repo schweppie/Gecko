@@ -27,6 +27,8 @@ namespace Gameplay.Robots
         public delegate void voidDelegate();
         public event voidDelegate OnDispose;
 
+        public bool isDebugBot = false;
+
         public Robot(Tile startTile, Vector3Int direction)
         {
             tile = startTile;

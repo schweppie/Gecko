@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Gameplay.Tiles;
 using JP.Framework.Extensions;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace Gameplay.Robots
 {
     public class RobotVisual : MonoBehaviour
     {
+        [SerializeField]
+        private bool isDebug = false;
+
         private Robot robot;
 
         private Vector3Int oldPosition;
@@ -66,11 +70,24 @@ namespace Gameplay.Robots
             visualTransform.DOLocalRotate(new Vector3(0f, 0f, 0f), 1f).SetEase(Ease.OutElastic);
         }
 
-
         private void OnGameVisualization(int step, float t)
         {
             transform.position = Vector3.Lerp(oldPosition, robot.Position, t);
             transform.forward = Vector3.Slerp(oldDirection, robot.Direction, t);
+        }
+
+        private void Update()
+        {
+            if (!isDebug && !robot.isDebugBot)
+                return;
+
+            Tile tileAbove = FieldController.Instance.GetTileAboveIntPosition(robot.Position);
+            if (tileAbove != null)
+                Debug.DrawLine(robot.Position + new Vector3(0, 0.5f, 0f), tileAbove.IntPosition, Color.magenta);
+
+            Tile tileBelow = FieldController.Instance.GetTileBelowIntPosition(robot.Position);
+            if (tileBelow != null)
+                Debug.DrawLine(robot.Position + new Vector3(0, 0.5f, 0f), tileBelow.IntPosition, Color.yellow);
         }
 
         private void OnDestroy()

@@ -7,7 +7,6 @@ Shader "Unlit With Shadows" {
 	}
 	SubShader {
 		Tags {"Queue" = "Geometry" "RenderType" = "Opaque"}
- 
 		Pass {
 			Tags {"LightMode" = "ForwardBase"}
 			CGPROGRAM
