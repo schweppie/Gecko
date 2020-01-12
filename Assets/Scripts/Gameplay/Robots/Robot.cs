@@ -43,13 +43,13 @@ namespace Gameplay.Robots
             foreach (RobotComponent component in components.Values)
                 component.Initialize(this);
             
-            GameStepController.Instance.OnDynamicForwardStep += OnDynamicForwardStep;
+            //GameStepController.Instance.OnDynamicForwardStep += OnDynamicForwardStep;
             GameStepController.Instance.OnDynamicBackwardStep += OnDynamicBackwardStep;
         }
 
-        private void OnDynamicForwardStep(int step)
+        public void OnDynamicForwardStep(int step, HashSet<Robot> invalidRobotsSwapList)
         {
-            commandComponent.ExecuteNextCommand();
+            commandComponent.ExecuteNextCommand(invalidRobotsSwapList);
         }
 
         private void OnDynamicBackwardStep(int step)
@@ -73,7 +73,7 @@ namespace Gameplay.Robots
         {
             OnDispose?.Invoke();
             
-            GameStepController.Instance.OnDynamicForwardStep -= OnDynamicForwardStep;
+            //GameStepController.Instance.OnDynamicForwardStep -= OnDynamicForwardStep;
             GameStepController.Instance.OnDynamicBackwardStep -= OnDynamicBackwardStep;
         }
 
@@ -92,7 +92,6 @@ namespace Gameplay.Robots
         public void PickNewStrategy()
         {
             commandComponent.UndoLastCommand();
-            commandComponent.ExecuteNextCommand();
         }
     }
 }

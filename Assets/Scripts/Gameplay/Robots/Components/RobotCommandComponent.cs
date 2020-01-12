@@ -20,7 +20,7 @@ namespace Gameplay.Robots.Components
         /// 
         /// It can populated in the IsApplicable() from a strategy.
         /// </summary>
-        private HashSet<IOccupier> invalidOccupiers = new HashSet<IOccupier>();
+        private HashSet<Robot> invalidOccupiers;
 
         private void ResetInvalidOccupiers()
         {
@@ -29,7 +29,10 @@ namespace Gameplay.Robots.Components
 
         public void AddInvalidOccupier(IOccupier occupier)
         {
-            invalidOccupiers.Add(occupier);
+            occupier.PickNewStrategy();
+
+            if (occupier is Robot)
+                invalidOccupiers.Add(occupier as Robot);
         }
 
         private void HandleInvalidOccupiers()
@@ -55,9 +58,11 @@ namespace Gameplay.Robots.Components
             commandStrategyContainer.AddStrategy(new WaitStrategy(robot));
         }
 
-        public void ExecuteNextCommand()
+        public void ExecuteNextCommand(HashSet<Robot> invalidRobotsSwapList)
         {
-            ResetInvalidOccupiers();
+            invalidOccupiers = invalidRobotsSwapList;
+
+            //ResetInvalidOccupiers();
 
             RobotCommand robotCommand = commandStrategyContainer.GetApplicableStrategy().GetCommand();
             commands.Add(robotCommand);
@@ -65,7 +70,7 @@ namespace Gameplay.Robots.Components
             robotCommand.Initialize(robot);
             robotCommand.Execute();
 
-            HandleInvalidOccupiers();
+            //HandleInvalidOccupiers();
         }
 
         public void ExecutePrevCommand()
