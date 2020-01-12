@@ -26,7 +26,8 @@ namespace Gameplay.Tiles
             if (!needsBottom)
                 return;
 
-            if (FieldController.Instance.GetTileAtIntPosition(IntPosition + Vector3Int.down).GetComponent<BlockingTileComponent>() == null)
+            if (FieldController.Instance.GetTileAtIntPosition(IntPosition + Vector3Int.down).GetComponent<BlockingTileComponent>() == null 
+                && tileBottomVisualInstance == null)
             {
                 tileBottomVisualInstance = Instantiate(FieldController.Instance.TileBottomVisualPrefab);
                 tileBottomVisualInstance.transform.SetParent(transform, false);
