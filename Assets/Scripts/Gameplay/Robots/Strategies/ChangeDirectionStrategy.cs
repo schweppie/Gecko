@@ -28,6 +28,11 @@ namespace Gameplay.Robots.Strategies
             if (robot.Direction == directionTile.GetDirection())
                 return false;
 
+            IOccupier otherOccupier = GameStepController.Instance.GetOccupierAt(robot.Position);
+
+            if (otherOccupier != null)
+                commandComponent.AddInvalidOccupier(otherOccupier);
+
             return true;
         }
 
