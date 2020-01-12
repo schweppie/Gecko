@@ -80,8 +80,8 @@ public class FieldController : SingletonBehaviour<FieldController>
     public Tile GetTileBelowIntPosition(Vector3Int intPosition)
     {
         // This should probably be cached when new tiles have been added/after initial initialization
-        var tilesBelow = positionsToTiles.Where(x => x.Key.y <= intPosition.y && x.Key.x == intPosition.x && x.Key.z == intPosition.z && x.Value.GetComponent<EmptyTileComponent>() == null);
-        tilesBelow = tilesBelow.OrderByDescending(x => x.Key.y);
+        var tilesBelow = positionsToTiles.Where(i => i.Key.y < intPosition.y && i.Key.x == intPosition.x && i.Key.z == intPosition.z && i.Value.GetComponent<EmptyTileComponent>() == null);
+        tilesBelow = tilesBelow.OrderByDescending(i => i.Key.y);
 
         return tilesBelow.FirstOrDefault().Value;
     }
@@ -89,8 +89,8 @@ public class FieldController : SingletonBehaviour<FieldController>
     public Tile GetTileAboveIntPosition(Vector3Int intPosition)
     {
         // This should probably be cached when new tiles have been added/after initial initialization
-        var tilesBelow = positionsToTiles.Where(x => x.Key.y > intPosition.y && x.Key.x == intPosition.x && x.Key.z == intPosition.z && x.Value.GetComponent<EmptyTileComponent>() == null);
-        tilesBelow = tilesBelow.OrderBy(x => x.Key.y);
+        var tilesBelow = positionsToTiles.Where(i => i.Key.y > intPosition.y && i.Key.x == intPosition.x && i.Key.z == intPosition.z && i.Value.GetComponent<EmptyTileComponent>() == null);
+        tilesBelow = tilesBelow.OrderBy(i => i.Key.y);
 
         return tilesBelow.FirstOrDefault().Value;
     }

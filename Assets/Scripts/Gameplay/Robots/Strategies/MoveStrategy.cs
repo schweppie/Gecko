@@ -37,8 +37,7 @@ namespace Gameplay.Robots.Strategies
                 return false;
 
             // Check if target tile's vertical path is free
-            if (FieldController.Instance.GetTileAtIntPosition(robot.Position + robot.Direction).GetComponent<EmptyTileComponent>() != null &&
-                !IsVerticalPathFree(robot.Position + robot.Direction))
+            if (!IsVerticalPathFree(robot.Position + robot.Direction))
                 return false;
 
             // Check old occupier of the tile this robot wants to move to, to avoid robots moving through each other
@@ -61,7 +60,11 @@ namespace Gameplay.Robots.Strategies
         {
             Tile targetTile = FieldController.Instance.GetTileAtIntPosition(position);
             Tile tileAboveTarget = FieldController.Instance.GetTileAboveIntPosition(position);
-            Tile tileBelowTarget = FieldController.Instance.GetTileBelowIntPosition(position);
+            Tile tileBelowTarget = targetTile;
+
+            // If targetTile is in mid air, find closest ground tile
+            if (targetTile.GetComponent<EmptyTileComponent>() != null)
+                tileBelowTarget = FieldController.Instance.GetTileBelowIntPosition(position);
 
             // No floor below? This means no more world.. we may always fall
             if (tileBelowTarget == null)
