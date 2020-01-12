@@ -49,8 +49,6 @@ namespace Gameplay.Tiles
         public static Tile ConstructTileFromVisual(TileVisual visual)
         {
             Tile tile = new Tile(visual);
-            
-            tile.visual = visual;
             tile.intPosition = visual.IntPosition;
             
             visual.LinkTile(tile);
@@ -68,6 +66,18 @@ namespace Gameplay.Tiles
         public void SetOccupier(IOccupier occupier)
         {
             this.occupier = occupier;
+        }
+
+        public void Disable()
+        {
+            GameStepController.Instance.OnStaticForwardStep -= OnStaticForwardStep;
+            GameStepController.Instance.OnStaticBackwardStep -= OnStaticBackwardStep;
+        }
+        
+        public void Enable()
+        {
+            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
+            GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
         }
     }
 }
