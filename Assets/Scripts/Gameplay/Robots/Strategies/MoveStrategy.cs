@@ -31,19 +31,27 @@ namespace Gameplay.Robots.Strategies
 
             var occupationBuffer = GameStepController.Instance.OccupationBuffer;
             var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
+            Vector3Int currentPosition = robot.Position;
+            Vector3Int targetPosition = robot.Position + robot.Direction;
+            Tile targetTile = FieldController.Instance.GetTileAtIntPosition(targetPosition);
 
             // If occupied, no move
-            if (occupationBuffer.ContainsKey(robot.Position + robot.Direction))
+            if (occupationBuffer.ContainsKey(targetPosition))
+                return false;
+
+            // Can only enter blocking direction tiles in same direction
+            BlockingDirectionTileComponent blockingDirectionTile = targetTile.GetComponent<BlockingDirectionTileComponent>();
+            if (blockingDirectionTile != null && !blockingDirectionTile.IsDirectionPerpendicular(robot.Direction))
                 return false;
 
             // Check if target tile's vertical path is free
-            if (!IsVerticalPathFree(robot.Position + robot.Direction))
+            if (!IsVerticalPathFree(targetPosition))
                 return false;
 
             // Check old occupier of the tile this robot wants to move to, to avoid robots moving through each other
-            if (oldOccupationBuffer.ContainsKey(robot.Position + robot.Direction))
+            if (oldOccupationBuffer.ContainsKey(targetPosition))
             {
-                IOccupier oldOccupier =  GameStepController.Instance.GetOldOccupierAt(robot.Position + robot.Direction);
+                IOccupier oldOccupier =  GameStepController.Instance.GetOldOccupierAt(targetPosition);
                 IOccupier currentOccupier =  GameStepController.Instance.GetOccupierAt(robot.Position);
 
                 if (oldOccupier == currentOccupier)
@@ -72,6 +80,11 @@ namespace Gameplay.Robots.Strategies
 
             // Can't land on blocking tile
             if (tileBelowTarget.GetComponent<BlockingTileComponent>() != null)
+                return false;
+
+            // Can't land on incorrect direction blocking tile
+            BlockingDirectionTileComponent blockingDirectionTile = tileBelowTarget.GetComponent<BlockingDirectionTileComponent>();
+            if (blockingDirectionTile != null && !blockingDirectionTile.IsDirectionPerpendicular(robot.Direction))
                 return false;
 
             // If no tile below or above, use bounds of field
