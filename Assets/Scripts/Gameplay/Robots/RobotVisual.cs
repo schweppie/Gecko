@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Gameplay.Tiles;
+using Gameplay.Tiles.Components;
 using JP.Framework.Extensions;
 using UnityEngine;
 
@@ -47,8 +48,10 @@ namespace Gameplay.Robots
 
         private void OnGameVisualizationStart()
         {
-            oldPosition = transform.position.ToIntVector();
-            oldDirection = transform.forward.ToIntVector();
+            Tile visualWorldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(transform.position.RoundToIntVector());
+
+            oldPosition = visualWorldTile.IntPosition;
+            oldDirection = transform.forward.RoundToIntVector();
         }
 
         private void UnsubscribeEvents()
@@ -72,7 +75,18 @@ namespace Gameplay.Robots
 
         private void OnGameVisualization(int step, float t)
         {
-            transform.position = Vector3.Lerp(oldPosition, robot.Position, t);
+            float additionalHeight = 0f;
+
+            Vector3Int worldTilePosition = transform.position.RoundToIntVector();
+            Tile visualWorldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(worldTilePosition);
+
+            Debug.DrawLine(visualWorldTile.IntPosition, visualWorldTile.IntPosition + Vector3.up, Color.green);
+
+            BlockingDirectionTileComponent heightTile = visualWorldTile.GetComponent<BlockingDirectionTileComponent>();
+            if (heightTile != null)
+                additionalHeight = heightTile.GetHeight(transform.position);
+
+            transform.position = Vector3.Lerp(oldPosition, robot.Position + Vector3.up * additionalHeight, t);
             transform.forward = Vector3.Slerp(oldDirection, robot.Direction, t);
         }
 

@@ -77,6 +77,15 @@ public class FieldController : SingletonBehaviour<FieldController>
         return tile;
     }
 
+    public Tile GetTileAtOrBelowIntPosition(Vector3Int intPosition)
+    {
+        // This should probably be cached when new tiles have been added/after initial initialization
+        var tilesBelow = positionsToTiles.Where(i => i.Key.y <= intPosition.y && i.Key.x == intPosition.x && i.Key.z == intPosition.z && i.Value.GetComponent<EmptyTileComponent>() == null);
+        tilesBelow = tilesBelow.OrderByDescending(i => i.Key.y);
+
+        return tilesBelow.FirstOrDefault().Value;
+    }
+
     public Tile GetTileBelowIntPosition(Vector3Int intPosition)
     {
         // This should probably be cached when new tiles have been added/after initial initialization
