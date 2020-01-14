@@ -8,6 +8,7 @@ namespace Gameplay.Tiles
     public class Tile
     {
         private TileVisual visual;
+        public TileVisual Visual => visual;
 
         private Vector3Int intPosition;
         public Vector3Int IntPosition => intPosition;
@@ -24,7 +25,10 @@ namespace Gameplay.Tiles
             this.visual = visual;
             tileComponents = new Dictionary<Type, TileComponent>();
             foreach (TileComponent tileComponent in visual.TileComponents)
+            {
                 tileComponents[tileComponent.GetType()] = tileComponent;
+                tileComponent.Initialize(this);
+            }
             
             GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
             GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
@@ -53,7 +57,7 @@ namespace Gameplay.Tiles
             tile.visual = visual;
             tile.intPosition = visual.IntPosition;
             
-            visual.LinkTile(tile);
+            visual.Initialize(tile);
             
             return tile;
         }

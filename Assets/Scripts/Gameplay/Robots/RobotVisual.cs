@@ -17,6 +17,10 @@ namespace Gameplay.Robots
         private Vector3Int oldDirection;
 
         private Transform visualTransform;
+
+        private float heightPosition;
+        private float yVelocity = 0f;
+        private const float GRAVITY = -1f;
         
         public void Initialize(Robot robot)
         {
@@ -29,6 +33,8 @@ namespace Gameplay.Robots
 
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutQuart);
+
+            heightPosition = transform.position.y;
 
             visualTransform = transform.GetChild(0);
         }
@@ -48,9 +54,7 @@ namespace Gameplay.Robots
 
         private void OnGameVisualizationStart()
         {
-            Tile visualWorldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(transform.position.RoundToIntVector());
-
-            oldPosition = visualWorldTile.IntPosition;
+            oldPosition = transform.position.RoundToIntVector();
             oldDirection = transform.forward.RoundToIntVector();
         }
 
@@ -75,19 +79,51 @@ namespace Gameplay.Robots
 
         private void OnGameVisualization(int step, float t)
         {
-            float additionalHeight = 0f;
+            // Interpolate position based on t
+            Vector3 position = Vector3.Lerp(oldPosition, robot.Position, t);
 
-            Vector3Int worldTilePosition = transform.position.RoundToIntVector();
-            Tile visualWorldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(worldTilePosition);
+            // Update height
+            position.y = GetVisualHeight(t);
 
-            Debug.DrawLine(visualWorldTile.IntPosition, visualWorldTile.IntPosition + Vector3.up, Color.green);
-
-            BlockingDirectionTileComponent heightTile = visualWorldTile.GetComponent<BlockingDirectionTileComponent>();
-            if (heightTile != null)
-                additionalHeight = heightTile.GetHeight(transform.position);
-
-            transform.position = Vector3.Lerp(oldPosition, robot.Position + Vector3.up * additionalHeight, t);
+            transform.position = position;
             transform.forward = Vector3.Slerp(oldDirection, robot.Direction, t);
+        }
+
+        private float GetVisualHeight(float t)
+        {
+            // Find the visual tile that is below the visual robot
+            Vector3Int worldTilePosition = transform.position.RoundToIntVector();
+            Tile worldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(worldTilePosition);
+
+            float targetHeight = robot.Tile.IntPosition.y - 1;
+
+            // If there is a tile below, get the tile's floor height and handle gravity
+            if (worldTile != null)
+            {
+                // Get the height of the visual world tile
+                targetHeight = worldTile.Visual.HeightReporter.GetValue(robot, t);
+
+                // If in air, increase fall velocity and update y position
+                if (heightPosition > targetHeight)
+                {
+                    yVelocity = yVelocity - (10f * Time.deltaTime);
+                    heightPosition += yVelocity * Time.deltaTime;
+                }
+
+                // If below height of tile, reset to tileheight
+                if (heightPosition < targetHeight)
+                {
+                    yVelocity = 0f;
+                    heightPosition = targetHeight;
+                }
+            }
+            else
+            {
+                // No tile below, lets just lerp
+                heightPosition = Mathf.Lerp(oldPosition.y, targetHeight, t);
+            }
+
+            return heightPosition;
         }
 
         private void Update()
