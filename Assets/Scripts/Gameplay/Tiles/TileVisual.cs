@@ -16,8 +16,8 @@ namespace Gameplay.Tiles
 
         private GameObject tileBottomVisualInstance;
 
-        private DefaultHeightReporter heightReporter;
-        public DefaultHeightReporter HeightReporter => heightReporter;
+        private BaseHeightReporter heightReporter;
+        public BaseHeightReporter HeightReporter => heightReporter;
 
         private void Awake()
         {
@@ -44,7 +44,13 @@ namespace Gameplay.Tiles
         {
             this.tile = tile;
 
-            heightReporter = new DefaultHeightReporter(tile);
+            if (heightReporter == null)
+                heightReporter = new DefaultHeightReporter(tile);
+        }
+
+        public void SetHeightReporter(BaseHeightReporter reporter)
+        {
+            heightReporter = reporter;
         }
         
         public Vector3Int IntPosition

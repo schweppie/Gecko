@@ -6,7 +6,7 @@ namespace Gameplay.Tiles.Components
     {
         protected Tile tile;
         
-        public void Initialize(Tile tile)
+        public virtual void Initialize(Tile tile)
         {
             this.tile = tile;
         }
