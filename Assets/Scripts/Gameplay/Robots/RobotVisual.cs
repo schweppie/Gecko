@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using Gameplay.Tiles;
-using Gameplay.Tiles.Components;
 using JP.Framework.Extensions;
 using UnityEngine;
 
@@ -9,6 +8,12 @@ namespace Gameplay.Robots
     public class RobotVisual : MonoBehaviour
     {
         [SerializeField]
+        private Transform animationRoot;
+
+        [SerializeField]
+        private Transform rotationRoot;
+
+        [SerializeField]
         private bool isDebug = false;
 
         private Robot robot;
@@ -16,11 +21,9 @@ namespace Gameplay.Robots
         private Vector3Int oldPosition;
         private Vector3Int oldDirection;
 
-        private Transform visualTransform;
-
         private float heightPosition;
         private float yVelocity = 0f;
-        private const float GRAVITY = -1f;
+        private const float GRAVITY = 10f;
         
         public void Initialize(Robot robot)
         {
@@ -31,12 +34,10 @@ namespace Gameplay.Robots
 
             SubscribeEvents();
 
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutQuart);
+            animationRoot.localScale = Vector3.zero;
+            animationRoot.DOScale(Vector3.one, 1f).SetEase(Ease.OutQuart);
 
             heightPosition = transform.position.y;
-
-            visualTransform = transform.GetChild(0);
         }
 
         public void OnDispose()
@@ -67,14 +68,14 @@ namespace Gameplay.Robots
 
         public void AnimateMove()
         {
-            visualTransform.DOKill();
-            visualTransform.DOLocalRotate(new Vector3(-10f, 0f, 0f), 0.5f).SetEase(Ease.OutQuart);
+            animationRoot.DOKill();
+            animationRoot.DOLocalRotate(new Vector3(-10f, 0f, 0f), 0.5f).SetEase(Ease.OutQuart);
         }
 
         public void AnimateIdle()
         {
-            visualTransform.DOKill();
-            visualTransform.DOLocalRotate(new Vector3(0f, 0f, 0f), 1f).SetEase(Ease.OutElastic);
+            animationRoot.DOKill();
+            animationRoot.DOLocalRotate(new Vector3(0f, 0f, 0f), 1f).SetEase(Ease.OutElastic);
         }
 
         private void OnGameVisualization(int step, float t)
@@ -104,9 +105,10 @@ namespace Gameplay.Robots
                 targetHeight = worldTile.Visual.HeightReporter.GetValue(robot, t);
 
                 // If in air, increase fall velocity and update y position
+                // TODO this should use an equation, so we can roll back time using T as well
                 if (heightPosition > targetHeight)
                 {
-                    yVelocity = yVelocity - (10f * Time.deltaTime);
+                    yVelocity = yVelocity - (GRAVITY * Time.deltaTime);
                     heightPosition += yVelocity * Time.deltaTime;
                 }
 
