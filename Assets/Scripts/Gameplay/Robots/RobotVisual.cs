@@ -54,8 +54,8 @@ namespace Gameplay.Robots
 
         private void OnGameVisualizationStart()
         {
-            oldPosition = transform.position.RoundToIntVector();
-            oldDirection = transform.forward.RoundToIntVector();
+            oldPosition = transform.position.ToIntVector();
+            oldDirection = transform.forward.ToIntVector();
         }
 
         private void UnsubscribeEvents()
@@ -92,7 +92,7 @@ namespace Gameplay.Robots
         private float GetVisualHeight(float t)
         {
             // Find the visual tile that is below the visual robot
-            Vector3Int worldTilePosition = transform.position.RoundToIntVector();
+            Vector3Int worldTilePosition = transform.position.ToIntVector();
             Tile worldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(worldTilePosition);
 
             float targetHeight = robot.Tile.IntPosition.y - 1;

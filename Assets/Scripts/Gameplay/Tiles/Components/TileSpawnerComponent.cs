@@ -21,7 +21,7 @@ namespace Gameplay.Tiles.Components
             if (FieldController.Instance.GetTileAtIntPosition(tile.IntPosition).IsOccupied)
                 return;
             
-            Robot robot = RobotsController.Instance.CreateRobot(tile, transform.forward.RoundToIntVector());
+            Robot robot = RobotsController.Instance.CreateRobot(tile, transform.forward.ToIntVector());
             robot.isDebugBot = spawnDebugBots;
 
             spawned++;

@@ -7,7 +7,7 @@ namespace Gameplay.Tiles.Components
     {
         public Vector3Int GetDirection()
         {
-            return transform.forward.RoundToIntVector();
+            return transform.forward.ToIntVector();
         }
     }
 }
