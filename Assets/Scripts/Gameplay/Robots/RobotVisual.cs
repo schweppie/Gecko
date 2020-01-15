@@ -21,6 +21,7 @@ namespace Gameplay.Robots
         private Vector3Int oldPosition;
         private Vector3Int oldDirection;
 
+        private float xAngle;
         private float heightPosition;
         private float yVelocity = 0f;
         private const float GRAVITY = 10f;
@@ -80,6 +81,8 @@ namespace Gameplay.Robots
 
         private void OnGameVisualization(int step, float t)
         {
+            Vector3 oldVisualPosition = transform.position;
+
             // Interpolate position based on t
             Vector3 position = Vector3.Lerp(oldPosition, robot.Position, t);
 
@@ -88,6 +91,11 @@ namespace Gameplay.Robots
 
             transform.position = position;
             transform.forward = Vector3.Slerp(oldDirection, robot.Direction, t);
+
+            // Rotate based on delta
+            float angle = Mathf.Clamp((oldVisualPosition.y - position.y) * 800f, -45, 15);
+            xAngle = Mathf.Lerp(xAngle, angle, 10f * Time.deltaTime);
+            rotationRoot.localRotation = Quaternion.Euler(xAngle, 0f, 0f);
         }
 
         private float GetVisualHeight(float t)
