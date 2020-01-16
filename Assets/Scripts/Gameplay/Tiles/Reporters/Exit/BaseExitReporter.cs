@@ -1,4 +1,5 @@
-﻿using Gameplay.Tiles.Components;
+﻿using Gameplay.Robots;
+using Gameplay.Tiles.Components;
 using UnityEngine;
 
 namespace Gameplay.Tiles.Reporters.Exit
@@ -9,10 +10,8 @@ namespace Gameplay.Tiles.Reporters.Exit
         {
         }
 
-        protected Vector3Int CorrectForSlopesBelowExit(Vector3Int exitPosition)
+        private Vector3Int CorrectForSlopesBelowExit(Vector3Int exitPosition)
         {
-            return exitPosition;
-
             // If our exit position is 'in air' check if belows tile is a slope
             Tile exitTile = FieldController.Instance.GetTileAtIntPosition(exitPosition);
             if (exitTile.GetComponent<EmptyTileComponent>() != null)
@@ -29,6 +28,18 @@ namespace Gameplay.Tiles.Reporters.Exit
             Debug.DrawLine(tile.IntPosition, exitPosition, Color.green, 10f);
 
             return exitPosition;
+        }
+
+        /// <summary>
+        /// Returns the exit position corrected if slopes are below it
+        /// This means that if the non-corrected exit is on a empty tile, check if there
+        /// is a slope below. If this is the case, return the position of the slope tile
+        /// </summary>
+        /// <param name="robot"></param>
+        /// <returns></returns>
+        public Vector3Int GetCorrectedExit(Robot robot)
+        {
+            return CorrectForSlopesBelowExit(GetValue(robot));
         }
     }
 }

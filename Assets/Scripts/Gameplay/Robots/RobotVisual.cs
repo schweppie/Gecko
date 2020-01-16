@@ -141,6 +141,11 @@ namespace Gameplay.Robots
             if (!isDebug && !robot.isDebugBot)
                 return;
 
+            Debug.DrawLine(robot.Tile.IntPosition + new Vector3(0.5f, 0f, -0.5f), robot.Tile.IntPosition + new Vector3(0.5f, 0f, 0.5f), Color.red);
+            Debug.DrawLine(robot.Tile.IntPosition + new Vector3(-0.5f, 0f, -0.5f), robot.Tile.IntPosition + new Vector3(-0.5f, 0f, 0.5f), Color.red);
+            Debug.DrawLine(robot.Tile.IntPosition + new Vector3(-0.5f, 0f, 0.5f), robot.Tile.IntPosition + new Vector3(0.5f, 0f, 0.5f), Color.red);
+            Debug.DrawLine(robot.Tile.IntPosition + new Vector3(-0.5f, 0f, -0.5f), robot.Tile.IntPosition + new Vector3(0.5f, 0f, -0.5f), Color.red);
+
             Tile tileAbove = FieldController.Instance.GetTileAboveIntPosition(robot.Position);
             if (tileAbove != null)
                 Debug.DrawLine(robot.Position + new Vector3(0, 0.5f, 0f), tileAbove.IntPosition, Color.magenta);

@@ -37,15 +37,18 @@ namespace Gameplay.Robots.Strategies
             var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
 
             currentPosition = robot.Position;
-            targetPosition = robot.Tile.ExitReporter.GetValue(robot);
+
+            Vector3Int vanillaExitPosition = robot.Tile.ExitReporter.GetValue(robot);
+            Vector3Int correctedTargetPosition = robot.Tile.ExitReporter.GetCorrectedExit(robot);
+
+            targetPosition = correctedTargetPosition;
 
             Tile targetTile = FieldController.Instance.GetTileAtIntPosition(targetPosition);
 
             // Check if we can enter the tile on our target position
             // If the enter position is higher than our current exit, we can't enter
             Vector3Int entryPosition = targetTile.EnterReporter.GetValue(robot);
-            Vector3Int vanillaExitPosition = targetPosition;
-            if (entryPosition.y > targetPosition.y)
+            if (entryPosition.y > targetPosition.y && vanillaExitPosition.y == correctedTargetPosition.y)
                 return false;
 
             // If occupied, no move

@@ -17,8 +17,7 @@ namespace Gameplay.Tiles.Reporters.Exit
             if (robot.Direction == -tile.Visual.transform.forward)
                 heightOffset.y = 1;
 
-            exitPosition = CorrectForSlopesBelowExit(tile.IntPosition + robot.Direction + heightOffset);
-
+            exitPosition = tile.IntPosition + robot.Direction + heightOffset;
             Debug.DrawLine(tile.IntPosition, exitPosition, Color.green, 10f);
 
             return exitPosition;

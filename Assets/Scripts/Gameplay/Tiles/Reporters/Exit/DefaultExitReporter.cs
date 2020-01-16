@@ -11,8 +11,7 @@ namespace Gameplay.Tiles.Reporters.Exit
 
         public override Vector3Int GetValue(Robot robot)
         {
-            Vector3Int exitPosition = tile.IntPosition + robot.Direction;
-            return CorrectForSlopesBelowExit(exitPosition);
+            return tile.IntPosition + robot.Direction;
         }
     }
 }
