@@ -11,7 +11,7 @@ namespace Gameplay.Tiles.Components
         public override void Initialize(Tile tile)
         {
             base.Initialize(tile);
-            tile.Visual.SetHeightReporter(new CurveHeightReporter(heightCurve, tile));
+            tile.SetHeightReporter(new CurveHeightReporter(heightCurve, tile));
         }
 
         public bool IsDirectionPerpendicular(Vector3Int direction)

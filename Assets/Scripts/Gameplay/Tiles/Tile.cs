@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gameplay.Tiles.Components;
+using Gameplay.Tiles.Reporters.Height;
 using UnityEngine;
 
 namespace Gameplay.Tiles
@@ -20,6 +21,9 @@ namespace Gameplay.Tiles
         private IOccupier occupier;
         public bool IsOccupied { get { return occupier != null; } }
 
+        private BaseHeightReporter heightReporter;
+        public BaseHeightReporter HeightReporter => heightReporter;
+
         public Tile(TileVisual visual)
         {
             this.visual = visual;
@@ -32,6 +36,14 @@ namespace Gameplay.Tiles
             
             GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
             GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
+
+            if (heightReporter == null)
+                heightReporter = new DefaultHeightReporter(this);
+        }
+
+        public void SetHeightReporter(BaseHeightReporter reporter)
+        {
+            heightReporter = reporter;
         }
 
         private void OnStaticForwardStep(int step)

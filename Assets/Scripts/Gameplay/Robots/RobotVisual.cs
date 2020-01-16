@@ -110,7 +110,7 @@ namespace Gameplay.Robots
             if (worldTile != null)
             {
                 // Get the height of the visual world tile
-                targetHeight = worldTile.Visual.HeightReporter.GetValue(robot, t);
+                targetHeight = worldTile.HeightReporter.GetValue(robot, t);
 
                 // If in air, increase fall velocity and update y position
                 // TODO this should use an equation, so we can roll back time using T as well

@@ -1,5 +1,4 @@
 ﻿using Gameplay.Tiles.Components;
-using Gameplay.Tiles.Reporters.Height;
 using UnityEngine;
 
 namespace Gameplay.Tiles
@@ -15,9 +14,6 @@ namespace Gameplay.Tiles
         private Tile tile;
 
         private GameObject tileBottomVisualInstance;
-
-        private BaseHeightReporter heightReporter;
-        public BaseHeightReporter HeightReporter => heightReporter;
 
         private void Awake()
         {
@@ -44,13 +40,6 @@ namespace Gameplay.Tiles
         {
             this.tile = tile;
 
-            if (heightReporter == null)
-                heightReporter = new DefaultHeightReporter(tile);
-        }
-
-        public void SetHeightReporter(BaseHeightReporter reporter)
-        {
-            heightReporter = reporter;
         }
         
         public Vector3Int IntPosition
