@@ -29,6 +29,8 @@ namespace Gameplay.Robots
 
         public bool isDebugBot = false;
 
+        public bool CarriesResource; // Temp, need system for resource carrying
+
         public Robot(Tile startTile, Vector3Int direction)
         {
             tile = startTile;
