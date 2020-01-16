@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using Gameplay.Tiles;
 using JP.Framework.Extensions;
+using UnityEditor;
 using UnityEngine;
 
 namespace Gameplay.Robots
@@ -23,6 +24,7 @@ namespace Gameplay.Robots
 
         private float xAngle;
         private float heightPosition;
+        private float oldHeightPosition;
         private float yVelocity = 0f;
         private const float GRAVITY = 20f;
         
@@ -58,6 +60,7 @@ namespace Gameplay.Robots
         {
             oldPosition = transform.position.ToIntVector();
             oldDirection = transform.forward.ToIntVector();
+            oldHeightPosition = oldPosition.y;
         }
 
         private void UnsubscribeEvents()
@@ -86,7 +89,7 @@ namespace Gameplay.Robots
             // Interpolate position based on t
             Vector3 position = Vector3.Lerp(oldPosition, robot.Position, t);
 
-            // Update height
+            // Update visual height
             position.y = GetVisualHeight(t);
 
             transform.position = position;
@@ -109,6 +112,10 @@ namespace Gameplay.Robots
             // If there is a tile below, get the tile's floor height and handle gravity
             if (worldTile != null)
             {
+                // Store last known height when standing on tile
+                // Will be used when not standing on tile anymore (see the else)
+                oldHeightPosition = heightPosition;
+
                 // Get the height of the visual world tile
                 targetHeight = worldTile.HeightReporter.GetValue(robot);
 
@@ -130,7 +137,7 @@ namespace Gameplay.Robots
             else
             {
                 // No tile below, lets just lerp
-                heightPosition = Mathf.Lerp(oldPosition.y, targetHeight, t);
+                heightPosition = Mathf.Lerp(oldHeightPosition, targetHeight, t);
             }
 
             return heightPosition;
@@ -153,6 +160,14 @@ namespace Gameplay.Robots
             Tile tileBelow = FieldController.Instance.GetTileBelowIntPosition(robot.Position);
             if (tileBelow != null)
                 Debug.DrawLine(robot.Position + new Vector3(0, 0.5f, 0f), tileBelow.IntPosition, Color.yellow);
+        }
+
+        void OnDrawGizmos()
+        {
+            if (!isDebug && !robot.isDebugBot)
+                return;
+
+            Handles.Label(transform.position, robot.Tile.Visual.gameObject.name);
         }
 
         private void OnDestroy()

@@ -26,6 +26,9 @@ public class FieldController : SingletonBehaviour<FieldController>
     public delegate void UpdateVisualsDelegate();
     public event UpdateVisualsDelegate OnUpdateVisualsEvent;
 
+    // For debugging
+    private int emptyTiles = 0;
+
     private void Awake()
     {
         Initialize();
@@ -70,7 +73,10 @@ public class FieldController : SingletonBehaviour<FieldController>
         if (positionsToTiles.ContainsKey(intPosition))
             return positionsToTiles[intPosition];
 
+        emptyTiles++;
+
         TileVisual emptyTile = Instantiate(emptyTileVisualPrefab);
+        emptyTile.name = "EmptyTile " + emptyTiles;
         emptyTile.transform.position = intPosition;
         Tile tile = Tile.ConstructTileFromVisual(emptyTile);
         positionsToTiles[tile.IntPosition] = tile;
