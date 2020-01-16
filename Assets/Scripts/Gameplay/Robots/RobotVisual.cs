@@ -89,24 +89,35 @@ namespace Gameplay.Robots
             // Interpolate position based on t
             Vector3 position = Vector3.Lerp(oldPosition, robot.Position, t);
 
+            // Find the visual tile that is below the visual robot
+            Vector3Int worldTilePosition = transform.position.ToIntVector();
+            Tile worldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(worldTilePosition);
+
             // Update visual height
-            position.y = GetVisualHeight(t);
+            position.y = GetVisualHeight(worldTile, t);
 
             transform.position = position;
             transform.forward = Vector3.Slerp(oldDirection, robot.Direction, t);
 
             // Rotate based on delta
+            /*
             float angle = Mathf.Clamp((oldVisualPosition.y - position.y) * 800f, -45, 15);
             xAngle = Mathf.Lerp(xAngle, angle, 10f * Time.deltaTime);
             rotationRoot.localRotation = Quaternion.Euler(xAngle, 0f, 0f);
+            */
+
+
+            if (worldTile != null)
+            {
+                Vector3 upVector = worldTile.NormalReporter.GetValue(robot);
+                Vector3 forwardVector = Vector3.Cross(transform.right, upVector);
+                rotationRoot.rotation = Quaternion.Slerp(rotationRoot.rotation, Quaternion.LookRotation(forwardVector, upVector), 10 * Time.deltaTime);
+            }
+
         }
 
-        private float GetVisualHeight(float t)
+        private float GetVisualHeight(Tile worldTile, float t)
         {
-            // Find the visual tile that is below the visual robot
-            Vector3Int worldTilePosition = transform.position.ToIntVector();
-            Tile worldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(worldTilePosition);
-
             float targetHeight = robot.Tile.IntPosition.y;
 
             // If there is a tile below, get the tile's floor height and handle gravity
