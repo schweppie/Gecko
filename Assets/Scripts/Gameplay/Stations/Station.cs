@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gameplay.Stations
 {
-    public class Station : IOccupier
+    public class Station
     {
         private StationVisual visual;
 
@@ -55,11 +55,6 @@ namespace Gameplay.Stations
             GameStepController.Instance.OnStaticForwardStep -= OnStaticForwardStep;
             GameStepController.Instance.OnStaticBackwardStep -= OnStaticBackwardStep;
             Object.Destroy(visual.gameObject);
-        }
-
-        public void PickNewStrategy()
-        {
-            throw new System.NotImplementedException();
         }
 
         /// <summary>
