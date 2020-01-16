@@ -20,7 +20,7 @@ namespace Gameplay.Tiles.Reporters.Height
 
             if (Mathf.Abs(zDot) > 0.5f)
             {
-                if (zDot < 0f)
+                if (zDot > 0f)
                     distance = position.z;
                 else
                     distance = 1f - position.z;
