@@ -1,6 +1,6 @@
 ﻿using Gameplay.Robots;
 
-namespace Gameplay.Tiles.Reporters
+namespace Gameplay.Tiles.Reporters.Height
 {
     public class DefaultHeightReporter : BaseHeightReporter
     {

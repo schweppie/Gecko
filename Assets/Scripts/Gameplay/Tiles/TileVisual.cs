@@ -1,5 +1,5 @@
 ﻿using Gameplay.Tiles.Components;
-using Gameplay.Tiles.Reporters;
+using Gameplay.Tiles.Reporters.Height;
 using UnityEngine;
 
 namespace Gameplay.Tiles

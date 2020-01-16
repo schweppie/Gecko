@@ -1,7 +1,7 @@
 ﻿using Gameplay.Robots;
 using UnityEngine;
 
-namespace Gameplay.Tiles.Reporters
+namespace Gameplay.Tiles.Reporters.Height
 {
     public class CurveHeightReporter : BaseHeightReporter
     {

@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Gameplay.Tiles.Reporters
 {
-    public abstract class VisualDataReporter<T>
+    public abstract class DataReporter<T>
     {
         protected Tile tile;
 
-        public VisualDataReporter(Tile tile)
+        public DataReporter(Tile tile)
         {
             this.tile = tile;
         }
