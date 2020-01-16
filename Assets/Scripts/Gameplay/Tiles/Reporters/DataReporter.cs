@@ -12,6 +12,6 @@ namespace Gameplay.Tiles.Reporters
             this.tile = tile;
         }
 
-        public abstract T GetValue(Robot robot, float t);
+        public abstract T GetValue(Robot robot);
     }
 }

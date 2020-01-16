@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gameplay.Tiles.Components;
+using Gameplay.Tiles.Reporters.Enter;
+using Gameplay.Tiles.Reporters.Exit;
 using Gameplay.Tiles.Reporters.Height;
 using UnityEngine;
 
@@ -24,9 +26,20 @@ namespace Gameplay.Tiles
         private BaseHeightReporter heightReporter;
         public BaseHeightReporter HeightReporter => heightReporter;
 
+        private BaseExitReporter exitReporter;
+        public BaseExitReporter ExitReporter => exitReporter;
+
+        private BaseEnterReporter enterReporter;
+        public BaseEnterReporter EnterReporter => enterReporter;
+
         public Tile(TileVisual visual)
         {
             this.visual = visual;
+
+            heightReporter = new DefaultHeightReporter(this);
+            exitReporter = new DefaultExitReporter(this);
+            enterReporter = new DefaultEnterReporter(this);
+
             tileComponents = new Dictionary<Type, TileComponent>();
             foreach (TileComponent tileComponent in visual.TileComponents)
             {
@@ -36,14 +49,21 @@ namespace Gameplay.Tiles
             
             GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
             GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
-
-            if (heightReporter == null)
-                heightReporter = new DefaultHeightReporter(this);
         }
 
         public void SetHeightReporter(BaseHeightReporter reporter)
         {
             heightReporter = reporter;
+        }
+
+        public void SetExitReporter(BaseExitReporter reporter)
+        {
+            exitReporter = reporter;
+        }
+
+        public void SetEnterReporter(BaseEnterReporter reporter)
+        {
+            enterReporter = reporter;
         }
 
         private void OnStaticForwardStep(int step)

@@ -24,7 +24,7 @@ namespace Gameplay.Robots
         private float xAngle;
         private float heightPosition;
         private float yVelocity = 0f;
-        private const float GRAVITY = 10f;
+        private const float GRAVITY = 20f;
         
         public void Initialize(Robot robot)
         {
@@ -104,13 +104,13 @@ namespace Gameplay.Robots
             Vector3Int worldTilePosition = transform.position.ToIntVector();
             Tile worldTile = FieldController.Instance.GetTileAtOrBelowIntPosition(worldTilePosition);
 
-            float targetHeight = robot.Tile.IntPosition.y - 1;
+            float targetHeight = robot.Tile.IntPosition.y;
 
             // If there is a tile below, get the tile's floor height and handle gravity
             if (worldTile != null)
             {
                 // Get the height of the visual world tile
-                targetHeight = worldTile.HeightReporter.GetValue(robot, t);
+                targetHeight = worldTile.HeightReporter.GetValue(robot);
 
                 // If in air, increase fall velocity and update y position
                 // TODO this should use an equation, so we can roll back time using T as well

@@ -12,6 +12,10 @@ namespace Gameplay.Robots.Strategies
         private Dictionary<Vector3Int, IOccupier> occupationBuffer;
         private Dictionary<Vector3Int, IOccupier> oldOccupationBuffer;
 
+
+        private Vector3Int currentPosition;
+        private Vector3Int targetPosition;
+
         public MoveStrategy(Robot robot) : base(robot)
         {
             occupationBuffer = GameStepController.Instance.OccupationBuffer;
@@ -31,9 +35,18 @@ namespace Gameplay.Robots.Strategies
 
             var occupationBuffer = GameStepController.Instance.OccupationBuffer;
             var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
-            Vector3Int currentPosition = robot.Position;
-            Vector3Int targetPosition = robot.Position + robot.Direction;
+
+            currentPosition = robot.Position;
+            targetPosition = robot.Tile.ExitReporter.GetValue(robot);
+
             Tile targetTile = FieldController.Instance.GetTileAtIntPosition(targetPosition);
+
+            // Check if we can enter the tile on our target position
+            // If the enter position is higher than our current exit, we can't enter
+            Vector3Int entryPosition = targetTile.EnterReporter.GetValue(robot);
+            Vector3Int vanillaExitPosition = targetPosition;
+            if (entryPosition.y > targetPosition.y)
+                return false;
 
             // If occupied, no move
             if (occupationBuffer.ContainsKey(targetPosition))
@@ -117,7 +130,7 @@ namespace Gameplay.Robots.Strategies
 
         public override RobotCommand GetCommand()
         {
-            return new MoveCommand(); ;
+            return new MoveCommand(targetPosition.y - currentPosition.y);
         }
     }
 }

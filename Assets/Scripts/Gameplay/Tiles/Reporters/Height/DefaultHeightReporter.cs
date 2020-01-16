@@ -8,7 +8,7 @@ namespace Gameplay.Tiles.Reporters.Height
         {
         }
 
-        public override float GetValue(Robot robot, float t)
+        public override float GetValue(Robot robot)
         {
             return tile.IntPosition.y;
         }
