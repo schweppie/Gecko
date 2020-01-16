@@ -9,7 +9,17 @@ namespace Gameplay.Tiles
         private bool needsBottom = false;
 
         private TileComponent[] tileComponents;
-        public TileComponent[] TileComponents => tileComponents;
+        public TileComponent[] TileComponents
+        {
+            get
+            {
+                if (tileComponents == null)
+                    tileComponents = GetComponents<TileComponent>();
+
+                return tileComponents;
+            }
+        }
+        
         
         private Tile tile;
 
@@ -39,7 +49,6 @@ namespace Gameplay.Tiles
         public void Initialize(Tile tile)
         {
             this.tile = tile;
-
         }
         
         public Vector3Int IntPosition

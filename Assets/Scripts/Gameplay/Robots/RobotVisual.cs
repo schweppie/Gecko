@@ -162,6 +162,7 @@ namespace Gameplay.Robots
                 Debug.DrawLine(robot.Position + new Vector3(0, 0.5f, 0f), tileBelow.IntPosition, Color.yellow);
         }
 
+#if UNITY_EDITOR
         void OnDrawGizmos()
         {
             if (!isDebug && !robot.isDebugBot)
@@ -169,6 +170,7 @@ namespace Gameplay.Robots
 
             Handles.Label(transform.position, robot.Tile.Visual.gameObject.name);
         }
+#endif
 
         private void OnDestroy()
         {
