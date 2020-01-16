@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589d702a05a73ad48a25ca710d5e689f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  needsBottom: 0
 --- !u!114 &8631456629069707997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +124,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 26b42cca780c0a640b35cda11030c813, type: 2}
+      objectReference: {fileID: 2100000, guid: c6eff84783289494cb95f718fd78234e, type: 2}
     - target: {fileID: -1504981713932161579, guid: 7362516a79a36ea45993d05f374cc7a9,
         type: 3}
       propertyPath: m_CastShadows
