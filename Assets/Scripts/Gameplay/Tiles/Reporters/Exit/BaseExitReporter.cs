@@ -31,8 +31,8 @@ namespace Gameplay.Tiles.Reporters.Exit
         }
 
         /// <summary>
-        /// Returns the exit position corrected if slopes are below it
-        /// This means that if the non-corrected exit is on a empty tile, check if there
+        /// Returns the exit position corrected if a slope is below the default non-corrected exit position.
+        /// This means that if the non-corrected exit is on an empty tile, check if there
         /// is a slope below. If this is the case, return the position of the slope tile
         /// </summary>
         /// <param name="robot"></param>

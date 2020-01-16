@@ -22,7 +22,6 @@ namespace Gameplay.Robots
         private Vector3Int oldPosition;
         private Vector3Int oldDirection;
 
-        private float xAngle;
         private float heightPosition;
         private float oldHeightPosition;
         private float yVelocity = 0f;
@@ -65,8 +64,12 @@ namespace Gameplay.Robots
 
         private void UnsubscribeEvents()
         {
-            GameVisualizationController.Instance.OnGameVisualization -= OnGameVisualization;
-            GameVisualizationController.Instance.OnVisualizationStart -= OnGameVisualizationStart;
+            if (GameVisualizationController.Instance != null)
+            {
+                GameVisualizationController.Instance.OnGameVisualization -= OnGameVisualization;
+                GameVisualizationController.Instance.OnVisualizationStart -= OnGameVisualizationStart;
+            }
+
             robot.OnDispose -= OnDispose;
         }
 
@@ -99,21 +102,13 @@ namespace Gameplay.Robots
             transform.position = position;
             transform.forward = Vector3.Slerp(oldDirection, robot.Direction, t);
 
-            // Rotate based on delta
-            /*
-            float angle = Mathf.Clamp((oldVisualPosition.y - position.y) * 800f, -45, 15);
-            xAngle = Mathf.Lerp(xAngle, angle, 10f * Time.deltaTime);
-            rotationRoot.localRotation = Quaternion.Euler(xAngle, 0f, 0f);
-            */
-
-
+            // Rotate based on visual tile's normal
             if (worldTile != null)
             {
                 Vector3 upVector = worldTile.NormalReporter.GetValue(robot);
                 Vector3 forwardVector = Vector3.Cross(transform.right, upVector);
                 rotationRoot.rotation = Quaternion.Slerp(rotationRoot.rotation, Quaternion.LookRotation(forwardVector, upVector), 10 * Time.deltaTime);
             }
-
         }
 
         private float GetVisualHeight(Tile worldTile, float t)
@@ -154,6 +149,7 @@ namespace Gameplay.Robots
             return heightPosition;
         }
 
+#if UNITY_EDITOR
         private void Update()
         {
             if (!isDebug && !robot.isDebugBot)
@@ -173,8 +169,7 @@ namespace Gameplay.Robots
                 Debug.DrawLine(robot.Position + new Vector3(0, 0.5f, 0f), tileBelow.IntPosition, Color.yellow);
         }
 
-#if UNITY_EDITOR
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             if (!isDebug && !robot.isDebugBot)
                 return;
