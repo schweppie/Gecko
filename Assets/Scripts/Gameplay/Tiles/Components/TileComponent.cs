@@ -13,7 +13,6 @@ namespace Gameplay.Tiles.Components
         
         public virtual void DoNextStep()
         {
-            
         }
 
         public virtual void DoPrevStep()

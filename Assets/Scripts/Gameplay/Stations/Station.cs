@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Gameplay.Stations.Components;
 using Gameplay.Tiles;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Gameplay.Stations
 {
@@ -10,11 +13,18 @@ namespace Gameplay.Stations
 
         private List<Tile> stationTiles;
         private List<Tile> oldOverriddenTiles;
+        
+        private Dictionary<Type, StationComponent> stationComponents;
 
         public Station(StationVisual visual)
         {
             this.visual = visual;
             visual.Initialize(this);
+            
+            stationComponents = new Dictionary<Type, StationComponent>();
+            foreach (StationComponent stationComponent in visual.StationComponents)
+                stationComponents[stationComponent.GetType()] = stationComponent;
+            
             CreateStationTiles();
             GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
             GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
@@ -37,10 +47,14 @@ namespace Gameplay.Stations
 
         private void OnStaticForwardStep(int step)
         {
+            foreach (var stationComponent in stationComponents.Values)
+                stationComponent.DoNextStep();            
         }
 
         private void OnStaticBackwardStep(int step)
         {
+            foreach (var stationComponent in stationComponents.Values)
+                stationComponent.DoPrevStep();      
         }
 
         public void TestRemove()
