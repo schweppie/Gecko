@@ -9,7 +9,17 @@ namespace Gameplay.Tiles
         private bool needsBottom = false;
 
         private TileComponent[] tileComponents;
-        public TileComponent[] TileComponents => tileComponents;
+        public TileComponent[] TileComponents
+        {
+            get
+            {
+                if (tileComponents == null)
+                    tileComponents = GetComponents<TileComponent>();
+
+                return tileComponents;
+            }
+        }
+        
         
         private Tile tile;
 
@@ -36,12 +46,9 @@ namespace Gameplay.Tiles
                 Destroy(tileBottomVisualInstance);
         }
 
-        public void LinkTile(Tile tile)
+        public void Initialize(Tile tile)
         {
             this.tile = tile;
-
-            for (int i = 0; i < tileComponents.Length; i++)
-                tileComponents[i].SetTile(tile);
         }
         
         public Vector3Int IntPosition

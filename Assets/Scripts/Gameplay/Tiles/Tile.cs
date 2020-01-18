@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gameplay.Tiles.Components;
+using Gameplay.Tiles.Reporters.Enter;
+using Gameplay.Tiles.Reporters.Exit;
+using Gameplay.Tiles.Reporters.Height;
+using Gameplay.Tiles.Reporters.Normal;
 using UnityEngine;
 
 namespace Gameplay.Tiles
@@ -8,6 +12,7 @@ namespace Gameplay.Tiles
     public class Tile
     {
         private TileVisual visual;
+        public TileVisual Visual => visual;
 
         private Vector3Int intPosition;
         public Vector3Int IntPosition => intPosition;
@@ -19,15 +24,56 @@ namespace Gameplay.Tiles
         private IOccupier occupier;
         public bool IsOccupied { get { return occupier != null; } }
 
+        private BaseHeightReporter heightReporter;
+        public BaseHeightReporter HeightReporter => heightReporter;
+
+        private BaseExitReporter exitReporter;
+        public BaseExitReporter ExitReporter => exitReporter;
+
+        private BaseEnterReporter enterReporter;
+        public BaseEnterReporter EnterReporter => enterReporter;
+
+        private BaseNormalReporter normalReporter;
+        public BaseNormalReporter NormalReporter => normalReporter;
+
         public Tile(TileVisual visual)
         {
             this.visual = visual;
+
+            heightReporter = new DefaultHeightReporter(this);
+            exitReporter = new DefaultExitReporter(this);
+            enterReporter = new DefaultEnterReporter(this);
+            normalReporter = new DefaultNormalReporter(this);
+
             tileComponents = new Dictionary<Type, TileComponent>();
             foreach (TileComponent tileComponent in visual.TileComponents)
+            {
                 tileComponents[tileComponent.GetType()] = tileComponent;
+                tileComponent.Initialize(this);
+            }
             
             GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
             GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
+        }
+
+        public void SetHeightReporter(BaseHeightReporter reporter)
+        {
+            heightReporter = reporter;
+        }
+
+        public void SetExitReporter(BaseExitReporter reporter)
+        {
+            exitReporter = reporter;
+        }
+
+        public void SetEnterReporter(BaseEnterReporter reporter)
+        {
+            enterReporter = reporter;
+        }
+
+        public void SetNormalReporter(BaseNormalReporter reporter)
+        {
+            normalReporter = reporter;
         }
 
         private void OnStaticForwardStep(int step)
@@ -53,7 +99,7 @@ namespace Gameplay.Tiles
             tile.visual = visual;
             tile.intPosition = visual.IntPosition;
             
-            visual.LinkTile(tile);
+            visual.Initialize(tile);
             
             return tile;
         }
