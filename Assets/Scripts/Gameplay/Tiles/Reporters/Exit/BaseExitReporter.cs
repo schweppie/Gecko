@@ -16,12 +16,12 @@ namespace Gameplay.Tiles.Reporters.Exit
             Tile exitTile = FieldController.Instance.GetTileAtIntPosition(exitPosition);
             if (exitTile.GetComponent<EmptyTileComponent>() != null)
             {
-                Tile slopeTile = FieldController.Instance.GetTileAtIntPosition(exitPosition + Vector3Int.down);
+                Tile tileBelowExit = FieldController.Instance.GetTileAtIntPosition(exitPosition + Vector3Int.down);
 
-                if (slopeTile.GetComponent<SlopeTileComponent>() != null)
+                if (tileBelowExit.GetComponent<SlopeTileComponent>() != null)
                 {
                     Debug.DrawLine(exitPosition, exitPosition + Vector3Int.down, Color.magenta, 10f);
-                    return slopeTile.IntPosition;
+                    return tileBelowExit.IntPosition;
                 }
             }
 

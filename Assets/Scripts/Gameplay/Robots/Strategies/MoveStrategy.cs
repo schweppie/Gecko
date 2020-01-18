@@ -120,8 +120,8 @@ namespace Gameplay.Robots.Strategies
             oldVerticalOccupiers = oldVerticalOccupiers.Where(o => o.Key.y >= belowPosition.y && o.Key.y < abovePosition.y);
 
             // No other occupiers, we can fall
-            if (newVerticalOccupiers.Count() == 0 && oldVerticalOccupiers.Count() == 0
-                || oldVerticalOccupiers.Count() > 0 && newVerticalOccupiers.Count() == 0)
+            if (newVerticalOccupiers.Count() == 0 && oldVerticalOccupiers.Count() == 0)
+                //|| oldVerticalOccupiers.Count() > 0 && newVerticalOccupiers.Count() == 0)
                 return true;
 
             return false;

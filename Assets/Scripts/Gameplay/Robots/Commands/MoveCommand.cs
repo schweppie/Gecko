@@ -34,8 +34,8 @@ namespace Gameplay.Robots.Commands
 
         public override void Undo()
         {
-            // TODO undo is broken becuase of slopes and new visualization
-            robot.Move(robot.Direction * -1);
+            // TODO undo is broken because of slopes and new visualization
+            robot.Move(robot.Direction * -1 -(Vector3Int.up * verticalOffset));
         }
     }
 }
