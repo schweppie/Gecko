@@ -30,6 +30,9 @@ public class FieldController : SingletonBehaviour<FieldController>
     public delegate void UpdateVisualsDelegate();
     public event UpdateVisualsDelegate OnUpdateVisualsEvent;
 
+    // For debugging
+    private int emptyTiles = 0;
+
     private void Awake()
     {
         Initialize();
@@ -95,7 +98,10 @@ public class FieldController : SingletonBehaviour<FieldController>
         if (positionsToTiles.ContainsKey(intPosition))
             return positionsToTiles[intPosition];
 
+        emptyTiles++;
+
         TileVisual emptyTile = Instantiate(emptyTileVisualPrefab);
+        emptyTile.name = "EmptyTile " + emptyTiles;
         emptyTile.transform.position = intPosition;
         Tile tile = Tile.ConstructTileFromVisual(emptyTile);
         positionsToTiles[tile.IntPosition] = tile;
@@ -112,6 +118,15 @@ public class FieldController : SingletonBehaviour<FieldController>
         positionsToTiles[position] = newTile;
         return oldTile;
 	}
+
+    public Tile GetTileAtOrBelowIntPosition(Vector3Int intPosition)
+    {
+        // This should probably be cached when new tiles have been added/after initial initialization
+        var tilesBelow = positionsToTiles.Where(i => i.Key.y <= intPosition.y && i.Key.x == intPosition.x && i.Key.z == intPosition.z && i.Value.GetComponent<EmptyTileComponent>() == null);
+        tilesBelow = tilesBelow.OrderByDescending(i => i.Key.y);
+
+        return tilesBelow.FirstOrDefault().Value;
+    }
 
     public Tile GetTileBelowIntPosition(Vector3Int intPosition)
     {

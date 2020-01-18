@@ -12,6 +12,8 @@ namespace Gameplay.Robots.Strategies
         private Dictionary<Vector3Int, IOccupier> occupationBuffer;
         private Dictionary<Vector3Int, IOccupier> oldOccupationBuffer;
 
+        private Vector3Int targetPosition;
+
         public MoveStrategy(Robot robot) : base(robot)
         {
             occupationBuffer = GameStepController.Instance.OccupationBuffer;
@@ -31,9 +33,19 @@ namespace Gameplay.Robots.Strategies
 
             var occupationBuffer = GameStepController.Instance.OccupationBuffer;
             var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
-            Vector3Int currentPosition = robot.Position;
-            Vector3Int targetPosition = robot.Position + robot.Direction;
+
+            Vector3Int defaultExitPosition = robot.Tile.ExitReporter.GetValue(robot);
+            Vector3Int correctedExitPosition = robot.Tile.ExitReporter.GetCorrectedExit(robot);
+
+            targetPosition = correctedExitPosition;
+
             Tile targetTile = FieldController.Instance.GetTileAtIntPosition(targetPosition);
+
+            // Check if we can enter the target tile's enter position
+            // If the enter position is higher than our current exit, we can't enter
+            Vector3Int enterPosition = targetTile.EnterReporter.GetValue(robot);
+            if (enterPosition.y > targetPosition.y && defaultExitPosition.y == correctedExitPosition.y)
+                return false;
 
             // If occupied, no move
             if (occupationBuffer.ContainsKey(targetPosition))
@@ -109,6 +121,7 @@ namespace Gameplay.Robots.Strategies
 
             // No other occupiers, we can fall
             if (newVerticalOccupiers.Count() == 0 && oldVerticalOccupiers.Count() == 0)
+                //|| oldVerticalOccupiers.Count() > 0 && newVerticalOccupiers.Count() == 0)
                 return true;
 
             return false;
@@ -116,7 +129,8 @@ namespace Gameplay.Robots.Strategies
 
         public override RobotCommand GetCommand()
         {
-            return new MoveCommand(); ;
+            // Provide the vertical delta, for when moving up/down slopes
+            return new MoveCommand(targetPosition.y - robot.Position.y);
         }
     }
 }
