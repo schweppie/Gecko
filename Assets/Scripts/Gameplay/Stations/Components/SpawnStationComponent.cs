@@ -14,10 +14,10 @@ namespace Gameplay.Stations.Components
 
         [SerializeField]
         private TileVisual spawnerTileVisual;
-        
+
         [SerializeField]
         private Transform doorPivot = null;
-        
+
         [SerializeField]
         private bool spawnDebugBots = false;
 
@@ -30,6 +30,17 @@ namespace Gameplay.Stations.Components
 
         private State state = State.Idle;
         private int spawned = 0;
+        private Robot lastSpawnedRobot = null;
+
+        private void Start()
+        {
+            GameStepController.Instance.OnDynamicStepComplete += OnDynamicStepComplete;
+        }
+
+        private void OnDestroy()
+        {
+            GameStepController.Instance.OnDynamicStepComplete -= OnDynamicStepComplete;
+        }
 
         public override void DoNextStep()
         {
@@ -39,14 +50,17 @@ namespace Gameplay.Stations.Components
             switch (state)
             {
                 case State.Idle:
-                    bool spawnedRobot = SpawnRobot();
-                    if (spawnedRobot)
+                    Robot robot = SpawnRobot();
+                    if (robot != null)
+                    {
                         state = State.OpenDoor;
+                        lastSpawnedRobot = robot;
+                    }
                     break;
+
                 case State.OpenDoor:
-                    OpenDoor();
-                    state = State.CloseDoor;
                     break;
+
                 case State.CloseDoor:
                     CloseDoor();
                     spawned++;
@@ -55,22 +69,36 @@ namespace Gameplay.Stations.Components
             }
         }
 
-        private bool SpawnRobot()
+        private void OnDynamicStepComplete(int step)
+        {
+            Vector3Int exitPosition = spawnerTileVisual.IntPosition + spawnerTileVisual.transform.forward.ToIntVector();
+            Tile exitTile = FieldController.Instance.GetTileAtIntPosition(exitPosition);
+            if (state == State.OpenDoor)
+            {
+                if (exitTile.Occupier == lastSpawnedRobot)
+                { // spawned robot is going to exit
+                    OpenDoor();
+                    state = State.CloseDoor;
+                }
+            }
+        }
+
+        private Robot SpawnRobot()
         {
             Tile spawnTile = FieldController.Instance.GetTileAtIntPosition(spawnerTileVisual.IntPosition);
             if (spawnTile.IsOccupied)
-                return false;
-            
+                return null;
+
             Robot robot = RobotsController.Instance.CreateRobot(spawnTile, spawnerTileVisual.transform.forward.ToIntVector());
             robot.isDebugBot = spawnDebugBots;
-            return true;
+            return robot;
         }
 
         private void OpenDoor()
         {
             doorPivot.DOScaleY(.05f, .5f);
         }
-        
+
         private void CloseDoor()
         {
             doorPivot.DOScaleY(1f, .5f);

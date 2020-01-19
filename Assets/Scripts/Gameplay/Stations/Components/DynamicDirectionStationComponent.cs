@@ -1,4 +1,5 @@
-﻿using Gameplay.Tiles.Components;
+﻿using System;
+using Gameplay.Tiles.Components;
 using UnityEngine;
 
 namespace Gameplay.Stations.Components
@@ -10,13 +11,20 @@ namespace Gameplay.Stations.Components
 
         private IOccupier lastOccupier;
 
-        public override void DoNextStep()
+        private void Start()
+        {
+            GameStepController.Instance.OnDynamicStepComplete += OnDynamicStepComplete;
+        }
+
+        private void OnDestroy()
+        {
+            GameStepController.Instance.OnDynamicStepComplete -= OnDynamicStepComplete;
+        }
+
+        private void OnDynamicStepComplete(int step)
         {
             if (lastOccupier != null && !directionTileComponent.Tile.IsOccupied)
-            {
                 directionTileComponent.FlipDirection();
-            }
-
             lastOccupier = directionTileComponent.Tile.Occupier;
         }
     }

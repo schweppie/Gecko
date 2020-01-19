@@ -40,7 +40,7 @@ namespace Gameplay.Stations
         {
             this.station = station;
             for (int i = 0; i < stationComponents.Length; i++)
-                stationComponents[i].SetStation(station);
+                stationComponents[i].Initialize(station);
         }
 
         [ContextMenu("Test remove")]
