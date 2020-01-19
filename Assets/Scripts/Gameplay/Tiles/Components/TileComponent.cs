@@ -12,11 +12,7 @@ namespace Gameplay.Tiles.Components
             this.tile = tile;
         }
         
-        public virtual void DoNextStep()
-        {
-        }
-
-        public virtual void DoPrevStep()
+        public virtual void DoStaticStep()
         {
         }
     }

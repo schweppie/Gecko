@@ -1,3 +1,4 @@
+using Gameplay.Field;
 using Gameplay.Robots.Commands;
 using Gameplay.Tiles;
 using Gameplay.Tiles.Components;
@@ -16,8 +17,8 @@ namespace Gameplay.Robots.Strategies
 
         public MoveStrategy(Robot robot) : base(robot)
         {
-            occupationBuffer = GameStepController.Instance.OccupationBuffer;
-            oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
+            occupationBuffer = FieldController.Instance.OccupationBuffer;
+            oldOccupationBuffer = FieldController.Instance.OldOccupationBuffer;
         }
 
         public override int GetPriority()
@@ -31,8 +32,8 @@ namespace Gameplay.Robots.Strategies
             if (robot.Tile.GetComponent<EmptyTileComponent>() != null)
                 return false;
 
-            var occupationBuffer = GameStepController.Instance.OccupationBuffer;
-            var oldOccupationBuffer = GameStepController.Instance.OldOccupationBuffer;
+            var occupationBuffer = FieldController.Instance.OccupationBuffer;
+            var oldOccupationBuffer = FieldController.Instance.OldOccupationBuffer;
 
             Vector3Int defaultExitPosition = robot.Tile.ExitReporter.GetValue(robot);
             Vector3Int correctedExitPosition = robot.Tile.ExitReporter.GetCorrectedExit(robot);
@@ -67,8 +68,8 @@ namespace Gameplay.Robots.Strategies
             // Check old occupier of the tile this robot wants to move to, to avoid robots moving through each other
             if (oldOccupationBuffer.ContainsKey(targetPosition))
             {
-                IOccupier oldOccupier =  GameStepController.Instance.GetOldOccupierAt(targetPosition);
-                IOccupier currentOccupier =  GameStepController.Instance.GetOccupierAt(robot.Position);
+                IOccupier oldOccupier = FieldController.Instance.GetOldOccupierAt(targetPosition);
+                IOccupier currentOccupier = FieldController.Instance.GetOccupierAt(robot.Position);
 
                 if (oldOccupier == currentOccupier)
                 {

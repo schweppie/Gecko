@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Gameplay.Field;
+using UnityEngine;
 
 namespace Gameplay.Robots.Commands
 {
@@ -7,12 +8,7 @@ namespace Gameplay.Robots.Commands
         public override void Execute()
         {
             robot.Move(Vector3Int.down);
-            GameStepController.Instance.AddOccupier(robot.Position, robot);
-        }
-
-        public override void Undo()
-        {
-            robot.Move(Vector3Int.up);
+            FieldController.Instance.AddOccupier(robot.Position, robot);
         }
     }
 }
