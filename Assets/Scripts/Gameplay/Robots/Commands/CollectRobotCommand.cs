@@ -6,10 +6,5 @@ namespace Gameplay.Robots.Commands
         {
             robot.RobotVisual.OnDispose();
         }
-
-        public override void Undo()
-        {
-            RobotsController.Instance.CreateRobotVisual(robot);
-        }
     }
 }

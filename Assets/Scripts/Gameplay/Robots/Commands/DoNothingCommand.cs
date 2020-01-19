@@ -5,9 +5,5 @@ namespace Gameplay.Robots.Commands
         public override void Execute()
         {
         }
-
-        public override void Undo()
-        {
-        }
     }
 }

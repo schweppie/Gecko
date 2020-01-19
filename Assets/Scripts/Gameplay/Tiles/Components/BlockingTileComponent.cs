@@ -1,12 +1,13 @@
+using Gameplay.Field;
 using System;
 
 namespace Gameplay.Tiles.Components
 {
     public class BlockingTileComponent : TileComponent, IOccupier
     {
-        public override void DoNextStep()
+        public override void DoStaticStep()
         {
-            GameStepController.Instance.AddOccupier(tile.IntPosition, this);
+            FieldController.Instance.AddOccupier(tile.IntPosition, this);
         }
 
         public void PickNewStrategy()
