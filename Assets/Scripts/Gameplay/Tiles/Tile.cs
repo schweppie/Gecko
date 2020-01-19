@@ -22,6 +22,7 @@ namespace Gameplay.Tiles
         private Dictionary<Type, TileComponent> tileComponents;
 
         private IOccupier occupier;
+        public IOccupier Occupier => occupier;
         public bool IsOccupied { get { return occupier != null; } }
 
         private BaseHeightReporter heightReporter;
