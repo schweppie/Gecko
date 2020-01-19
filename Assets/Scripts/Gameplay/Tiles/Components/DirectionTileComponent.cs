@@ -17,7 +17,6 @@ namespace Gameplay.Tiles.Components
         {
             flipped = !flipped;
             transform.DOLocalRotate(new Vector3(0, flipped ? 180 : 0, 0), .3f);
-            //transform.localScale = new Vector3(1, 1, flipped?-1:1);
         }
     }
 }
