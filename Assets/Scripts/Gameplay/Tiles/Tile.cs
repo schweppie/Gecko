@@ -52,8 +52,7 @@ namespace Gameplay.Tiles
                 tileComponent.Initialize(this);
             }
             
-            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
-            GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
+            GameStepController.Instance.OnStaticStep += OnStaticStep;
         }
 
         public void SetHeightReporter(BaseHeightReporter reporter)
@@ -76,17 +75,12 @@ namespace Gameplay.Tiles
             normalReporter = reporter;
         }
 
-        private void OnStaticForwardStep(int step)
+        private void OnStaticStep(int step)
         {
             foreach (var tileComponent in tileComponents.Values)
-                tileComponent.DoNextStep();            
+                tileComponent.DoStaticStep();            
         }
-        
-        private void OnStaticBackwardStep(int step)
-        {
-            foreach (var tileComponent in tileComponents.Values)
-                tileComponent.DoPrevStep();            
-        }        
+   
 
         /// <summary>
         /// Normally the data (this tile) is created first before the visual, but as we want to build levels in the
@@ -116,14 +110,12 @@ namespace Gameplay.Tiles
 
         public void Disable()
         {
-            GameStepController.Instance.OnStaticForwardStep -= OnStaticForwardStep;
-            GameStepController.Instance.OnStaticBackwardStep -= OnStaticBackwardStep;
+            GameStepController.Instance.OnStaticStep -= OnStaticStep;
         }
         
         public void Enable()
         {
-            GameStepController.Instance.OnStaticForwardStep += OnStaticForwardStep;
-            GameStepController.Instance.OnStaticBackwardStep += OnStaticBackwardStep;
+            GameStepController.Instance.OnStaticStep += OnStaticStep;
         }
     }
 }

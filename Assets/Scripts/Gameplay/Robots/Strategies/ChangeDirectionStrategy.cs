@@ -1,3 +1,4 @@
+using Gameplay.Field;
 using Gameplay.Robots.Commands;
 using Gameplay.Tiles;
 using Gameplay.Tiles.Components;
@@ -28,7 +29,7 @@ namespace Gameplay.Robots.Strategies
             if (robot.Direction == directionTile.GetDirection())
                 return false;
 
-            IOccupier otherOccupier = GameStepController.Instance.GetOccupierAt(robot.Position);
+            IOccupier otherOccupier = FieldController.Instance.GetOccupierAt(robot.Position);
 
             if (otherOccupier != null)
                 commandComponent.AddInvalidOccupier(otherOccupier);

@@ -1,4 +1,5 @@
 
+using Gameplay.Field;
 using UnityEngine;
 
 namespace Gameplay.Robots.Commands
@@ -21,7 +22,7 @@ namespace Gameplay.Robots.Commands
 
             robot.Move(robot.Direction + Vector3Int.up * verticalOffset);
 
-            GameStepController.Instance.AddOccupier(robot.Position, robot);
+            FieldController.Instance.AddOccupier(robot.Position, robot);
 
             robot.RobotVisual.AnimateMove();
         }
@@ -30,12 +31,6 @@ namespace Gameplay.Robots.Commands
         {
             GameVisualizationController.Instance.OnVisualizationComplete -= OnVisualizationComplete;
             robot.RobotVisual.AnimateIdle();
-        }
-
-        public override void Undo()
-        {
-            // TODO undo is broken because of slopes and new visualization
-            robot.Move(robot.Direction * -1 -(Vector3Int.up * verticalOffset));
         }
     }
 }

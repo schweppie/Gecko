@@ -1,4 +1,6 @@
-﻿namespace Gameplay.Robots.Commands
+﻿using Gameplay.Field;
+
+namespace Gameplay.Robots.Commands
 {
     public class SpawnCommand : RobotCommand
     {
@@ -7,12 +9,7 @@
         public override void Execute()
         {
             robotVisual = RobotsController.Instance.CreateRobotVisual(robot);
-            GameStepController.Instance.AddOccupier(robot.Position, robot);
-        }
-
-        public override void Undo()
-        {
-            robot.Dispose();
+            FieldController.Instance.AddOccupier(robot.Position, robot);
         }
     }
 }

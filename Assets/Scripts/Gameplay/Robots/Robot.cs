@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gameplay.Field;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
 using UnityEngine;
@@ -45,20 +46,14 @@ namespace Gameplay.Robots
             foreach (RobotComponent component in components.Values)
                 component.Initialize(this);
             
-            GameStepController.Instance.OnDynamicForwardStep += OnDynamicForwardStep;
-            GameStepController.Instance.OnDynamicBackwardStep += OnDynamicBackwardStep;
+            GameStepController.Instance.OnDynamicStep += OnDynamicStep;
         }
 
-        private void OnDynamicForwardStep(int step)
+        private void OnDynamicStep(int step)
         {
             commandComponent.ExecuteNextCommand();
         }
 
-        private void OnDynamicBackwardStep(int step)
-        {
-            commandComponent.ExecutePrevCommand();
-        }
-        
         public void SetDirection(Vector3Int direction)
         {
             this.direction = direction;
@@ -75,8 +70,7 @@ namespace Gameplay.Robots
         {
             OnDispose?.Invoke();
             
-            GameStepController.Instance.OnDynamicForwardStep -= OnDynamicForwardStep;
-            GameStepController.Instance.OnDynamicBackwardStep -= OnDynamicBackwardStep;
+            GameStepController.Instance.OnDynamicStep -= OnDynamicStep;
         }
 
         public void SetVisual(RobotVisual robotVisual)

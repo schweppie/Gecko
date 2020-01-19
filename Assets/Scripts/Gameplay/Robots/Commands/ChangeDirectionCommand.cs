@@ -1,3 +1,4 @@
+using Gameplay.Field;
 using UnityEngine;
 
 namespace Gameplay.Robots.Commands
@@ -16,12 +17,7 @@ namespace Gameplay.Robots.Commands
         {
             oldDirection = robot.Direction;
             robot.SetDirection(direction);
-            GameStepController.Instance.AddOccupier(robot.Position, robot);
-        }
-
-        public override void Undo()
-        {
-            robot.SetDirection(oldDirection);
+            FieldController.Instance.AddOccupier(robot.Position, robot);
         }
     }
 }

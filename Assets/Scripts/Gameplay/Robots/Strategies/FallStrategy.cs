@@ -1,3 +1,4 @@
+using Gameplay.Field;
 using Gameplay.Robots.Commands;
 using Gameplay.Tiles.Components;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace Gameplay.Robots.Strategies
             if (robot.Tile.GetComponent<EmptyTileComponent>() == null)
                 return false;
 
-            IOccupier currentOccupier = GameStepController.Instance.GetOccupierAt(robot.Position + Vector3Int.down);
+            IOccupier currentOccupier = FieldController.Instance.GetOccupierAt(robot.Position + Vector3Int.down);
 
             if (currentOccupier != null)
                 return false;
