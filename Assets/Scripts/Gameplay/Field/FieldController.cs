@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Gameplay.Stations;
 using System.Linq;
 using Gameplay.Tiles;
 using Gameplay.Tiles.Components;
@@ -10,7 +11,10 @@ public class FieldController : SingletonBehaviour<FieldController>
 {
     [SerializeField]
     private Transform tiles = null;
-    
+
+    [SerializeField]
+    private Transform stations = null;
+
     [SerializeField]
     private TileVisual emptyTileVisualPrefab = null;
 
@@ -35,6 +39,12 @@ public class FieldController : SingletonBehaviour<FieldController>
     }
 
     private void Initialize()
+    {
+        InitializeTiles();
+        InitializeStations();
+    }
+
+    private void InitializeTiles()
     {
         positionsToTiles = new Dictionary<Vector3Int, Tile>();
         foreach (Transform tileTransform in tiles.transform)
@@ -62,6 +72,21 @@ public class FieldController : SingletonBehaviour<FieldController>
         OnUpdateVisualsEvent?.Invoke();
     }
 
+    private void InitializeStations()
+    {
+        foreach (Transform stationTransform in stations.transform)
+        {
+            StationVisual stationVisual = stationTransform.GetComponent<StationVisual>();
+            if (stationVisual == null)
+            {
+                Debug.LogError("Did not find component '" + nameof(StationVisual) + "' on station", stationTransform);
+                continue;
+            }
+
+            Station station = Station.ConstructStationFromVisual(stationVisual);
+        }
+    }
+
     public void ClearTileOccupations()
     {
         foreach(var pair in positionsToTiles)
@@ -82,6 +107,17 @@ public class FieldController : SingletonBehaviour<FieldController>
         positionsToTiles[tile.IntPosition] = tile;
         return tile;
     }
+
+    /// <summary>
+    /// used to place a new tile on an existing positions
+    /// returns the old overriden tile
+    /// </summary>
+    public Tile OverrideTileAtPosition(Vector3Int position, Tile newTile)
+    {
+        positionsToTiles.TryGetValue(position, out Tile oldTile);
+        positionsToTiles[position] = newTile;
+        return oldTile;
+	}
 
     public Tile GetTileAtOrBelowIntPosition(Vector3Int intPosition)
     {

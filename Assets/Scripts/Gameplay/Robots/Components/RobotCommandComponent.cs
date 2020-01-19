@@ -51,6 +51,7 @@ namespace Gameplay.Robots.Components
             commandStrategyContainer.AddStrategy(new CollectStrategy(robot));
             commandStrategyContainer.AddStrategy(new FallStrategy(robot));
             commandStrategyContainer.AddStrategy(new ChangeDirectionStrategy(robot));
+            commandStrategyContainer.AddStrategy(new LoadStrategy(robot));
             commandStrategyContainer.AddStrategy(new MoveStrategy(robot));
             commandStrategyContainer.AddStrategy(new WaitStrategy(robot));
         }
