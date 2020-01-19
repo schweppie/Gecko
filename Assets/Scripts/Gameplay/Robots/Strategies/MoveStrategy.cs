@@ -51,6 +51,10 @@ namespace Gameplay.Robots.Strategies
             if (occupationBuffer.ContainsKey(targetPosition))
                 return false;
 
+            // Cannot enter a tile with BlockEntryTileComponent
+            if (targetTile.GetComponent<BlockEntryTileComponent>())
+                return false;
+
             // Can only enter blocking direction tiles in same direction
             BlockingDirectionTileComponent blockingDirectionTile = targetTile.GetComponent<BlockingDirectionTileComponent>();
             if (blockingDirectionTile != null && !blockingDirectionTile.IsDirectionPerpendicular(robot.Direction))
