@@ -1,4 +1,3 @@
-
 using Gameplay.Field;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ namespace Gameplay.Robots.Commands
 
         public MoveCommand(int verticalOffset)
         {
-            this.verticalOffset = verticalOffset;   
+            this.verticalOffset = verticalOffset;
         }
 
         public override void Execute()

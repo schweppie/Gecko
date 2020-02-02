@@ -2,10 +2,11 @@
 
 namespace Gameplay.Products
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Product")]
-    public class Product : ScriptableObject
+    public abstract class Product : ICarryable
     {
-        [SerializeField]
-        private Color color;
+        public abstract bool IsMixedProduct { get; }
+        public abstract bool ContainsProduct(ProductData productData);
+
+        public ProductVisual visual;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gameplay.Field;
+using Gameplay.Products;
 using Gameplay.Robots.Components;
 using Gameplay.Tiles;
 using UnityEngine;
@@ -11,9 +12,9 @@ namespace Gameplay.Robots
     {
         private Tile tile;
         public Tile Tile => tile;
-        
+
         private Vector3Int position;
-        
+
         private Vector3Int direction;
         public Vector3Int Direction => direction;
 
@@ -30,7 +31,8 @@ namespace Gameplay.Robots
 
         public bool isDebugBot = false;
 
-        public bool CarriesResource; // Temp, need system for resource carrying
+        private ICarryable carryable = null;
+        public bool IsCarrying => carryable != null;
 
         public Robot(Tile startTile, Vector3Int direction)
         {
@@ -38,14 +40,14 @@ namespace Gameplay.Robots
             position = startTile.IntPosition;
             this.direction = direction;
         }
-        
+
         public void Initialize()
         {
             components.Add(commandComponent.GetType(), commandComponent);
 
             foreach (RobotComponent component in components.Values)
                 component.Initialize(this);
-            
+
             GameStepController.Instance.OnDynamicStep += OnDynamicStep;
         }
 
@@ -65,11 +67,11 @@ namespace Gameplay.Robots
             Tile nextTile = FieldController.Instance.GetTileAtIntPosition(position);
             tile = nextTile;
         }
-        
+
         public void Dispose()
         {
             OnDispose?.Invoke();
-            
+
             GameStepController.Instance.OnDynamicStep -= OnDynamicStep;
         }
 
@@ -77,7 +79,7 @@ namespace Gameplay.Robots
         {
             this.robotVisual = robotVisual;
         }
-        
+
         public T GetComponent<T>() where T : RobotComponent
         {
             RobotComponent component;
@@ -89,6 +91,14 @@ namespace Gameplay.Robots
         {
             commandComponent.UndoLastCommand();
             commandComponent.ExecuteNextCommand();
+        }
+
+        public void CarryProduct(ProductVisual productVisual)
+        {
+            if (IsCarrying)
+                throw new Exception("Was already carrying");
+            carryable = productVisual.Product;
+            productVisual.SetCarrier(robotVisual.transform);
         }
     }
 }
