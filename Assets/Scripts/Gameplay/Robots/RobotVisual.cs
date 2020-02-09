@@ -27,7 +27,7 @@ namespace Gameplay.Robots
         private float oldHeightPosition;
         private float yVelocity = 0f;
         private const float GRAVITY = 20f;
-        
+
         public void Initialize(Robot robot)
         {
             this.robot = robot;
@@ -51,8 +51,8 @@ namespace Gameplay.Robots
 
         private void SubscribeEvents()
         {
-            GameVisualizationController.Instance.OnGameVisualization += OnGameVisualization;
             GameVisualizationController.Instance.OnVisualizationStart += OnGameVisualizationStart;
+            GameVisualizationController.Instance.OnGameVisualization += OnGameVisualization;
             robot.OnDispose += OnDispose;
         }
 
