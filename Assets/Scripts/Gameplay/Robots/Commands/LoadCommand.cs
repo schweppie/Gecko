@@ -6,18 +6,19 @@ namespace Gameplay.Robots.Commands
 {
     public class LoadCommand : RobotCommand
     {
-        private GarbageDispenserComponent garbageDispenserComponent; // TODO should be generic
+        private IProductProducer productProducer;
 
-        public LoadCommand(GarbageDispenserComponent garbageDispenserComponent)
+        public LoadCommand(IProductProducer productProducer)
         {
-            this.garbageDispenserComponent = garbageDispenserComponent;
+            this.productProducer = productProducer;
         }
 
         public override void Execute()
         {
             FieldController.Instance.AddOccupier(robot.Position, robot);
-            ProductVisual productVisual = garbageDispenserComponent.CreateProductVisual();
-            robot.CarryProduct(productVisual);
+            Product product = productProducer.ProduceProduct();
+            product.Visual.AnimateFallOnToCarrier(robot.RobotVisual.transform);
+            robot.CarryProduct(product);
         }
     }
 }

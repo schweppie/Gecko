@@ -1,9 +1,11 @@
-﻿using Gameplay.Stations.Components;
+﻿using Gameplay.Products;
+using Gameplay.Stations.Components;
 
 namespace Gameplay.Tiles.Components
 {
     public class LoadTileComponent : TileComponent
     {
-        public GarbageDispenserComponent GarbageDispenserComponent; // TODO this should be generic
+        // In the future a load tile may have multiple product producers, for now just one
+        public IProductProducer ProductProducer;
     }
 }

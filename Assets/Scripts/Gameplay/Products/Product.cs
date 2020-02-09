@@ -7,6 +7,13 @@ namespace Gameplay.Products
         public abstract bool IsMixedProduct { get; }
         public abstract bool ContainsProduct(ProductData productData);
 
-        public ProductVisual visual;
+        private ProductVisual visual;
+        public ProductVisual Visual => visual;
+
+        public void SetVisual(ProductVisual visual)
+        {
+            this.visual = visual;
+            visual.SetProduct(this);
+        }
     }
 }

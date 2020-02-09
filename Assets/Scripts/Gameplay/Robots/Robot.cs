@@ -93,12 +93,11 @@ namespace Gameplay.Robots
             commandComponent.ExecuteNextCommand();
         }
 
-        public void CarryProduct(ProductVisual productVisual)
+        public void CarryProduct(Product product)
         {
             if (IsCarrying)
                 throw new Exception("Was already carrying");
-            carryable = productVisual.Product;
-            productVisual.SetCarrier(robotVisual.transform);
+            carryable = product;
         }
     }
 }

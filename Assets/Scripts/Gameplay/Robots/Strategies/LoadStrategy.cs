@@ -29,7 +29,7 @@ namespace Gameplay.Robots.Strategies
         {
             Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position);
             var loadTileComponent = tile.GetComponent<LoadTileComponent>();
-            return new LoadCommand(loadTileComponent.GarbageDispenserComponent);
+            return new LoadCommand(loadTileComponent.ProductProducer);
         }
     }
 }

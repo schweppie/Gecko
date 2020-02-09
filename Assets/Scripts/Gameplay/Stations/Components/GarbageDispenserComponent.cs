@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Gameplay.Stations.Components
 {
-    public class GarbageDispenserComponent : StationComponent
+    public class GarbageDispenserComponent : StationComponent, IProductProducer
     {
         [SerializeField]
         private List<ProductData> products;
@@ -21,19 +21,20 @@ namespace Gameplay.Stations.Components
 
         private void Start()
         {
-            loadTileComponent.GarbageDispenserComponent = this;
+            loadTileComponent.ProductProducer = this;
         }
 
-        public ProductVisual CreateProductVisual()
+        Product IProductProducer.ProduceProduct()
         {
+            var mixedProduct = new MixedProduct(products);
             GameObject newProductVisualGO = Instantiate(mixedProductVisual.gameObject);
             var newProductVisual = newProductVisualGO.GetComponent<ProductVisual>();
-            newProductVisual.Initialize(new MixedProduct(products));
+            mixedProduct.SetVisual(newProductVisual);
             var newMixedProductVisual = newProductVisualGO.GetComponent<MixedProductVisual>();
             newMixedProductVisual.SetupMixedProduct();
             newProductVisualGO.transform.position = productSpawnPoint.position;
             newProductVisualGO.transform.rotation = productSpawnPoint.rotation;
-            return newProductVisual;
+            return mixedProduct;
         }
     }
 }
