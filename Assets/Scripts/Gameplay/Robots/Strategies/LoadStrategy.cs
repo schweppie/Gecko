@@ -18,7 +18,7 @@ namespace Gameplay.Robots.Strategies
 
         public override bool IsApplicable()
         {
-            if (robot.CarriesResource)
+            if (robot.IsCarrying)
                 return false;
             Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position);
             var loadTileComponent = tile.GetComponent<LoadTileComponent>();
@@ -27,7 +27,9 @@ namespace Gameplay.Robots.Strategies
 
         public override RobotCommand GetCommand()
         {
-            return new LoadCommand(); ;
+            Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position);
+            var loadTileComponent = tile.GetComponent<LoadTileComponent>();
+            return new LoadCommand(loadTileComponent.ProductProducer);
         }
     }
 }

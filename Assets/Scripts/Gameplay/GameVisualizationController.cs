@@ -9,14 +9,13 @@ namespace Gameplay
         public delegate void VisualizeDelegate(int step, float t);
         public event VisualizeDelegate OnGameVisualization;
 
-        public delegate void voidDelegate();
-        public event voidDelegate OnVisualizationStart;
-        public event voidDelegate OnVisualizationComplete;
+        public delegate void VoidDelegate();
+        public event VoidDelegate OnVisualizationStart;
+        public event VoidDelegate OnVisualizationComplete;
 
         public void DoVisualization()
         {
-            if (OnVisualizationStart != null)
-                OnVisualizationStart();
+            OnVisualizationStart?.Invoke();
 
             StartCoroutine(VisualizationEnumerator());
         }
@@ -29,14 +28,12 @@ namespace Gameplay
             {
                 t += Time.deltaTime * 2f;
 
-                if (OnGameVisualization != null)
-                    OnGameVisualization(GameStepController.Instance.Step, t);
-                
+                OnGameVisualization?.Invoke(GameStepController.Instance.Step, t);
+
                 yield return null;
             }
-            
-            if (OnVisualizationComplete != null)
-                OnVisualizationComplete();
+
+            OnVisualizationComplete?.Invoke();
         }
     }
 }
