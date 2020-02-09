@@ -12,10 +12,11 @@ namespace Gameplay.Products
             Product = product;
         }
 
-        public void AnimateFallOnToCarrier(Transform carrierTransform)
+        public void AnimateFallOnToCarrier(Transform unanimatedCarrierTransform, Transform carrierTransform)
         {
-            transform.SetParent(carrierTransform, true);
-            transform.DOLocalMove(transform.localPosition - new Vector3(0, 1.2f, 0), .5f);
+            transform.SetParent(unanimatedCarrierTransform, true);
+            transform.DOLocalMove(Vector3.zero, .5f)
+                .OnComplete(() => transform.SetParent(carrierTransform, true));
         }
     }
 }

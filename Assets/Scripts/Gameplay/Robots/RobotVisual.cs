@@ -16,6 +16,16 @@ namespace Gameplay.Robots
         private Transform rotationRoot;
 
         [SerializeField]
+        private Transform carryTransform;
+        public Transform CarryTransform => carryTransform;
+
+        [SerializeField]
+        private Transform unanimatedCarryTransform; // this transform does not have the animations from the animationRoot
+                                                    // and rotationRoot transform in order to let a product visual fall
+                                                    // onto the robot without it being affected by the stop animation
+                                                    // of the robot
+        public Transform UnanimatedCarryTransform => unanimatedCarryTransform;
+
         private bool isDebug = false;
 
         private Robot robot;

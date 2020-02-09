@@ -17,7 +17,7 @@ namespace Gameplay.Robots.Commands
         {
             FieldController.Instance.AddOccupier(robot.Position, robot);
             Product product = productProducer.ProduceProduct();
-            product.Visual.AnimateFallOnToCarrier(robot.RobotVisual.transform);
+            product.Visual.AnimateFallOnToCarrier(robot.RobotVisual.UnanimatedCarryTransform, robot.RobotVisual.CarryTransform);
             robot.CarryProduct(product);
         }
     }
