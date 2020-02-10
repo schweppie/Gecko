@@ -7,8 +7,12 @@ namespace Gameplay
     {
         public delegate void StepDelegate(int step);
 
+        public event StepDelegate OnStaticStepStart;
         public event StepDelegate OnStaticStep;
+        public event StepDelegate OnStaticStepComplete;
+        public event StepDelegate OnDynamicStepStart;
         public event StepDelegate OnDynamicStep;
+        public event StepDelegate OnDynamicStepComplete;
 
         private int step;
         public int Step => step;
@@ -19,13 +23,14 @@ namespace Gameplay
 
             step++;
 
-            if (OnStaticStep != null)
-                OnStaticStep(step);
+            OnStaticStepStart?.Invoke(step);
+            OnStaticStep?.Invoke(step);
+            OnStaticStepComplete?.Invoke(step);
             
-            if (OnDynamicStep != null)
-                OnDynamicStep(step);
-
+            OnDynamicStepStart?.Invoke(step);
+            OnDynamicStep?.Invoke(step);
             FieldController.Instance.WriteOccupiersToTiles();
+            OnDynamicStepComplete?.Invoke(step);
         }
     }
 }

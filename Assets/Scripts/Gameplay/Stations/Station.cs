@@ -14,18 +14,18 @@ namespace Gameplay.Stations
 
         private List<Tile> stationTiles;
         private List<Tile> oldOverriddenTiles;
-        
+
         private Dictionary<Type, StationComponent> stationComponents;
 
         public Station(StationVisual visual)
         {
             this.visual = visual;
             visual.Initialize(this);
-            
+
             stationComponents = new Dictionary<Type, StationComponent>();
             foreach (StationComponent stationComponent in visual.StationComponents)
                 stationComponents[stationComponent.GetType()] = stationComponent;
-            
+
             CreateStationTiles();
             GameStepController.Instance.OnStaticStep += OnStaticStep;
         }
@@ -48,7 +48,7 @@ namespace Gameplay.Stations
         private void OnStaticStep(int step)
         {
             foreach (var stationComponent in stationComponents.Values)
-                stationComponent.DoNextStep();            
+                stationComponent.DoNextStep();
         }
 
         public void TestRemove()
@@ -66,7 +66,7 @@ namespace Gameplay.Stations
 
         /// <summary>
         /// Normally the data (this station) is created first before the visual, but as we want to build levels in the
-        /// Unity editor in scenes, the visuals already exists while the data does not yet 
+        /// Unity editor in scenes, the visuals already exists while the data does not yet
         /// </summary>
         public static Station ConstructStationFromVisual(StationVisual visual)
         {

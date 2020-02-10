@@ -6,7 +6,7 @@ namespace Gameplay.Stations.Components
     {
         protected Station station;
         
-        public void SetStation(Station station)
+        public virtual void Initialize(Station station)
         {
             this.station = station;
         }
