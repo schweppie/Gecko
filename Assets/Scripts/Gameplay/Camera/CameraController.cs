@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using JP.Framework.Flow;
 
 namespace Gameplay.Cameras
@@ -12,67 +11,123 @@ namespace Gameplay.Cameras
         [SerializeField]
         private Camera camera;
 
-        private Vector3 mousePanStart;
-        private Vector3 mouseRotateStart;
+        [SerializeField]
+        private float normalMovementSpeed = 0.08f;
+
+        [SerializeField]
+        private float fastMovementSpeed = 0.15f;
+
+        [SerializeField]
+        private float movementTime = 10f;
+
+        [SerializeField]
+        private float rotationSpeed = 0.3f;
+
+        [SerializeField]
+        private float zoomSpeed = 0.3f;
+
+        private float movementSpeed;
 
         private Vector3 targetPosition;
         private Quaternion targetRotation;
+        private Vector3 zoomDirection;
+        private float zoom = 20f;
+
+        private Vector3 mouseDragStart;
+        private Vector3 mouseDragCurrent;
+        private Vector3 mouseRotateStart;
+        private Vector3 mouseRotateCurrent;
+
+        private Plane mousePlane;
+
+        private void Awake()
+        {
+            targetPosition = cameraTarget.position;
+            targetRotation = cameraTarget.rotation;
+
+            zoomDirection = camera.transform.position - cameraTarget.position;
+            zoomDirection.x = 0f;
+            zoomDirection.Normalize();
+
+            mousePlane = new Plane(Vector3.up, Vector3.zero);
+        }
 
         private void Update()
         {
-            Vector3 panMovement = GetPanMovement();
-            Vector2 angleMovement = GetAngleMovement();
+            HandleMouseInput();
+            HandleKeyboardInput();
 
-            targetPosition += cameraTarget.right * panMovement.x + cameraTarget.forward * panMovement.z;
-            targetRotation = cameraTarget.rotation * Quaternion.Euler(Vector3.up * angleMovement.x / 5f);
-
-            cameraTarget.position = targetPosition;
-            cameraTarget.rotation = targetRotation;
+            camera.transform.LookAt(cameraTarget);
         }
 
-        private Vector3 GetPanMovement()
+        private void HandleMouseInput()
         {
-            Vector3 panMovement = Vector3.zero;
+            zoom -= Input.mouseScrollDelta.y;
 
-            if (Input.GetKey(KeyCode.A))
-                panMovement.x -= 1f;
-            if (Input.GetKey(KeyCode.D))
-                panMovement.x += 1f;
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
 
-            if (Input.GetKey(KeyCode.W))
-                panMovement.z += 1f;
-            if (Input.GetKey(KeyCode.S))
-                panMovement.z -= 1f;
+                float distance;
+                if (mousePlane.Raycast(mouseRay, out distance))
+                    mouseDragStart = mouseRay.GetPoint(distance);
+            }
 
-            return panMovement;
-        }
+            if (Input.GetMouseButton(0))
+            {
+                Ray mouseRay = camera.ScreenPointToRay(Input.mousePosition);
 
-        private Vector2 GetAngleMovement()
-        {
-            Vector2 angleMovement = Vector2.zero;
+                float distance;
+                if (mousePlane.Raycast(mouseRay, out distance))
+                    mouseDragCurrent = mouseRay.GetPoint(distance);
 
-            if (Input.GetKey(KeyCode.LeftArrow))
-                angleMovement.x -= 1f;
-            if (Input.GetKey(KeyCode.RightArrow))
-                angleMovement.x += 1f;
-
-            if (Input.GetKey(KeyCode.UpArrow))
-                angleMovement.y += 1f;
-            if (Input.GetKey(KeyCode.DownArrow))
-                angleMovement.y -= 1f;
+                targetPosition = cameraTarget.position + mouseDragStart - mouseDragCurrent;
+            }
 
             if (Input.GetMouseButtonDown(2))
-            {
                 mouseRotateStart = Input.mousePosition;
-            }
+            
             if (Input.GetMouseButton(2))
             {
-                Vector3 mouseRotateDelta = Input.mousePosition - mouseRotateStart;
-                angleMovement.x = mouseRotateDelta.x;
-            }
+                mouseRotateCurrent = Input.mousePosition;
 
-            return angleMovement;
+                Vector3 delta = mouseRotateStart - mouseRotateCurrent;
+                mouseRotateStart = mouseRotateCurrent;
+
+                targetRotation *= Quaternion.Euler(Vector3.up * (-delta.x / 5f));
+            }
+        }
+
+        private void HandleKeyboardInput()
+        {
+            movementSpeed = Input.GetKey(KeyCode.LeftShift) ? fastMovementSpeed : normalMovementSpeed;
+
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                targetPosition += cameraTarget.forward * movementSpeed;
+
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                targetPosition += cameraTarget.forward * -movementSpeed;
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                targetPosition += cameraTarget.right * movementSpeed;
+
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                targetPosition += cameraTarget.right * -movementSpeed;
+
+            if (Input.GetKey(KeyCode.Q))
+                targetRotation *= Quaternion.Euler(Vector3.up * rotationSpeed);
+            if (Input.GetKey(KeyCode.E))
+                targetRotation *= Quaternion.Euler(Vector3.up * -rotationSpeed);
+
+            if (Input.GetKey(KeyCode.R))
+                zoom -= zoomSpeed;
+            if (Input.GetKey(KeyCode.F))
+                zoom += zoomSpeed;
+            zoom = Mathf.Clamp(zoom, 1f, 200f);
+
+            cameraTarget.position = Vector3.Lerp(cameraTarget.position, targetPosition, Time.deltaTime * movementTime);
+            cameraTarget.rotation = Quaternion.Lerp(cameraTarget.rotation, targetRotation, Time.deltaTime * movementTime);
+            camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, zoomDirection * zoom, Time.deltaTime * movementTime);
         }
     }
 }
-
