@@ -10,7 +10,7 @@ namespace UI
         private Dictionary<Type, Window> windows;
         public Dictionary<Type, Window> Windows => windows;
 
-        private Dictionary<int, Window> activeWindows = new Dictionary<int, Window>();
+        private Dictionary<int, Window> layerToActiveWindow = new Dictionary<int, Window>();
 
         private void Awake()
         {
@@ -41,10 +41,10 @@ namespace UI
         {
             int windowLayer = window.GetLayer();
 
-            if (activeWindows.ContainsKey(windowLayer))
-                activeWindows[windowLayer].Hide();
+            if (layerToActiveWindow.ContainsKey(windowLayer))
+                layerToActiveWindow[windowLayer].Hide();
 
-            activeWindows[windowLayer] = window;
+            layerToActiveWindow[windowLayer] = window;
 
             window.Show();
         }
@@ -61,10 +61,10 @@ namespace UI
         {
             int windowLayer = window.GetLayer();
 
-            if (activeWindows.ContainsKey(windowLayer))
-                activeWindows[windowLayer].Hide();
+            if (layerToActiveWindow.ContainsKey(windowLayer))
+                layerToActiveWindow[windowLayer].Hide();
 
-            activeWindows.Remove(windowLayer);
+            layerToActiveWindow.Remove(windowLayer);
 
             window.Hide();
         }
