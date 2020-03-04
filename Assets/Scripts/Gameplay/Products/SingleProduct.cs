@@ -3,6 +3,7 @@
     public class SingleProduct : Product
     {
         private ProductData productData;
+        public ProductData ProductData => productData;
 
         public override bool IsMixedProduct => false;
 

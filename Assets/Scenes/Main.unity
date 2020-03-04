@@ -4193,6 +4193,7 @@ Transform:
   - {fileID: 1321874233}
   - {fileID: 814072665}
   - {fileID: 441025275}
+  - {fileID: 2035432731}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19729,7 +19730,7 @@ GameObject:
   - component: {fileID: 1321874233}
   - component: {fileID: 1321874234}
   m_Layer: 0
-  m_Name: RobotFactory
+  m_Name: RobotsController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30832,6 +30833,49 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2026388455}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035432730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2035432731}
+  - component: {fileID: 2035432732}
+  m_Layer: 0
+  m_Name: ProductsController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2035432731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2035432730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 225739838}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2035432732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2035432730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00acdcf6d0e7cbf4590c0dd7ca38e544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2036716276 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 389776813683586278, guid: 48ea979143d3d774591a723e9afb5756,

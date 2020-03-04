@@ -8,5 +8,13 @@ namespace Gameplay.Products
         [SerializeField]
         private Color color;
         public Color Color => color;
+
+        [SerializeField]
+        private int weight;
+        public int Weight => weight;
+
+        [SerializeField]
+        private GameObject singleProductVisualPrefab;
+        public GameObject SingleProductVisualPrefab => singleProductVisualPrefab;
     }
 }

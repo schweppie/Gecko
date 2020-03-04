@@ -27,14 +27,23 @@ namespace Gameplay.Stations.Components
         Product IProductProducer.ProduceProduct()
         {
             var mixedProduct = new MixedProduct(products);
+
             GameObject newProductVisualGO = Instantiate(mixedProductVisual.gameObject);
+
             var newProductVisual = newProductVisualGO.GetComponent<ProductVisual>();
             mixedProduct.SetVisual(newProductVisual);
+
             var newMixedProductVisual = newProductVisualGO.GetComponent<MixedProductVisual>();
             newMixedProductVisual.SetupMixedProduct();
+
             newProductVisualGO.transform.position = productSpawnPoint.position;
             newProductVisualGO.transform.rotation = productSpawnPoint.rotation;
             return mixedProduct;
+        }
+
+        public bool CanProduceProduct()
+        {
+            return true;
         }
     }
 }
