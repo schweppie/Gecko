@@ -111,12 +111,14 @@ namespace Gameplay.Tiles
 
         public void Disable()
         {
+            visual.Hide();
             GameStepController.Instance.OnStaticStep -= OnStaticStep;
         }
         
         public void Enable()
         {
             GameStepController.Instance.OnStaticStep += OnStaticStep;
+            visual.Show();
         }
     }
 }

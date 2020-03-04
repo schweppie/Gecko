@@ -42,5 +42,10 @@ namespace Gameplay.Stations.Components
         {
             return products.Count > 0;
         }
+
+        public Transform GetReceiverTransform()
+        {
+            return station.Visual.transform;
+        }
     }
 }

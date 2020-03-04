@@ -11,6 +11,7 @@ namespace Gameplay.Stations
     public class Station
     {
         private StationVisual visual;
+        public StationVisual Visual => visual;
 
         private List<Tile> stationTiles;
         private List<Tile> oldOverriddenTiles;
@@ -32,6 +33,8 @@ namespace Gameplay.Stations
 
         private void CreateStationTiles()
         {
+            Debug.Log("Creating station tiles : " + Visual.gameObject.name);
+
             stationTiles = new List<Tile>();
             oldOverriddenTiles = new List<Tile>();
             foreach (TileVisual localTileVisual in visual.LocalTileVisuals)
@@ -40,6 +43,10 @@ namespace Gameplay.Stations
                 stationTiles.Add(newTile);
                 Vector3Int globalTilePosition = localTileVisual.IntPosition;
                 Tile oldTile = FieldController.Instance.OverrideTileAtPosition(globalTilePosition, newTile);
+
+                if (oldTile == null)
+                    continue;
+
                 oldTile.Disable();
                 oldOverriddenTiles.Add(oldTile);
             }

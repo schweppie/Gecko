@@ -33,6 +33,7 @@ namespace Gameplay.Robots
 
         private ICarryable carryable = null;
         public bool IsCarrying => carryable != null;
+        public ICarryable Carryable => carryable;
 
         public Robot(Tile startTile, Vector3Int direction)
         {
@@ -93,11 +94,18 @@ namespace Gameplay.Robots
             commandComponent.ExecuteNextCommand();
         }
 
-        public void CarryProduct(Product product)
+        public void LoadProduct(Product product)
         {
             if (IsCarrying)
                 throw new Exception("Was already carrying");
             carryable = product;
+        }
+
+        public void UnloadProduct()
+        {
+            if (!IsCarrying)
+                throw new Exception("Wasn't carrying anything");
+            carryable = null;
         }
     }
 }

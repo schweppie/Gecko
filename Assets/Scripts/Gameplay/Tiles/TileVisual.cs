@@ -25,12 +25,27 @@ namespace Gameplay.Tiles
         
         private Tile tile;
 
+        private MeshRenderer[] renderers;
+
         private GameObject tileBottomVisualInstance;
 
         private void Awake()
         {
             tileComponents = GetComponents<TileComponent>();
+            renderers = GetComponentsInChildren<MeshRenderer>();
             FieldController.Instance.OnUpdateVisualsEvent += OnUpdateVisuals;
+        }
+
+        public void Hide()
+        {
+            for (int i = 0; i < renderers.Length; i++)
+                renderers[i].enabled = false;
+        }
+
+        public void Show()
+        {
+            for (int i = 0; i < renderers.Length; i++)
+                renderers[i].enabled = true;
         }
 
         private void OnUpdateVisuals()

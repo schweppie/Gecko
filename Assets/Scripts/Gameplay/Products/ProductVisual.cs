@@ -18,5 +18,11 @@ namespace Gameplay.Products
             transform.DOLocalMove(Vector3.zero, .5f)
                 .OnComplete(() => transform.SetParent(carrierTransform, true));
         }
+
+        public void AnimateToStation(Transform stationTransform)
+        {
+            transform.SetParent(stationTransform, true);
+            transform.DOLocalMove(Vector3.zero, .5f);
+        }
     }
 }
