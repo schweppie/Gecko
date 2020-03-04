@@ -19,9 +19,9 @@ namespace Gameplay.Products
                 .OnComplete(() => transform.SetParent(carrierTransform, true));
         }
 
-        public void AnimateToStation(Transform stationTransform)
+        public void AnimateToReceiver(Transform receiverTransform)
         {
-            transform.SetParent(stationTransform, true);
+            transform.SetParent(receiverTransform, true);
             transform.DOLocalMove(Vector3.zero, .5f);
         }
     }

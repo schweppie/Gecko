@@ -26,16 +26,15 @@ namespace Gameplay.Stations.Components
 
         Product IProductProducer.ProduceProduct()
         {
-            var mixedProduct = new MixedProduct(products);
+            // TODO: ProductsController should be responsible for instantiating
+            // product objects and product visual objects, should not be in station
+            MixedProduct mixedProduct = ProductsController.Instance.CreateProduct(products) as MixedProduct;
 
             GameObject newProductVisualGO = Instantiate(mixedProductVisual.gameObject);
-
             var newProductVisual = newProductVisualGO.GetComponent<ProductVisual>();
             mixedProduct.SetVisual(newProductVisual);
-
             var newMixedProductVisual = newProductVisualGO.GetComponent<MixedProductVisual>();
             newMixedProductVisual.SetupMixedProduct();
-
             newProductVisualGO.transform.position = productSpawnPoint.position;
             newProductVisualGO.transform.rotation = productSpawnPoint.rotation;
             return mixedProduct;

@@ -33,8 +33,6 @@ namespace Gameplay.Stations
 
         private void CreateStationTiles()
         {
-            Debug.Log("Creating station tiles : " + Visual.gameObject.name);
-
             stationTiles = new List<Tile>();
             oldOverriddenTiles = new List<Tile>();
             foreach (TileVisual localTileVisual in visual.LocalTileVisuals)
@@ -44,6 +42,7 @@ namespace Gameplay.Stations
                 Vector3Int globalTilePosition = localTileVisual.IntPosition;
                 Tile oldTile = FieldController.Instance.OverrideTileAtPosition(globalTilePosition, newTile);
 
+                // There isn't always an existing tile already on a station's tile
                 if (oldTile == null)
                     continue;
 

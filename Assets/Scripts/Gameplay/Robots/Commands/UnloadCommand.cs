@@ -18,7 +18,7 @@ namespace Gameplay.Robots.Commands
             Product product = robot.Carryable as Product;
             productReceiver.ReceiveProduct(product);
 
-            product.Visual.AnimateToStation(productReceiver.GetReceiverTransform());
+            product.Visual.AnimateToReceiver(productReceiver.GetReceiverTransform());
 
             robot.UnloadProduct();
         }

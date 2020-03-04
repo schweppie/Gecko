@@ -1,7 +1,5 @@
 ﻿using JP.Framework.Flow;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Gameplay.Products
 {
@@ -25,4 +23,3 @@ namespace Gameplay.Products
         }
     }
 }
-
