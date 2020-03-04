@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Plastic
   m_EditorClassIdentifier: 
   color: {r: 1, g: 0.87910455, b: 0.2971698, a: 1}
+  weight: 1
+  singleProductVisualPrefab: {fileID: 3995168735211838632, guid: dfaceb0c558a5a1489e7781f4de0c95f,
+    type: 3}
