@@ -6,7 +6,7 @@ namespace Gameplay.Products
     {
         // Maybe should pass in a Product as well
         // If products have different weights/count for example
-        bool CanReceiveProduct();
+        bool CanReceiveProduct(Product product);
         void ReceiveProduct(Product product);
         Transform GetReceiverTransform();
     }
