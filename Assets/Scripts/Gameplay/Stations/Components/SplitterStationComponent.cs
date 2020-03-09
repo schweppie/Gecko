@@ -17,7 +17,7 @@ namespace Gameplay.Stations.Components
         private LoadTileComponent restProductLoadTile;
 
         [SerializeField]
-        private ProductData splitProductData;
+        private SingleProductData splitProductData;
 
         [SerializeField]
         private ProductData mixedProductData;

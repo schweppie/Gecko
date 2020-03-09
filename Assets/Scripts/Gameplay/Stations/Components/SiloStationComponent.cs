@@ -14,7 +14,10 @@ namespace Gameplay.Stations.Components
         private LoadTileComponent loadTileComponent;
 
         [SerializeField]
-        private ProductData siloProduct;
+        private SingleProductData siloProduct;
+
+        [SerializeField]
+        private Transform productReceiveTransform;
         
         private Stack<Product> products;
 
@@ -41,7 +44,7 @@ namespace Gameplay.Stations.Components
 
         public Transform GetReceiverTransform()
         {
-            return station.Visual.transform;
+            return productReceiveTransform;
         }
 
         public bool CanProduceProduct(ProductData productData)

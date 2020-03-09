@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace Gameplay.Products
 {
     public abstract class Product : ICarryable
     {
         public abstract bool IsMixedProduct { get; }
-        public abstract bool ContainsProduct(ProductData productData);
+        public abstract bool ContainsProduct(SingleProductData productData);
+        public abstract List<SingleProductData> GetProductDatas();
 
         private ProductVisual visual;
         public ProductVisual Visual => visual;
@@ -13,7 +14,6 @@ namespace Gameplay.Products
         public void SetVisual(ProductVisual visual)
         {
             this.visual = visual;
-            visual.SetProduct(this);
         }
     }
 }

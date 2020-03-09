@@ -3,6 +3,6 @@
     public interface ICarryable
     {
         bool IsMixedProduct { get; }
-        bool ContainsProduct(ProductData productData);
+        bool ContainsProduct(SingleProductData productData);
     }
 }

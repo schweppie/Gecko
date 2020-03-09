@@ -19,7 +19,7 @@ namespace Gameplay.Robots.Commands
             Product product = robot.Carryable as Product;
             unloadTileComponent.UnloadProduct(product);
 
-            //product.Visual.AnimateToReceiver(unloadTileComponent.GetReceiverTransform());
+            product.Visual.AnimateToReceiver(unloadTileComponent.GetReceiverTransform());
 
             robot.UnloadProduct();
         }
