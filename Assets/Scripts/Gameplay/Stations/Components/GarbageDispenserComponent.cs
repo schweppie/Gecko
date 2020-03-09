@@ -8,10 +8,7 @@ namespace Gameplay.Stations.Components
     public class GarbageDispenserComponent : StationComponent, IProductProducer
     {
         [SerializeField]
-        private List<ProductData> products;
-
-        [SerializeField]
-        private MixedProductVisual mixedProductVisual;
+        private MixedProductData mixedProductData;
 
         [SerializeField]
         private LoadTileComponent loadTileComponent;
@@ -21,15 +18,16 @@ namespace Gameplay.Stations.Components
 
         private void Start()
         {
-            loadTileComponent.ProductProducer = this;
+            loadTileComponent.SetProductProducer(this);
+            loadTileComponent.SetOutputProduct(mixedProductData);
         }
 
-        Product IProductProducer.ProduceProduct()
+        Product IProductProducer.ProduceProduct(ProductData productData)
         {
             // TODO: ProductsController should be responsible for instantiating
             // product objects and product visual objects, should not be in station
-            MixedProduct mixedProduct = ProductsController.Instance.CreateProduct(products) as MixedProduct;
-
+            MixedProduct mixedProduct = ProductsController.Instance.CreateProduct(productData, productSpawnPoint) as MixedProduct;
+/*
             GameObject newProductVisualGO = Instantiate(mixedProductVisual.gameObject);
             var newProductVisual = newProductVisualGO.GetComponent<ProductVisual>();
             mixedProduct.SetVisual(newProductVisual);
@@ -37,10 +35,14 @@ namespace Gameplay.Stations.Components
             newMixedProductVisual.SetupMixedProduct();
             newProductVisualGO.transform.position = productSpawnPoint.position;
             newProductVisualGO.transform.rotation = productSpawnPoint.rotation;
+            
+            */
+            
+            
             return mixedProduct;
         }
 
-        public bool CanProduceProduct()
+        public bool CanProduceProduct(ProductData productData)
         {
             return true;
         }

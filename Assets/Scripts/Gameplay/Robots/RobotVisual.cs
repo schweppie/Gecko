@@ -186,6 +186,9 @@ namespace Gameplay.Robots
                 return;
 
             Handles.Label(transform.position, robot.Tile.Visual.gameObject.name);
+            
+            if (robot.IsCarrying)
+                Handles.Label(transform.position + Vector3.up, robot.Carryable.GetType().Name);
         }
 #endif
 

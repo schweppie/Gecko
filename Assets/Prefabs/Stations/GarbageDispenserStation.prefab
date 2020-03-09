@@ -120,12 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad7cf505fa8dfa408247316eb35e656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  products:
-  - {fileID: 11400000, guid: 0813eaf81a6ca874ba2c1bb3beba22c2, type: 2}
-  - {fileID: 11400000, guid: 6e7c6513e30d8cb4199f92cc10974d1b, type: 2}
-  - {fileID: 11400000, guid: 7a56421f95a30f0418927579cf8396b3, type: 2}
-  mixedProductVisual: {fileID: -2092924766183860291, guid: 1fa98d00af4059f4180d7153bf386206,
-    type: 3}
+  mixedProductData: {fileID: 11400000, guid: 5a36b5e9aa8791944a5a9b2878ed9987, type: 2}
   loadTileComponent: {fileID: 5771795294700695064}
   productSpawnPoint: {fileID: 327759897751515399}
 --- !u!1 &5961772501985007108

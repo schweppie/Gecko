@@ -1,4 +1,5 @@
 ﻿using Gameplay.Field;
+using Gameplay.Products;
 using Gameplay.Robots.Commands;
 using Gameplay.Tiles;
 using Gameplay.Tiles.Components;
@@ -22,14 +23,14 @@ namespace Gameplay.Robots.Strategies
                 return false;
             Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position);
             var unloadTileComponent = tile.GetComponent<UnloadTileComponent>();
-            return unloadTileComponent != null && unloadTileComponent.ProductReceiver.CanReceiveProduct();
+            return unloadTileComponent != null && unloadTileComponent.CanUnloadProduct(robot.Carryable as Product);
         }
 
         public override RobotCommand GetCommand()
         {
             Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position);
             var unloadTileComponent = tile.GetComponent<UnloadTileComponent>();
-            return new UnloadCommand(unloadTileComponent.ProductReceiver);
+            return new UnloadCommand(unloadTileComponent);
         }
     }
 }

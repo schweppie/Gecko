@@ -1,24 +1,25 @@
 ﻿using Gameplay.Field;
 using Gameplay.Products;
+using Gameplay.Tiles.Components;
 
 namespace Gameplay.Robots.Commands
 {
     public class UnloadCommand : RobotCommand
     {
-        private IProductReceiver productReceiver;
+        private UnloadTileComponent unloadTileComponent;
 
-        public UnloadCommand(IProductReceiver productReceiver)
+        public UnloadCommand(UnloadTileComponent unloadTileComponent)
         {
-            this.productReceiver = productReceiver;
+            this.unloadTileComponent = unloadTileComponent;
         }
 
         public override void Execute()
         {
             FieldController.Instance.AddOccupier(robot.Position, robot);
             Product product = robot.Carryable as Product;
-            productReceiver.ReceiveProduct(product);
+            unloadTileComponent.UnloadProduct(product);
 
-            product.Visual.AnimateToReceiver(productReceiver.GetReceiverTransform());
+            //product.Visual.AnimateToReceiver(unloadTileComponent.GetReceiverTransform());
 
             robot.UnloadProduct();
         }

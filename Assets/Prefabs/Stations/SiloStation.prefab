@@ -61,6 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unloadTileComponent: {fileID: 7843216293314326565}
   loadTileComponent: {fileID: 7462727516551045574}
+  siloProduct: {fileID: 11400000, guid: 7a56421f95a30f0418927579cf8396b3, type: 2}
 --- !u!1 &5626396855245057363
 GameObject:
   m_ObjectHideFlags: 0

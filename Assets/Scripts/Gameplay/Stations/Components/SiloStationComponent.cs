@@ -13,19 +13,25 @@ namespace Gameplay.Stations.Components
         [SerializeField]
         private LoadTileComponent loadTileComponent;
 
+        [SerializeField]
+        private ProductData siloProduct;
+        
         private Stack<Product> products;
 
         private void Start()
         {
-            loadTileComponent.ProductProducer = this;
-            unloadTileComponent.ProductReceiver = this;
+            loadTileComponent.SetProductProducer(this);
+            loadTileComponent.SetOutputProduct(siloProduct);
+            
+            unloadTileComponent.SetProductReceiver(this);
+            unloadTileComponent.SetInputProduct(siloProduct);
 
             products = new Stack<Product>();
         }
 
-        public bool CanReceiveProduct()
+        public bool CanReceiveProduct(Product product)
         {
-            return true;            
+            return !product.IsMixedProduct && product.ContainsProduct(siloProduct);
         }
 
         public void ReceiveProduct(Product product)
@@ -33,19 +39,19 @@ namespace Gameplay.Stations.Components
             products.Push(product);
         }
 
-        public Product ProduceProduct()
-        {
-            return products.Pop();
-        }
-
-        public bool CanProduceProduct()
-        {
-            return products.Count > 0;
-        }
-
         public Transform GetReceiverTransform()
         {
             return station.Visual.transform;
+        }
+
+        public bool CanProduceProduct(ProductData productData)
+        {
+            return products.Count > 0 && productData.GetType() == siloProduct.GetType();
+        }
+
+        public Product ProduceProduct(ProductData productData)
+        {
+            return products.Pop();
         }
     }
 }

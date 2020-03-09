@@ -22,6 +22,7 @@ namespace Gameplay.Products
 
         public void SetupMixedProduct()
         {
+            /*
             var meshRenderers = GetComponentsInChildren<MeshRenderer>();
             MixedProduct mixedProduct = ProductVisual.Product as MixedProduct;
             if (mixedProduct == null)
@@ -32,7 +33,7 @@ namespace Gameplay.Products
             {
                 meshRenderer.material.SetColor(Color, productDatas[productIndex].Color);
                 productIndex = (productIndex + 1) % productDatas.Count;
-            }
+            }*/
         }
     }
 }
