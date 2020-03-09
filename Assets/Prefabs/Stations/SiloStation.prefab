@@ -279,6 +279,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StationLoadTile
       objectReference: {fileID: 0}
+    - target: {fileID: 5380702416627140360, guid: 35547ff818e41ed438311d746754eb4d,
+        type: 3}
+      propertyPath: needsBottom
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35547ff818e41ed438311d746754eb4d, type: 3}
 --- !u!4 &8955807139102907773 stripped
@@ -365,6 +370,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9041424699208305044, guid: 32f354d522880e34b87b5ad48e318ab7,
+        type: 3}
+      propertyPath: needsBottom
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32f354d522880e34b87b5ad48e318ab7, type: 3}

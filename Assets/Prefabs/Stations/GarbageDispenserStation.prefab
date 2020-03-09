@@ -222,6 +222,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StationLoadTile
       objectReference: {fileID: 0}
+    - target: {fileID: 5380702416627140360, guid: 35547ff818e41ed438311d746754eb4d,
+        type: 3}
+      propertyPath: needsBottom
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35547ff818e41ed438311d746754eb4d, type: 3}
 --- !u!4 &5458377292009689763 stripped

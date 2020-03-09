@@ -232,6 +232,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StationLoadTile
       objectReference: {fileID: 0}
+    - target: {fileID: 5380702416627140360, guid: 35547ff818e41ed438311d746754eb4d,
+        type: 3}
+      propertyPath: needsBottom
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35547ff818e41ed438311d746754eb4d, type: 3}
 --- !u!4 &2727414982304534924 stripped
@@ -469,6 +474,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9041424699208305044, guid: 32f354d522880e34b87b5ad48e318ab7,
+        type: 3}
+      propertyPath: needsBottom
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32f354d522880e34b87b5ad48e318ab7, type: 3}
 --- !u!4 &3719669742943116792 stripped
@@ -556,6 +566,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StationLoadTile (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5380702416627140360, guid: 35547ff818e41ed438311d746754eb4d,
+        type: 3}
+      propertyPath: needsBottom
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35547ff818e41ed438311d746754eb4d, type: 3}
 --- !u!4 &7492714707667611514 stripped
@@ -583,6 +598,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7630580844073918838}
     m_Modifications:
+    - target: {fileID: -8802833679784345588, guid: 206c8e8419693434b9a5194c71289509,
+        type: 3}
+      propertyPath: needsBottom
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2382378677226244417, guid: 206c8e8419693434b9a5194c71289509,
         type: 3}
       propertyPath: m_LocalPosition.x
