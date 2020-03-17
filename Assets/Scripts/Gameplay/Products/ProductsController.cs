@@ -6,20 +6,20 @@ namespace Gameplay.Products
     public class ProductsController : SingletonBehaviour<ProductsController>
     {
         [SerializeField]
-        private ProductVisual productVisualizerPrefab;
+        private ProductVisualizer productVisualizerPrefab;
         
-        public Product CreateProduct(ProductData productData, Transform positionTransform)
+        public Product CreateProduct(ProductDefinition productDefinition, Transform positionTransform)
         {
             Product product;
 
-            if (productData.GetType() == typeof(MixedProductData))
+            if (productDefinition.GetType() == typeof(MixedProductDefinition))
             {
-                MixedProductData mixedProductData = productData as MixedProductData;
-                product = new MixedProduct(mixedProductData.ProductDatas);
+                MixedProductDefinition mixedProductDefinition = productDefinition as MixedProductDefinition;
+                product = new MixedProduct(mixedProductDefinition.ProductDefinitions);
             }
             else
             {
-                product = new SingleProduct(productData);                    
+                product = new SingleProduct(productDefinition);                    
             }
 
             product.SetVisual(InstantiateProductVisual(product, positionTransform));
@@ -27,12 +27,12 @@ namespace Gameplay.Products
             return product;
         }
 
-        private ProductVisual InstantiateProductVisual(Product product, Transform positionTransform)
+        private ProductVisualizer InstantiateProductVisual(Product product, Transform positionTransform)
         {
-            ProductVisual visual = Instantiate(productVisualizerPrefab);
-            visual.Initialize(product, positionTransform);
+            ProductVisualizer visualizer = Instantiate(productVisualizerPrefab);
+            visualizer.Initialize(product, positionTransform);
 
-            return visual;
+            return visualizer;
         }
     }
 }

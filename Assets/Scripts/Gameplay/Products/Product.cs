@@ -5,15 +5,15 @@ namespace Gameplay.Products
     public abstract class Product : ICarryable
     {
         public abstract bool IsMixedProduct { get; }
-        public abstract bool ContainsProduct(SingleProductData productData);
-        public abstract List<SingleProductData> GetProductDatas();
+        public abstract bool ContainsProduct(SingleProductDefinition productDefinition);
+        public abstract List<SingleProductDefinition> GetProductDatas();
 
-        private ProductVisual visual;
-        public ProductVisual Visual => visual;
+        private ProductVisualizer visualizer;
+        public ProductVisualizer Visualizer => visualizer;
 
-        public void SetVisual(ProductVisual visual)
+        public void SetVisual(ProductVisualizer visualizer)
         {
-            this.visual = visual;
+            this.visualizer = visualizer;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Gameplay.Stations.Components
         private LoadTileComponent loadTileComponent;
 
         [SerializeField]
-        private SingleProductData siloProduct;
+        private SingleProductDefinition siloProduct;
 
         [SerializeField]
         private Transform productReceiveTransform;
@@ -24,10 +24,7 @@ namespace Gameplay.Stations.Components
         private void Start()
         {
             loadTileComponent.SetProductProducer(this);
-            loadTileComponent.SetOutputProduct(siloProduct);
-            
             unloadTileComponent.SetProductReceiver(this);
-            unloadTileComponent.SetInputProduct(siloProduct);
 
             products = new Stack<Product>();
         }
@@ -47,12 +44,12 @@ namespace Gameplay.Stations.Components
             return productReceiveTransform;
         }
 
-        public bool CanProduceProduct(ProductData productData)
+        public bool CanProduceProduct()
         {
-            return products.Count > 0 && productData.GetType() == siloProduct.GetType();
+            return products.Count > 0;
         }
 
-        public Product ProduceProduct(ProductData productData)
+        public Product ProduceProduct()
         {
             return products.Pop();
         }

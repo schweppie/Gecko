@@ -5,13 +5,6 @@ namespace Gameplay.Tiles.Components
 {
     public class UnloadTileComponent : TileComponent
     {
-        private ProductData productData = null;
-
-        public void SetInputProduct(ProductData productData)
-        {
-            this.productData = productData;
-        }
-        
         private IProductReceiver productReceiver;
 
         public void SetProductReceiver(IProductReceiver productReceiver)
@@ -33,6 +26,5 @@ namespace Gameplay.Tiles.Components
         {
             return productReceiver.GetReceiverTransform();
         }
-      
     }
 }

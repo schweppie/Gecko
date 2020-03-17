@@ -2,7 +2,7 @@
 {
     public interface IProductProducer
     {
-        bool CanProduceProduct(ProductData productData);
-        Product ProduceProduct(ProductData productData);
+        bool CanProduceProduct();
+        Product ProduceProduct();
     }
 }

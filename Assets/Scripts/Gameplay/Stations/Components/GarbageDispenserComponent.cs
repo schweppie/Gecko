@@ -1,13 +1,14 @@
 ﻿using Gameplay.Products;
 using Gameplay.Tiles.Components;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Stations.Components
 {
     public class GarbageDispenserComponent : StationComponent, IProductProducer
     {
         [SerializeField]
-        private MixedProductData mixedProductData;
+        private MixedProductDefinition mixedProductDefinition;
 
         [SerializeField]
         private LoadTileComponent loadTileComponent;
@@ -18,15 +19,14 @@ namespace Gameplay.Stations.Components
         private void Start()
         {
             loadTileComponent.SetProductProducer(this);
-            loadTileComponent.SetOutputProduct(mixedProductData);
         }
 
-        public Product ProduceProduct(ProductData productData)
+        public Product ProduceProduct()
         {
-            return ProductsController.Instance.CreateProduct(productData, productSpawnPoint);
+            return ProductsController.Instance.CreateProduct(mixedProductDefinition, productSpawnPoint);
         }
 
-        public bool CanProduceProduct(ProductData productData)
+        public bool CanProduceProduct()
         {
             return true;
         }

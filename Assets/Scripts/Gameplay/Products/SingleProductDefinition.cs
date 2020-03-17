@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Gameplay.Products
 {
     [CreateAssetMenu(fileName = "SingleProductData", menuName = "ScriptableObjects/SingleProductData")]
-    public class SingleProductData : ProductData
+    public class SingleProductDefinition : ProductDefinition
     {
         [SerializeField]
         private GameObject singleProductVisualPrefab;

@@ -2,7 +2,7 @@
 
 namespace Gameplay.Products
 {
-    public abstract class ProductData : ScriptableObject
+    public abstract class ProductDefinition : ScriptableObject
     {
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gameplay.Products
 {
-    public class ProductVisual : MonoBehaviour
+    public class ProductVisualizer : MonoBehaviour
     {
         private Product product;
 

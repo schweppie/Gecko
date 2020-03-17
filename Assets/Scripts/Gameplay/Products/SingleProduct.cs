@@ -4,24 +4,24 @@ namespace Gameplay.Products
 {
     public class SingleProduct : Product
     {
-        private ProductData productData;
-        public ProductData ProductData => productData;
+        private ProductDefinition productDefinition;
+        public ProductDefinition ProductDefinition => productDefinition;
 
         public override bool IsMixedProduct => false;
 
-        public override bool ContainsProduct(SingleProductData productData)
+        public override bool ContainsProduct(SingleProductDefinition productDefinition)
         {
-            return this.productData == productData;
+            return this.productDefinition == productDefinition;
         }
 
-        public override List<SingleProductData> GetProductDatas()
+        public override List<SingleProductDefinition> GetProductDatas()
         {
-            return new List<SingleProductData>() {productData as SingleProductData};
+            return new List<SingleProductDefinition>() {productDefinition as SingleProductDefinition};
         }
 
-        public SingleProduct(ProductData productData)
+        public SingleProduct(ProductDefinition productDefinition)
         {
-            this.productData = productData;
+            this.productDefinition = productDefinition;
         }
     }
 }

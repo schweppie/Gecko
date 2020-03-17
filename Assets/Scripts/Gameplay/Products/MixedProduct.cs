@@ -5,37 +5,37 @@ namespace Gameplay.Products
 {
     public class MixedProduct : Product
     {
-        public List<SingleProductData> ProductDatas { get; }
+        public List<SingleProductDefinition> ProductDatas { get; }
 
         public override bool IsMixedProduct => true;
 
-        public override bool ContainsProduct(SingleProductData productData)
+        public override bool ContainsProduct(SingleProductDefinition productDefinition)
         {
-            return ProductDatas.Contains(productData);
+            return ProductDatas.Contains(productDefinition);
         }
 
-        public override List<SingleProductData> GetProductDatas()
+        public override List<SingleProductDefinition> GetProductDatas()
         {
             return ProductDatas;
         }
 
-        public MixedProduct(List<ProductData> productDatas)
+        public MixedProduct(List<SingleProductDefinition> productDefinitions)
         {
             // Need to make a new list, else we'll change the scriptable object
-            ProductDatas = new List<SingleProductData>();
+            ProductDatas = new List<SingleProductDefinition>();
 
-            for (int i = 0; i < productDatas.Count; i++)
-                ProductDatas.Add(productDatas[i] as SingleProductData);
+            for (int i = 0; i < productDefinitions.Count; i++)
+                ProductDatas.Add(productDefinitions[i] as SingleProductDefinition);
         }
 
-        public void RemoveProduct(SingleProductData productData)
+        public void RemoveProduct(SingleProductDefinition productDefinition)
         {
-            if (!ContainsProduct(productData))
+            if (!ContainsProduct(productDefinition))
                 throw new Exception("Can't remove product that doesn't exist!");
 
-            ProductDatas.Remove(productData);
-            
-            Visual.Visualize();
+            ProductDatas.Remove(productDefinition);
+
+            Visualizer.Visualize();
         }
     }
 }
