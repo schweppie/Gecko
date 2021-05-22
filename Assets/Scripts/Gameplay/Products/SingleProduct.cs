@@ -1,19 +1,27 @@
-﻿namespace Gameplay.Products
+﻿using System.Collections.Generic;
+
+namespace Gameplay.Products
 {
     public class SingleProduct : Product
     {
-        private ProductData productData;
+        private ProductDefinition productDefinition;
+        public ProductDefinition ProductDefinition => productDefinition;
 
         public override bool IsMixedProduct => false;
 
-        public override bool ContainsProduct(ProductData productData)
+        public override bool ContainsProduct(SingleProductDefinition productDefinition)
         {
-            return this.productData == productData;
+            return this.productDefinition == productDefinition;
         }
 
-        public SingleProduct(ProductData productData)
+        public override List<SingleProductDefinition> GetProductDatas()
         {
-            this.productData = productData;
+            return new List<SingleProductDefinition>() {productDefinition as SingleProductDefinition};
+        }
+
+        public SingleProduct(ProductDefinition productDefinition)
+        {
+            this.productDefinition = productDefinition;
         }
     }
 }

@@ -22,14 +22,14 @@ namespace Gameplay.Robots.Strategies
                 return false;
             Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position);
             var loadTileComponent = tile.GetComponent<LoadTileComponent>();
-            return loadTileComponent != null;
+            return loadTileComponent != null && loadTileComponent.CanLoadProduct();
         }
 
         public override RobotCommand GetCommand()
         {
             Tile tile = FieldController.Instance.GetTileAtIntPosition(robot.Position);
             var loadTileComponent = tile.GetComponent<LoadTileComponent>();
-            return new LoadCommand(loadTileComponent.ProductProducer);
+            return new LoadCommand(loadTileComponent);
         }
     }
 }

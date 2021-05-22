@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using Gameplay.Products;
+﻿using Gameplay.Products;
 using Gameplay.Tiles.Components;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gameplay.Stations.Components
 {
     public class GarbageDispenserComponent : StationComponent, IProductProducer
     {
         [SerializeField]
-        private List<ProductData> products;
-
-        [SerializeField]
-        private MixedProductVisual mixedProductVisual;
+        private MixedProductDefinition mixedProductDefinition;
 
         [SerializeField]
         private LoadTileComponent loadTileComponent;
@@ -21,20 +18,17 @@ namespace Gameplay.Stations.Components
 
         private void Start()
         {
-            loadTileComponent.ProductProducer = this;
+            loadTileComponent.SetProductProducer(this);
         }
 
-        Product IProductProducer.ProduceProduct()
+        public Product ProduceProduct()
         {
-            var mixedProduct = new MixedProduct(products);
-            GameObject newProductVisualGO = Instantiate(mixedProductVisual.gameObject);
-            var newProductVisual = newProductVisualGO.GetComponent<ProductVisual>();
-            mixedProduct.SetVisual(newProductVisual);
-            var newMixedProductVisual = newProductVisualGO.GetComponent<MixedProductVisual>();
-            newMixedProductVisual.SetupMixedProduct();
-            newProductVisualGO.transform.position = productSpawnPoint.position;
-            newProductVisualGO.transform.rotation = productSpawnPoint.rotation;
-            return mixedProduct;
+            return ProductsController.Instance.CreateProduct(mixedProductDefinition, productSpawnPoint);
+        }
+
+        public bool CanProduceProduct()
+        {
+            return true;
         }
     }
 }

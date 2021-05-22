@@ -1,24 +1,24 @@
 ﻿using Gameplay.Field;
 using Gameplay.Products;
-using Gameplay.Stations.Components;
+using Gameplay.Tiles.Components;
 
 namespace Gameplay.Robots.Commands
 {
     public class LoadCommand : RobotCommand
     {
-        private IProductProducer productProducer;
+        private LoadTileComponent loadTileComponent;
 
-        public LoadCommand(IProductProducer productProducer)
+        public LoadCommand(LoadTileComponent loadTileComponent)
         {
-            this.productProducer = productProducer;
+            this.loadTileComponent = loadTileComponent;
         }
 
         public override void Execute()
         {
             FieldController.Instance.AddOccupier(robot.Position, robot);
-            Product product = productProducer.ProduceProduct();
-            product.Visual.AnimateFallOnToCarrier(robot.RobotVisual.UnanimatedCarryTransform, robot.RobotVisual.CarryTransform);
-            robot.CarryProduct(product);
+            Product product = loadTileComponent.LoadProduct();
+            product.Visualizer.AnimateFallOnToCarrier(robot.RobotVisual.UnanimatedCarryTransform, robot.RobotVisual.CarryTransform);
+            robot.LoadProduct(product);
         }
     }
 }
