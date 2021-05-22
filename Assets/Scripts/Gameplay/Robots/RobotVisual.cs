@@ -197,7 +197,6 @@ namespace Gameplay.Robots
             UnsubscribeEvents();
         }
 
-
         [ContextMenu("Force Remove")]
         private void ForceRemove()
         {
