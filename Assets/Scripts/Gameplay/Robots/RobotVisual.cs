@@ -75,7 +75,6 @@ namespace Gameplay.Robots
 
         private void UnsubscribeEvents()
         {
-            Debug.Log("Unsubscribe events " + transform.name);
             if (GameVisualizationController.Instance != null)
             {
                 GameVisualizationController.Instance.OnGameVisualization -= OnGameVisualization;

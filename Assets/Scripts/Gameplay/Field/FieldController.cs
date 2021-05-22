@@ -94,12 +94,11 @@ namespace Gameplay.Field
 
         private void Update()
         {
-
             if (Input.GetKeyDown(KeyCode.I))
-                AddStation();
+                DebugAddStation();
         }
 
-        public void AddStation()
+        public void DebugAddStation()
         {
             StationVisual stationVisualInstance = Instantiate(tempInstantiateTestVisual, new Vector3(8,3,24), Quaternion.identity, stations.transform);
             AddStationFromVisual(stationVisualInstance);
