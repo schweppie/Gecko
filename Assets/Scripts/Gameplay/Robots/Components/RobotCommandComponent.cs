@@ -17,7 +17,7 @@ namespace Gameplay.Robots.Components
         /// <summary>
         /// This set holds the other occupiers which require to pick a new strategy
         /// when this robot's command has been executed.
-        /// 
+        ///
         /// It can populated in the IsApplicable() from a strategy.
         /// </summary>
         private HashSet<IOccupier> invalidOccupiers = new HashSet<IOccupier>();
@@ -40,15 +40,17 @@ namespace Gameplay.Robots.Components
             foreach (IOccupier occupier in invalidOccupiers)
                 occupier.PickNewStrategy();
         }
-        
+
         public override void Initialize(Robot robot)
         {
             base.Initialize(robot);
-            
+
             commandStrategyContainer = new StrategyContainer<RobotCommandStrategy>();
             commandStrategyContainer.AddStrategy(new SpawnStrategy(robot));
             commandStrategyContainer.AddStrategy(new DoNothingStrategy(robot));
             commandStrategyContainer.AddStrategy(new CollectStrategy(robot));
+            commandStrategyContainer.AddStrategy(new DestroySelfStrategy(robot));
+
             commandStrategyContainer.AddStrategy(new FallStrategy(robot));
             commandStrategyContainer.AddStrategy(new ChangeDirectionStrategy(robot));
             commandStrategyContainer.AddStrategy(new LoadStrategy(robot));
@@ -77,7 +79,7 @@ namespace Gameplay.Robots.Components
                 robot.Dispose();
                 return;
             }
-            
+
             RobotCommand robotCommand = commands.Last();
             commands.RemoveAt(commands.Count-1);
 

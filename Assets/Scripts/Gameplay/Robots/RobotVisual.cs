@@ -75,6 +75,7 @@ namespace Gameplay.Robots
 
         private void UnsubscribeEvents()
         {
+            Debug.Log("Unsubscribe events " + transform.name);
             if (GameVisualizationController.Instance != null)
             {
                 GameVisualizationController.Instance.OnGameVisualization -= OnGameVisualization;
@@ -186,7 +187,7 @@ namespace Gameplay.Robots
                 return;
 
             Handles.Label(transform.position, robot.Tile.Visual.gameObject.name);
-            
+
             if (robot.IsCarrying)
                 Handles.Label(transform.position + Vector3.up, robot.Carryable.GetType().Name);
         }
@@ -195,6 +196,14 @@ namespace Gameplay.Robots
         private void OnDestroy()
         {
             UnsubscribeEvents();
+        }
+
+
+        [ContextMenu("Force Remove")]
+        private void ForceRemove()
+        {
+            if (Application.isPlaying)
+                robot.RemoveRobot();
         }
     }
 }

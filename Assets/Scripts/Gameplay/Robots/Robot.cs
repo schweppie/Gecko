@@ -72,7 +72,6 @@ namespace Gameplay.Robots
         public void Dispose()
         {
             OnDispose?.Invoke();
-
             GameStepController.Instance.OnDynamicStep -= OnDynamicStep;
         }
 
@@ -106,6 +105,12 @@ namespace Gameplay.Robots
             if (!IsCarrying)
                 throw new Exception("Wasn't carrying anything");
             carryable = null;
+        }
+
+        public void RemoveRobot()
+        {
+            UnityEngine.Object.Destroy(robotVisual.gameObject);
+            Dispose();
         }
     }
 }

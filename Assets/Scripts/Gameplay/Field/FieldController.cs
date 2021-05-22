@@ -38,6 +38,10 @@ namespace Gameplay.Field
         private Dictionary<Vector3Int, IOccupier> oldOccupationBuffer = new Dictionary<Vector3Int, IOccupier>();
         public Dictionary<Vector3Int, IOccupier> OldOccupationBuffer => oldOccupationBuffer;
 
+
+        [SerializeField]
+        private StationVisual tempInstantiateTestVisual;
+
         // For debugging
         private int emptyTiles = 0;
 
@@ -82,17 +86,28 @@ namespace Gameplay.Field
 
         private void InitializeStations()
         {
-            foreach (Transform stationTransform in stations.transform)
-            {
-                StationVisual stationVisual = stationTransform.GetComponent<StationVisual>();
-                if (stationVisual == null)
-                {
-                    Debug.LogError("Did not find component '" + nameof(StationVisual) + "' on station", stationTransform);
-                    continue;
-                }
+            StationVisual[] stationVisuals = stations.GetComponentsInChildren<StationVisual>();
 
-                Station station = Station.ConstructStationFromVisual(stationVisual);
-            }
+            foreach (StationVisual stationVisual in stationVisuals)
+                AddStationFromVisual(stationVisual);
+        }
+
+        private void Update()
+        {
+
+            if (Input.GetKeyDown(KeyCode.I))
+                AddStation();
+        }
+
+        public void AddStation()
+        {
+            StationVisual stationVisualInstance = Instantiate(tempInstantiateTestVisual, new Vector3(8,3,24), Quaternion.identity, stations.transform);
+            AddStationFromVisual(stationVisualInstance);
+        }
+
+        public void AddStationFromVisual(StationVisual stationVisual)
+        {
+            Station station = Station.ConstructStationFromVisual(stationVisual);
         }
 
         public Tile GetTileAtIntPosition(Vector3Int intPosition)
@@ -117,7 +132,11 @@ namespace Gameplay.Field
         public Tile OverrideTileAtPosition(Vector3Int position, Tile newTile)
         {
             positionsToTiles.TryGetValue(position, out Tile oldTile);
-            positionsToTiles[position] = newTile;
+
+            if (newTile != null)
+                positionsToTiles[position] = newTile;
+            else
+                positionsToTiles.Remove(position);
             return oldTile;
         }
 
@@ -167,6 +186,11 @@ namespace Gameplay.Field
         public void AddOccupier(Vector3Int position, IOccupier occupier)
         {
             occupationBuffer[position] = occupier;
+        }
+
+        public void RemoveOccupier(Vector3Int position)
+        {
+            occupationBuffer.Remove(position);
         }
 
         public void ClearBuffers()
