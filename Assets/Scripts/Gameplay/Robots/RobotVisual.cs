@@ -26,6 +26,7 @@ namespace Gameplay.Robots
                                                     // of the robot
         public Transform UnanimatedCarryTransform => unanimatedCarryTransform;
 
+        [SerializeField]
         private bool isDebug = false;
 
         private Robot robot;

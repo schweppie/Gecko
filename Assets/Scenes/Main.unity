@@ -1196,7 +1196,8 @@ MonoBehaviour:
     type: 3}
   tileBottomVisualPrefab: {fileID: 3250740378589823392, guid: b07b8cac9d6a51148ab53ca99dcc9d89,
     type: 3}
-  tempInstantiateTestVisual: {fileID: 0}
+  tempInstantiateTestVisual: {fileID: 2873202432586028236, guid: 56bb7bc0dc0690c4391a7371a2736f8f,
+    type: 3}
 --- !u!4 &121208318
 Transform:
   m_ObjectHideFlags: 0

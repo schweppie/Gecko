@@ -100,7 +100,7 @@ namespace Gameplay.Field
 
         public void DebugAddStation()
         {
-            StationVisual stationVisualInstance = Instantiate(tempInstantiateTestVisual, new Vector3(8,3,24), Quaternion.identity, stations.transform);
+            StationVisual stationVisualInstance = Instantiate(tempInstantiateTestVisual, new Vector3(8,2,24), Quaternion.identity, stations.transform);
             AddStationFromVisual(stationVisualInstance);
         }
 
