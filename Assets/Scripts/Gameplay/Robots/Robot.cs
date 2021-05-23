@@ -109,7 +109,6 @@ namespace Gameplay.Robots
 
         public void RemoveRobot()
         {
-            UnityEngine.Object.Destroy(robotVisual.gameObject);
             Dispose();
         }
     }
