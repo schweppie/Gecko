@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2382378677226244417}
   - component: {fileID: 5380702416627140360}
   - component: {fileID: 435513411582699434}
+  - component: {fileID: 926865853685029735}
   m_Layer: 0
   m_Name: CurveTestTile
   m_TagString: Untagged
@@ -58,35 +59,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b07557aa15e4dd341856212353bd243b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &926865853685029735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250740378589823392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983d49b6e6528614cbadc3688ecba244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   heightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: -0
-      outSlope: -0
+      inSlope: 0.90514314
+      outSlope: 0.90514314
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.3129771
+      outWeight: 0.11809799
     - serializedVersion: 3
-      time: 0.5
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      time: 0.51876074
+      value: 0.7809443
+      inSlope: 0.4850412
+      outSlope: 0.4850412
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.45477617
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -3.7578132
+      outSlope: -3.7578132
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.39694655
+      inWeight: 0.0580629
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -98,6 +111,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2382378677226244417}
     m_Modifications:
+    - target: {fileID: -4216859302048453862, guid: 0e59637db9170a04690ea1b0bacb7fd2,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 0e59637db9170a04690ea1b0bacb7fd2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -115,6 +133,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 0e59637db9170a04690ea1b0bacb7fd2,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 0e59637db9170a04690ea1b0bacb7fd2,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.7071068
       objectReference: {fileID: 0}
@@ -127,16 +150,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 0e59637db9170a04690ea1b0bacb7fd2,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 0e59637db9170a04690ea1b0bacb7fd2,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 0e59637db9170a04690ea1b0bacb7fd2,
         type: 3}
