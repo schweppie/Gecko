@@ -7,7 +7,7 @@ namespace Gameplay.Tiles.Reporters.Height
     {
         private AnimationCurve heightCurve;
 
-        public CurveHeightReporter(AnimationCurve heightCurve, Tile tile) : base(tile)
+        public CurveHeightReporter(Tile tile, AnimationCurve heightCurve) : base(tile)
         {
             this.heightCurve = heightCurve;
         }
