@@ -39,14 +39,13 @@ namespace Gameplay.Stations
             {
                 Tile newTile = Tile.ConstructTileFromVisual(localTileVisual);
                 stationTiles.Add(newTile);
+
                 Vector3Int globalTilePosition = localTileVisual.IntPosition;
                 Tile oldTile = FieldController.Instance.OverrideTileAtPosition(globalTilePosition, newTile);
 
-                // There isn't always an existing tile already on a station's tile
-                if (oldTile == null)
-                    continue;
+                if (oldTile != null)
+                    oldTile.Disable();
 
-                oldTile.Disable();
                 oldOverriddenTiles.Add(oldTile);
             }
         }
@@ -57,13 +56,17 @@ namespace Gameplay.Stations
                 stationComponent.DoNextStep();
         }
 
-        public void TestRemove()
+        public void RemoveStation()
         {
-            for (int i = 0; i < stationTiles.Count; i++)
+            for (int i = 0; i < oldOverriddenTiles.Count; i++)
             {
-                FieldController.Instance.OverrideTileAtPosition(stationTiles[i].IntPosition, oldOverriddenTiles[i]);
-                stationTiles[i].Disable();
+                FieldController.Instance.OverrideTileAtPosition(oldOverriddenTiles[i].IntPosition, oldOverriddenTiles[i]);
+                oldOverriddenTiles[i].Enable();
             }
+
+            for (int i = 0; i < stationTiles.Count; i++)
+                stationTiles[i].Disable();
+
             stationTiles.Clear();
             oldOverriddenTiles.Clear();
             GameStepController.Instance.OnStaticStep -= OnStaticStep;

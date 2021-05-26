@@ -8,14 +8,14 @@ namespace Gameplay.Robots.Strategies
     public class ChangeDirectionStrategy : RobotCommandStrategy
     {
         private DirectionTileComponent directionTile;
-        
+
         public ChangeDirectionStrategy(Robot robot) : base(robot)
         {
         }
 
         public override int GetPriority()
         {
-            return 5;
+            return 6;
         }
 
         public override bool IsApplicable()

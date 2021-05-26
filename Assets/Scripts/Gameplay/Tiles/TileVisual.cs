@@ -1,4 +1,5 @@
-﻿using Gameplay.Field;
+﻿using DG.Tweening;
+using Gameplay.Field;
 using Gameplay.Tiles.Components;
 using JP.Framework.Extensions;
 using UnityEngine;
@@ -21,8 +22,7 @@ namespace Gameplay.Tiles
                 return tileComponents;
             }
         }
-        
-        
+
         private Tile tile;
 
         private MeshRenderer[] renderers;
@@ -53,7 +53,7 @@ namespace Gameplay.Tiles
             if (!needsBottom)
                 return;
 
-            if (FieldController.Instance.GetTileAtIntPosition(IntPosition + Vector3Int.down).GetComponent<BlockingTileComponent>() == null 
+            if (FieldController.Instance.GetTileAtIntPosition(IntPosition + Vector3Int.down).GetComponent<BlockingTileComponent>() == null
                 && tileBottomVisualInstance == null)
             {
                 tileBottomVisualInstance = Instantiate(FieldController.Instance.TileBottomVisualPrefab);
@@ -66,8 +66,37 @@ namespace Gameplay.Tiles
         public void Initialize(Tile tile)
         {
             this.tile = tile;
+            SubscribeEvents();
         }
-        
+
+        private void SubscribeEvents()
+        {
+            tile.OnDispose += OnDispose;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            tile.OnDispose -= OnDispose;
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeEvents();
+        }
+
         public Vector3Int IntPosition => transform.position.ToIntVector();
+
+        [ContextMenu("Force Remove")]
+        private void ForceRemove()
+        {
+            if (Application.isPlaying)
+                tile.RemoveTile();
+        }
+
+        public void OnDispose()
+        {
+            transform.DOScale(0, 1f)
+                .OnComplete(() => Destroy(gameObject));
+        }
     }
 }

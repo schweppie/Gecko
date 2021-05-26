@@ -26,6 +26,7 @@ namespace Gameplay.Robots
                                                     // of the robot
         public Transform UnanimatedCarryTransform => unanimatedCarryTransform;
 
+        [SerializeField]
         private bool isDebug = false;
 
         private Robot robot;
@@ -186,7 +187,7 @@ namespace Gameplay.Robots
                 return;
 
             Handles.Label(transform.position, robot.Tile.Visual.gameObject.name);
-            
+
             if (robot.IsCarrying)
                 Handles.Label(transform.position + Vector3.up, robot.Carryable.GetType().Name);
         }
@@ -195,6 +196,13 @@ namespace Gameplay.Robots
         private void OnDestroy()
         {
             UnsubscribeEvents();
+        }
+
+        [ContextMenu("Force Remove")]
+        private void ForceRemove()
+        {
+            if (Application.isPlaying)
+                robot.RemoveRobot();
         }
     }
 }

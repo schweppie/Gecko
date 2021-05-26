@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gameplay.Field;
 using Gameplay.Tiles.Components;
 using Gameplay.Tiles.Reporters.Enter;
 using Gameplay.Tiles.Reporters.Exit;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace Gameplay.Tiles
 {
-    public class Tile
+    public class Tile : IDisposable
     {
         private TileVisual visual;
         public TileVisual Visual => visual;
@@ -37,6 +38,9 @@ namespace Gameplay.Tiles
         private BaseNormalReporter normalReporter;
         public BaseNormalReporter NormalReporter => normalReporter;
 
+        public delegate void voidDelegate();
+        public event voidDelegate OnDispose;
+
         public Tile(TileVisual visual)
         {
             this.visual = visual;
@@ -52,7 +56,7 @@ namespace Gameplay.Tiles
                 tileComponents[tileComponent.GetType()] = tileComponent;
                 tileComponent.Initialize(this);
             }
-            
+
             GameStepController.Instance.OnStaticStep += OnStaticStep;
         }
 
@@ -64,6 +68,11 @@ namespace Gameplay.Tiles
         public void SetExitReporter(BaseExitReporter reporter)
         {
             exitReporter = reporter;
+        }
+
+        public void RemoveTile()
+        {
+            Dispose();
         }
 
         public void SetEnterReporter(BaseEnterReporter reporter)
@@ -79,21 +88,21 @@ namespace Gameplay.Tiles
         private void OnStaticStep(int step)
         {
             foreach (var tileComponent in tileComponents.Values)
-                tileComponent.DoStaticStep();            
+                tileComponent.DoStaticStep();
         }
-   
+
 
         /// <summary>
         /// Normally the data (this tile) is created first before the visual, but as we want to build levels in the
-        /// Unity editor in scenes, the visuals already exists while the data does not yet 
+        /// Unity editor in scenes, the visuals already exists while the data does not yet
         /// </summary>
         public static Tile ConstructTileFromVisual(TileVisual visual)
         {
             Tile tile = new Tile(visual);
             tile.intPosition = visual.IntPosition;
-            
+
             visual.Initialize(tile);
-            
+
             return tile;
         }
 
@@ -114,11 +123,18 @@ namespace Gameplay.Tiles
             visual.Hide();
             GameStepController.Instance.OnStaticStep -= OnStaticStep;
         }
-        
+
         public void Enable()
         {
             GameStepController.Instance.OnStaticStep += OnStaticStep;
             visual.Show();
+        }
+
+        public void Dispose()
+        {
+            OnDispose?.Invoke();
+            FieldController.Instance.OverrideTileAtPosition(intPosition, null);
+            GameStepController.Instance.OnStaticStep -= OnStaticStep;
         }
     }
 }

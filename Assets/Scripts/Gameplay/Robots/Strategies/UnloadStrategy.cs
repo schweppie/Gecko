@@ -14,7 +14,7 @@ namespace Gameplay.Robots.Strategies
 
         public override int GetPriority()
         {
-            return 7;
+            return 8;
         }
 
         public override bool IsApplicable()

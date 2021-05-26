@@ -43,11 +43,11 @@ namespace Gameplay.Stations
                 stationComponents[i].Initialize(station);
         }
 
-        [ContextMenu("Test remove")]
-        private void TestRemove()
+        [ContextMenu("Force Remove")]
+        private void ForceRemove()
         {
             if (Application.isPlaying)
-                station.TestRemove();
+                station.RemoveStation();
         }
     }
 }
