@@ -43,7 +43,18 @@ namespace Gameplay.Stations.Components
                 mixedProduct.RemoveProduct(splitProductDefinition);
             }
 
-            restProductLoadTile.AddProductToStack(mixedProduct);
+            if (mixedProduct.ProductDatas.Count > 1)
+            {
+                restProductLoadTile.AddProductToStack(mixedProduct);
+            }
+            else
+            {
+                SingleProductDefinition singleProductDefinition = mixedProduct.ProductDatas[0];
+                Product singleProduct = ProductsController.Instance.CreateProduct(singleProductDefinition, GetReceiverTransform());
+                restProductLoadTile.AddProductToStack(singleProduct);
+                mixedProduct.RemoveProduct(singleProductDefinition);
+            }
+
         }
 
         public Transform GetReceiverTransform()
